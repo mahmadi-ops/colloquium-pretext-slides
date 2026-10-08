@@ -1,0 +1,1219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Part two: MATH 14 (about 13 minutes) -->
+<section xml:id="sec-math14">
+  <title>MATH 14: Calculus and Analytic Geometry IV</title>
+
+  <!-- Notes: Same toolchain; the emphasis shifts to practice and support: skeletal
+       notes, self-checking exercises, the tutor and its feedback loop. -->
+  <slide>
+    <title>Vector calculus with practice built in</title>
+    <p>Curves and arc length, line integrals and vector fields, multiple integrals, and the theorems of Green, Stokes, and Gauss.</p>
+    <tabular halign="center">
+      <row bottom="minor">
+        <cell>144</cell><cell>34</cell><cell>43</cell><cell>231</cell>
+      </row>
+      <row>
+        <cell>diagrams</cell><cell>live figures</cell><cell>animations</cell><cell>exercises</cell>
+      </row>
+      <row>
+        <cell>PreFigure</cell><cell>Three.js, GeoGebra</cell><cell>Manim</cell><cell>many self-checking</cell>
+      </row>
+    </tabular>
+  </slide>
+
+  <!-- Notes: The book's figure for the scalar line integral as the area of a wall of
+       height f(x, y) = 2 + x^2 y over the half circle. The Riemann sum approaches
+       2 pi + 2/3, about 6.9499. -->
+  <slide>
+    <title>The line integral as the area of a wall</title>
+    <sidebyside widths="50% 46%" valign="top">
+      <interactive xml:id="int-slide-wall" iframe="wall-area-manim.html" aspect="1:1">
+        <description><p>A wall of height f(x, y) = 2 + x squared y standing on the upper unit semicircle, built step by step, then approximated by slabs.</p></description>
+      </interactive>
+      <stack>
+        <p>Press Play, or step through Surface, Base, Top, and Slabs. The slabs are a Riemann sum; it approaches the exact area <m>2\pi + \tfrac23 \approx 6.9499</m>.</p>
+      </stack>
+    </sidebyside>
+  </slide>
+
+  <!-- ===== How it's coded: The wall figure (3 steps) ===== -->
+  <slide>
+    <title>The example in code</title>
+    <p><alert>How it’s coded · The wall figure · step 1 of 3.</alert> The figure codes the book’s example: <m>f(x, y) = 2 + x^2 y</m> over the upper unit semicircle, exact area <m>2\pi + 2/3</m>. The comment lists what to change for another wall.</p>
+    <p>From <c>MATH-14/assets/wall-area-manim.html</c></p>
+    <program language="javascript" highlight-lines="9,14">
+<code>
+// ---------- the example ----------
+// The wall stands on C: r(t) = (cos t, sin t), 0 &lt;= t &lt;= pi, and reaches up to
+// the graph of f. Since |r'(t)| = 1, ds = dt, and its area is
+//   int_C f ds = int_0^pi (2 + cos^2 t sin t) dt = 2 pi + 2/3.
+// To show another wall: change f, the curve (onBase, TMAX), EXACT, the
+// surface's domain (RS, in step 1 below), and the text of the card, the
+// meter and the tour captions to match. The slabs use the lengths of the
+// chords themselves, so their sum needs no change for another curve.
+function f(x, y) { return 2 + x * x * y; }
+var TMAX = Math.PI;
+function height(t) { return f(Math.cos(t), Math.sin(t)); }
+function onBase(t, z) { return new THREE.Vector3(Math.cos(t), Math.sin(t), z || 0); }
+function onTop(t) { return onBase(t, height(t)); }
+var EXACT = 2 * Math.PI + 2 / 3;
+var NMAX = 64;
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Slabs are a Riemann sum</title>
+    <p><alert>How it’s coded · The wall figure · step 2 of 3.</alert> <m>n</m> chords, each carrying a slab as tall as the wall at its left end. Their areas add up to <m>\sum f\bigl(x(t_k), y(t_k)\bigr)\,\Delta s</m>, computed for <m>n = 1</m> to <m>64</m>.</p>
+    <p>From <c>MATH-14/assets/wall-area-manim.html</c></p>
+    <program language="javascript" highlight-lines="14">
+<code>
+// Mark n + 1 points on C, at t = k pi / n, and join neighbours by chords.
+// Each chord, of length ds, stands in for the arc of C between its ends,
+// and its slab is a flat panel standing on it, as tall as the wall at the
+// chord's left end, as in the book: f(x(t_k), y(t_k)).
+function slabsFor(n) {
+  var pts = [], h = [];
+  for (var k = 0; k &lt;= n; k++) pts.push(onBase(k * TMAX / n));
+  for (k = 0; k &lt; n; k++) h.push(height(k * TMAX / n));
+  return { pts: pts, h: h };
+}
+// the total area of the slabs: the sum of f(x(t_k), y(t_k)) ds
+function total(sl) {
+  var s = 0;
+  for (var k = 0; k &lt; sl.h.length; k++) s += sl.h[k] * sl.pts[k].distanceTo(sl.pts[k + 1]);
+  return s;
+}
+var SUMS = [NaN];
+for (var i0 = 1; i0 &lt;= NMAX; i0++) SUMS.push(total(slabsFor(i0)));
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Put it in the book</title>
+    <p><alert>How it’s coded · The wall figure · step 3 of 3.</alert> A captioned figure whose caption cites the example it animates.</p>
+    <p>From <c>MATH-14/source/section-line-integrals.ptx</c></p>
+    <program language="xml">
+<code>
+&lt;figure xml:id="fig-wall-area-manim"&gt;
+  &lt;caption&gt;
+    The wall of &lt;xref ref="ex-wall-half-circle"/&gt;, animated: the
+    graph of &lt;m&gt;z = f(x,y) = 2 + x^2 y&lt;/m&gt; (blue), the base of the
+    wall … and has the height &lt;m&gt;f\left(x(t_k),y(t_k)\right)&lt;/m&gt;
+    of the wall at the chord's left end.
+  &lt;/caption&gt;
+  &lt;interactive xml:id="interactive-wall-area-manim"
+               iframe="wall-area-manim.html"
+               width="100%" aspect="1:1"&gt;
+    …
+  &lt;/interactive&gt;
+&lt;/figure&gt;
+</code>
+</program>
+  </slide>
+
+  <!-- Notes: The course map from the front matter of the MATH 14 book. Hover a topic to
+       light up what it builds on; clicking a topic opens that part of the book. -->
+  <slide>
+    <title>A clickable map of the whole course</title>
+    <interactive xml:id="int-slide-brain-map" iframe="brain-map.html" width="84%" aspect="16:9">
+      <description><p>A map of the integrals of the course: each topic is a node, and arrows connect each topic to the ones that build on it.</p></description>
+    </interactive>
+  </slide>
+
+  <!-- ===== How it's coded: The course map (4 steps) ===== -->
+  <slide>
+    <title>Topics as data</title>
+    <p><alert>How it’s coded · The course map · step 1 of 4.</alert> Each topic is a record: position, title, formula in TeX (rendered with KaTeX), and the page of the book it links to.</p>
+    <p>From <c>MATH-14/assets/brain-map.html</c></p>
+    <program language="javascript" highlight-lines="6,10">
+<code>
+// Every node links to the page of the book where the topic lives.  The hrefs
+// are relative to external/ (where this file is deployed), so ../foo.html is
+// foo.html at the root of the built site; target '_parent' escapes the iframe.
+const NODES = [
+    { id:'hub-line', x:56, y:470, w:230, hub:'Line integrals', hubSize:36, gold:true,
+    rule:true, href:'../ch-curves-and-fields.html' },
+  { id:'param-curve', x:56, y:660, w:250, t:'Parametrizing the curve', tSize:21,
+        m:[["\\mathbf r(t)=x(t)\\,\\mathbf i+y(t)\\,\\mathbf j+z(t)\\,\\mathbf k,\\ \\ a\\le
+      t\\le b",13.5],["\\mathbf v(t)=\\tfrac{d\\mathbf r}{dt}",13.5]],
+      href:'../sec-parametrization.html' },
+  …
+];
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Arrows as data</title>
+    <p><alert>How it’s coded · The course map · step 2 of 4.</alert> Each arrow names two topics; <c>'gold'</c> marks a theorem or substitution that bridges two kinds of integral.</p>
+    <p>From <c>MATH-14/assets/brain-map.html</c></p>
+    <program language="javascript" highlight-lines="8,10-13">
+<code>
+// Third entry marks the gold bridges: a theorem (or a coordinate substitution)
+// trading an integral over a boundary for an integral over what it bounds.
+// The four theorems that start from a line integral all leave from the
+// Line integrals hub, so hovering it lights every bridge out of it.
+const EDGES = [
+    ['param-curve','hub-line'], ['hub-line','arclength'], ['hub-line','scalar'],
+    ['hub-line','work'],
+  ['hub-line','ftc','gold'],
+  ['scalar','wall'], ['scalar','wire'],
+    ['hub-line','green-circ','gold'], ['hub-line','stokes','gold'],
+    ['hub-line','green-flux','gold'],
+  ['green-circ','dbl','gold'], ['green-flux','dbl','gold'],
+  ['stokes','surf','gold'], ['surf','divergence','gold'], ['divergence','tri','gold'],
+  ['param','surf'],
+  ['dbl','dbl-cart'], ['dbl','dbl-polar'], ['dbl','dbl-sub'],
+  ['tri','tri-cart'], ['tri','tri-cyl'], ['tri','tri-sph'], ['tri','tri-sub']
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Light up the neighbours</title>
+    <p><alert>How it’s coded · The course map · step 3 of 4.</alert> Hovering a topic adds a class to its arrows and neighbours; the stylesheet does the rest.</p>
+    <p>From <c>MATH-14/assets/brain-map.html</c></p>
+    <program language="javascript" highlight-lines="8,10">
+<code>
+// hovering a topic lights up its connections and neighbours
+for (const n of NODES) {
+  const el = stage.querySelector('[data-node="' + n.id + '"]');
+  const inc = touching[n.id];
+  if (!inc) continue;
+  el.addEventListener('mouseenter', () =&gt; {
+    svg.classList.add('focus'); stage.classList.add('focus');
+    for (const p of inc.paths) p.classList.add('hi');
+        for (const id of inc.nodes) stage.querySelector('[data-node="' + id +
+      '"]').classList.add('hi');
+  });
+  el.addEventListener('mouseleave', () =&gt; {
+    …
+  });
+}
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Put it in the front matter</title>
+    <p><alert>How it’s coded · The course map · step 4 of 4.</alert> The map has its own file in the front matter; <c>&lt;static&gt;</c> gives the PDF a sentence in its place.</p>
+    <p>From <c>MATH-14/source</c></p>
+    <program language="xml">
+<code>
+&lt;!-- source/frontmatter.ptx --&gt;
+&lt;xi:include href="subsec-brain-map.ptx" /&gt;
+
+&lt;!-- source/subsec-brain-map.ptx --&gt;
+&lt;preface xml:id="subsec-brain-map"&gt;
+  &lt;title&gt;The big picture&lt;/title&gt;
+  &lt;p&gt;
+    The map below gathers every integral of this book on one page. …
+    For comfortable reading, &lt;url href="external/brain-map.html"
+    visual=""&gt;open the map full size in a new tab&lt;/url&gt;.
+  &lt;/p&gt;
+  &lt;interactive xml:id="brain-map" iframe="brain-map.html"
+               width="100%" aspect="16:9"&gt;
+    &lt;instructions&gt;
+      &lt;p&gt;
+        Each node of the map is a topic of the course, and each arrow
+        connects a topic to the ones that build on it; … click it to
+        jump to the part of the book where it is covered.
+…
+</code>
+</program>
+  </slide>
+
+  <!-- Notes: The skeletal notes are a second PreTeXt book, also printed as a PDF; we fill
+       the workspace boxes in class. After class the completed section is posted from the
+       Posting Desk. -->
+  <slide>
+    <title>Skeletal notes: fill it in during class, read it complete after</title>
+    <ol>
+      <li><p><alert>Before class.</alert> Students open or print the skeletal notes: definitions and set-ups are there, the work is left blank.</p></li>
+      <li><p><alert>In class.</alert> We do the derivations together and students write in the workspace boxes.</p></li>
+      <li><p><alert>After class.</alert> One click posts the completed notes: the same section with the work done and the checkpoints interactive.</p></li>
+    </ol>
+  </slide>
+
+  <slide>
+    <title>In class: the skeletal notes</title>
+    <p>The <term>hyperbolic cosine</term> and <term>hyperbolic sine</term> are defined as
+      <md>\cosh x = \frac{e^x + e^{-x}}{2}, \qquad \sinh x = \frac{e^x - e^{-x}}{2}.</md>
+    </p>
+    <p>Find the derivatives <m>\dfrac{d}{dx}(\cosh x)</m> and <m>\dfrac{d}{dx}(\sinh x)</m> by differentiating the two definitions.</p>
+    <image source="images/workspace.svg" width="92%"><shortdescription>Blank workspace for a handwritten derivation.</shortdescription></image>
+    <p><alert>Checkpoint.</alert> True or False: the parametrization <m>x = -\cosh t</m>, <m>y = -\sinh t</m>, <m>t \in \R</m>, also traces the left branch of <m>x^2 - y^2 = 1</m>. Your answer and reasoning.</p>
+  </slide>
+
+  <slide>
+    <title>After class: the completed notes</title>
+    <p>The <term>hyperbolic cosine</term> and <term>hyperbolic sine</term> are defined as
+      <md>\cosh x = \frac{e^x + e^{-x}}{2}, \qquad \sinh x = \frac{e^x - e^{-x}}{2}.</md>
+    </p>
+    <p>The derivatives are
+      <md>
+        <mrow>\frac{d}{dx}(\cosh x) \amp = \sinh x</mrow>
+        <mrow>\frac{d}{dx}(\sinh x) \amp = \cosh x</mrow>
+      </md>
+    Both follow directly from the definitions, since <m>\frac{d}{dx}e^x = e^x</m> and <m>\frac{d}{dx}e^{-x} = -e^{-x}</m>.</p>
+    <p><alert>Checkpoint.</alert> In the web book the same checkpoint is an interactive True/False question with the book's explanation.</p>
+  </slide>
+
+  <!-- ===== How it's coded: Skeletal notes (4 steps) ===== -->
+  <slide>
+    <title>Two books, the same sections</title>
+    <p><alert>How it’s coded · Skeletal notes · step 1 of 4.</alert> The skeletal notes are a second PreTeXt book whose sections mirror the completed notes, with the work taken out.</p>
+    <p>From <em>Repositories</em></p>
+    <program highlight-lines="1,4">
+<code>
+M13-Mehdi/source/                  the completed notes
+  ch-7-3.ptx                       Hyperbolic Functions
+  Conics.ptx, QuadricSurface.ptx, …
+M13-Skeletal-Notes/source/         the fill-in notes, same sections
+  ch-hyperbolic-skeletal.ptx       Hyperbolic Functions (Skeletal Notes)
+  sec-skel-geom-conics.ptx, …
+  assignment-1-hyperbolic.ptx …    the assignments live here too
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Leave room to write</title>
+    <p><alert>How it’s coded · Skeletal notes · step 2 of 4.</alert> Where students will write: a blank rounded box drawn in TikZ with <c>&lt;latex-image&gt;</c>, so the printed handout has the room.</p>
+    <p>From <c>M13-Mehdi/source/ch-hyperbolic-skeletal.ptx</c></p>
+    <program language="xml" highlight-lines="8,10">
+<code>
+&lt;p&gt;
+Find the derivatives &lt;m&gt;\dfrac{d}{dx}(\cosh x)&lt;/m&gt; and
+&lt;m&gt;\dfrac{d}{dx}(\sinh x)&lt;/m&gt; by differentiating the two definitions.
+&lt;/p&gt;
+
+&lt;sidebyside width="97%"&gt;
+&lt;image&gt;
+&lt;latex-image&gt;
+\begin{tikzpicture}
+\draw[rounded corners=8pt, draw=gray!55, thick] (0,0) rectangle (15,4.5);
+\node[anchor=north west, text=gray!60, font=\footnotesize\itshape]
+  at (0.25,4.25) {workspace};
+\end{tikzpicture}
+&lt;/latex-image&gt;
+&lt;shortdescription&gt;Blank workspace for a handwritten derivation.&lt;/shortdescription&gt;
+&lt;/image&gt;
+&lt;/sidebyside&gt;
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Post a chapter</title>
+    <p><alert>How it’s coded · Skeletal notes · step 3 of 4.</alert> A chapter waits in <c>main.ptx</c> inside an UNPOSTED comment; posting deletes the wrapper, and the site rebuilds on push.</p>
+    <p>From <c>M13-Skeletal-Notes/source/main.ptx</c></p>
+    <program language="xml" highlight-lines="11,17">
+<code>
+ &lt;xi:include href="frontmatter.ptx" /&gt;
+&lt;!-- &lt;xi:include href="introduction.ptx" /&gt; --&gt;
+
+ &lt;!-- Chapter 1: skeletal (fill-in) notes, 7.3 Hyperbolic Functions --&gt;
+ &lt;xi:include href="ch-hyperbolic-skeletal.ptx" /&gt;
+ &lt;!-- Chapter 2: skeletal (fill-in) notes, Series and Sequences --&gt;
+ &lt;xi:include href="ch-series-skeletal.ptx" /&gt;
+ &lt;!-- Chapter 3: skeletal (fill-in) notes, 3D Space and Vector Algebra --&gt;
+ &lt;xi:include href="ch-geometry-skeletal.ptx" /&gt;
+ &lt;!-- Chapter 4: skeletal (fill-in) notes, Functions of Multiple Variables --&gt;
+  &lt;!-- UNPOSTED &lt;xi:include href="ch-functions-multiple-variables-skeletal.ptx" /&gt; UNPOSTED
+   --&gt;
+ &lt;!-- Chapter 5: the problem sets --&gt;
+ &lt;xi:include href="exercises.ptx" /&gt;
+ &lt;!-- Placeholder, in the book only while everything else is unposted;
+      scripts/desk_action.py toggles it automatically. --&gt;
+ &lt;!-- UNPOSTED &lt;xi:include href="ch-coming-soon.ptx" /&gt; UNPOSTED --&gt;
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Let a script do it</title>
+    <p><alert>How it’s coded · Skeletal notes · step 4 of 4.</alert> The Posting Desk makes that edit with a script: find the wrapped include, put the bare include back, then validate and commit.</p>
+    <p>From <c>M13-Mehdi/scripts/desk_action.py</c></p>
+    <program language="python" highlight-lines="3-4,13">
+<code>
+def wrapped_re(href):
+    return re.compile(
+        r'&lt;!--\s*UNPOSTED(?:-WITH topic="([^"]*)")?\s+'
+        r'(&lt;xi:include\s+href="\.?/?%s"\s*/&gt;)\s+UNPOSTED\s*--&gt;' % re.escape(href)
+    )
+…
+def post_include(path, href):
+    """Unwrap one include.  Returns 'done', 'already', or 'absent'."""
+    text = read(path)
+    m = wrapped_re(href).search(text)
+    if m is None:
+        return "already" if inc_re(href).search(text) else "absent"
+    write(path, text[: m.start()] + m.group(2) + text[m.end():])
+    return "done"
+</code>
+</program>
+  </slide>
+
+  <!-- ===== How it's coded: The completed notes (3 steps) ===== -->
+  <slide>
+    <title>The derivation, filled in</title>
+    <p><alert>How it’s coded · The completed notes · step 1 of 3.</alert> After class the completed section has the work done, with each formula numbered so later pages can cite it.</p>
+    <p>From <c>M13-Mehdi/source/ch-7-3.ptx</c></p>
+    <program language="xml" highlight-lines="5-6">
+<code>
+&lt;p&gt;
+The derivatives are given as follows.
+
+&lt;md&gt;
+&lt;mrow xml:id="eq-hyp-dcosh"&gt;\frac{d}{dx}(\cosh x) \amp = \sinh x&lt;/mrow&gt;
+&lt;mrow xml:id="eq-hyp-dsinh"&gt;\frac{d}{dx}(\sinh x) \amp = \cosh x&lt;/mrow&gt;
+&lt;/md&gt;
+&lt;/p&gt;
+
+&lt;p&gt;
+Both formulas follow directly from the definitions, since
+&lt;m&gt;\frac{d}{dx}e^x = e^x&lt;/m&gt; and &lt;m&gt;\frac{d}{dx}e^{-x} = -e^{-x}&lt;/m&gt;.
+&lt;/p&gt;
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>An interactive checkpoint</title>
+    <p><alert>How it’s coded · The completed notes · step 2 of 3.</alert> <c>&lt;statement correct="yes"&gt;</c> makes the checkpoint a True/False question; <c>&lt;feedback&gt;</c> explains it after students answer.</p>
+    <p>From <c>M13-Mehdi/source/ch-7-3.ptx</c></p>
+    <program language="xml">
+<code>
+&lt;exercise xml:id="checkpoint-hyp-left-branch-downward"&gt;
+&lt;title&gt;True or False&lt;/title&gt;
+&lt;statement correct="yes"&gt;
+&lt;p&gt;
+The parametrization &lt;m&gt;x = -\cosh t&lt;/m&gt;, &lt;m&gt;y = -\sinh t&lt;/m&gt;,
+&lt;m&gt;t \in \R&lt;/m&gt;, also traces the left branch of &lt;m&gt;x^2 - y^2 = 1&lt;/m&gt;.
+&lt;/p&gt;
+&lt;p&gt;
+Justify your answer fully: give a proof if the statement is true, or a
+counterexample if it is false.
+&lt;/p&gt;
+&lt;/statement&gt;
+&lt;feedback&gt;
+&lt;p&gt;
+Every such point lies on the hyperbola, since
+&lt;md&gt;(-\cosh t)^2 - (-\sinh t)^2 = \cosh^2 t - \sinh^2 t = 1,&lt;/md&gt;
+and on its left branch, since &lt;m&gt;-\cosh t \leq -1&lt;/m&gt;. …
+&lt;/p&gt;
+…
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>The same checkpoint, skeletal</title>
+    <p><alert>How it’s coded · The completed notes · step 3 of 3.</alert> In the skeletal notes the checkpoint asks for an answer and reasons, with a workspace box instead of buttons.</p>
+    <p>From <c>M13-Mehdi/source/ch-hyperbolic-skeletal.ptx</c></p>
+    <program language="xml" highlight-lines="3">
+<code>
+&lt;exercise xml:id="skel-checkpoint-hyp-left-branch-downward"&gt;
+&lt;title&gt;True or False&lt;/title&gt;
+&lt;statement&gt;
+&lt;p&gt;
+The parametrization &lt;m&gt;x = -\cosh t&lt;/m&gt;, &lt;m&gt;y = -\sinh t&lt;/m&gt;,
+&lt;m&gt;t \in \R&lt;/m&gt;, also traces the left branch of &lt;m&gt;x^2 - y^2 = 1&lt;/m&gt;.
+&lt;/p&gt;
+
+&lt;p&gt;
+&lt;em&gt;True or false? Your answer and reasoning.&lt;/em&gt;
+&lt;/p&gt;
+
+&lt;sidebyside width="97%"&gt;
+&lt;image&gt;
+&lt;latex-image&gt;
+\begin{tikzpicture}
+\draw[rounded corners=8pt, draw=gray!55, thick] (0,0) rectangle (15,4);
+\node[anchor=north west, text=gray!60, font=\footnotesize\itshape]
+…
+</code>
+</program>
+  </slide>
+
+  <!-- Notes: The book's real answer rules. A typical attempt (cos, sin, 4sin(t)^2, 3.14):
+       two boxes right, two wrong, and the right ones keep their credit. Students still
+       submit written solutions; the boxes let them confirm final answers first. Static
+       site, no server, no login. -->
+  <slide>
+    <title>Exercises that check themselves</title>
+    <sidebyside widths="58% 38%" valign="top">
+      <image source="images/checkme.png"><shortdescription>Assignment 1, Problem 1 in the web book after a typical attempt: x(t) and y(t) marked correct, z(t) and the upper limit of t marked incorrect, 2 of 4 boxes correct.</shortdescription></image>
+      <stack>
+        <p>Numbers within a tolerance, expressions like <c>4cos(t)^2</c>, or words.</p>
+        <p>Each box earns its own credit; check as often as you like.</p>
+        <p>After the due date the worked solution appears under the problem.</p>
+        <p><url href="https://mahmadi-ops.github.io/MATH14-Skeletal/sec-exercises-hw1-online.html" visual="mahmadi-ops.github.io/MATH14-Skeletal">Assignment 1 in the book</url></p>
+      </stack>
+    </sidebyside>
+  </slide>
+
+  <!-- ===== How it's coded: Check me (5 steps) ===== -->
+  <slide>
+    <title>Boxes in the statement</title>
+    <p><alert>How it’s coded · Check me · step 1 of 5.</alert> Each <c>&lt;var/&gt;</c> in the statement becomes an answer box, in order; <c>width</c> sets its size.</p>
+    <p>From <c>MATH14-Skeletal/source/hw1-online.ptx</c></p>
+    <program language="xml" highlight-lines="11-13,15">
+<code>
+&lt;exercise xml:id="ex-hw1o-parametrize-intersection"&gt;
+  &lt;title&gt;Parametrizing a Curve of Intersection&lt;/title&gt;
+  &lt;statement&gt;
+    &lt;p&gt;
+      The curve &lt;m&gt;C&lt;/m&gt; is the intersection of the cylinder
+      &lt;m&gt;x^2 + y^2 = 1&lt;/m&gt; and the surface &lt;m&gt;z = 4x^2&lt;/m&gt;. Parametrize
+      &lt;m&gt;C&lt;/m&gt; by filling in the three components below, using the
+      standard parametrization of the unit circle for the shadow of
+      &lt;m&gt;C&lt;/m&gt; in the &lt;m&gt;xy&lt;/m&gt;-plane.
+    &lt;/p&gt;
+    &lt;p&gt;&lt;m&gt;x(t) =&lt;/m&gt; &lt;var width="14"/&gt;&lt;/p&gt;
+    &lt;p&gt;&lt;m&gt;y(t) =&lt;/m&gt; &lt;var width="14"/&gt;&lt;/p&gt;
+    &lt;p&gt;&lt;m&gt;z(t) =&lt;/m&gt; &lt;var width="14"/&gt;&lt;/p&gt;
+    &lt;p&gt;
+      The parameter &lt;m&gt;t&lt;/m&gt; runs from &lt;m&gt;0&lt;/m&gt; to &lt;var width="8"/&gt;,
+      which traces &lt;m&gt;C&lt;/m&gt; exactly once.
+    &lt;/p&gt;
+  &lt;/statement&gt;
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>What counts as right</title>
+    <p><alert>How it’s coded · Check me · step 2 of 5.</alert> In <c>&lt;setup&gt;</c>, the matching <c>&lt;var&gt;</c> lists conditions, checked in order. A <c>string</c> is a regular expression: <c>\s*</c> allows spaces, and <c>case="insensitive"</c> accepts COS(t).</p>
+    <p>From <c>MATH14-Skeletal/source/hw1-online.ptx</c></p>
+    <program language="xml" highlight-lines="2-3,8,14-15">
+<code>
+   &lt;setup&gt;
+     &lt;var case="insensitive"&gt;
+       &lt;condition string="cos\s*\(\s*t\s*\)"&gt;
+         &lt;feedback&gt;
+  &lt;p&gt;Correct.&lt;/p&gt;
+&lt;/feedback&gt;
+       &lt;/condition&gt;
+       &lt;condition string="sin\s*\(\s*t\s*\)"&gt;
+         &lt;feedback&gt;
+         &lt;p&gt;Incorrect.&lt;/p&gt;
+       &lt;/feedback&gt;
+       &lt;/condition&gt;
+     &lt;/var&gt;
+     &lt;var case="insensitive"&gt;
+       &lt;condition string="sin\s*\(\s*t\s*\)"&gt;
+         &lt;feedback&gt;
+         &lt;p&gt;Correct.&lt;/p&gt;
+       &lt;/feedback&gt;
+…
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Catch the likely mistakes</title>
+    <p><alert>How it’s coded · Check me · step 3 of 5.</alert> Later conditions recognize particular wrong answers, such as <m>4\sin^2(t)</m> for <m>z(t)</m> or <m>\pi</m> instead of <m>2\pi</m>. Numbers match within a <c>tolerance</c>.</p>
+    <p>From <c>MATH14-Skeletal/source/hw1-online.ptx</c></p>
+    <program language="xml" highlight-lines="4,16">
+<code>
+…
+    &lt;/feedback&gt;
+    &lt;/condition&gt;
+    &lt;condition string="4\s*\*?\s*(sin\s*\(\s*t\s*\)\s*\^\s*2|sin\s*\^\s*2\s*\(\s*t\s*\))"&gt;
+      &lt;feedback&gt;
+      &lt;p&gt;Incorrect.&lt;/p&gt;
+    &lt;/feedback&gt;
+    &lt;/condition&gt;
+    &lt;condition string="cos\s*\(\s*t\s*\)\s*\^\s*2"&gt;
+      &lt;feedback&gt;
+      &lt;p&gt;Incorrect.&lt;/p&gt;
+    &lt;/feedback&gt;
+    &lt;/condition&gt;
+  &lt;/var&gt;
+  &lt;var&gt;
+    &lt;condition number="6.283" tolerance="0.005"&gt;
+      &lt;feedback&gt;
+      &lt;p&gt;Correct.&lt;/p&gt;
+    &lt;/feedback&gt;
+…
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Release the solutions</title>
+    <p><alert>How it’s coded · Check me · step 4 of 5.</alert> Each solution carries a component name; adding the name to <c>&lt;version include&gt;</c> releases it at the next build. The commented lines are the release history.</p>
+    <p>From <c>MATH14-Skeletal/publication/publication.ptx</c></p>
+    <program language="xml" highlight-lines="1,10">
+<code>
+&lt;solution component="hw1-solutions"&gt; … &lt;/solution&gt;
+
+&lt;!-- publication/publication.ptx --&gt;
+&lt;!-- &lt;version include="hw1-solutions hw2-solutions hw3-solutions
+                  hw4-solutions hw5-solutions hw6-solutions
+                  hw7-solutions hw8-solutions hw9-solutions
+                  hw10-solutions review1-solutions review2-solutions
+                  review3-solutions review4-solutions"/&gt; --&gt;
+&lt;!-- &lt;version include="hw1-solutions review1-solutions"/&gt; --&gt;
+&lt;version include="hw1-solutions hw2-solutions review1-solutions"/&gt;
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Solutions under the problem</title>
+    <p><alert>How it’s coded · Check me · step 5 of 5.</alert> A small XSL override prints released solutions directly under each assignment problem instead of behind a click.</p>
+    <p>From <c>MATH14-Skeletal/xsl/custom-html.xsl</c></p>
+    <program language="xml" highlight-lines="16-17">
+<code>
+&lt;!-- In "Assignments and Review Problems" a posted solution is printed     --&gt;
+&lt;!-- straight below its problem instead of being hidden behind a knowl.    --&gt;
+&lt;!-- PreTeXt has a publisher switch for this (knowl/@example-solution),    --&gt;
+&lt;!-- but that is global: it would also unfold the solutions of every       --&gt;
+&lt;!-- worked example in the text.  These templates are the core's own       --&gt;
+&lt;!-- "born visible" branch, restricted to that one chapter.  Which         --&gt;
+&lt;!-- solutions exist at all is decided by &lt;version include="..."/&gt; in      --&gt;
+&lt;!-- publication/publication.ptx.  The review sets and the sample past    --&gt;
+&lt;!-- exam (a worksheet) are left out: like the MATH 13 pages, their        --&gt;
+&lt;!-- solutions stay behind the default knowls, one click under each        --&gt;
+&lt;!-- problem, once released.                                               --&gt;
+&lt;xsl:template match="exercise[ancestor::chapter[@xml:id = 'ch-problems']]
+                              [not(ancestor::section[starts-with(@xml:id,
+                                'sec-exercises-review')])]
+                              [not(ancestor::worksheet)]/solution"
+              mode="is-hidden"&gt;
+  &lt;xsl:text&gt;false&lt;/xsl:text&gt;
+&lt;/xsl:template&gt;
+</code>
+</program>
+  </slide>
+
+  <!-- Notes: In July I built an Interactive Problem Set with one problem of every
+       auto-graded type PreTeXt supports through Runestone. Not shown: matching renders
+       blank on the web build, so multiple select replaces it. -->
+  <slide>
+    <title>More exercise types, written and ready</title>
+    <sbsgroup widths="48% 48%" valign="top">
+      <sidebyside>
+        <image source="images/ex-cardsort.png"><shortdescription>A card sort: four critical points sorted into local minimum, local maximum, and saddle point, all correct.</shortdescription></image>
+        <image source="images/ex-clickable.png"><shortdescription>A clickable area: the line that forgot to normalize the vector is marked as the error.</shortdescription></image>
+      </sidebyside>
+      <sidebyside>
+        <image source="images/ex-parsons.png"><shortdescription>A Parsons problem: the steps of a proof dragged into the right order.</shortdescription></image>
+        <image source="images/ex-fillin.png"><shortdescription>A fill-in problem with feedback written for two specific mistakes.</shortdescription></image>
+      </sidebyside>
+    </sbsgroup>
+    <p>Card sort, Parsons, clickable area, multiple choice and select, true/false, fill in, short answer: each is a few elements of markup.</p>
+  </slide>
+
+  <slide>
+    <title>Card sort</title>
+    <p><alert>How it’s coded · Exercise types · step 1 of 8.</alert> Triggered by <c>&lt;statement&gt;</c> + <c>&lt;cardsort&gt;</c>.</p>
+    <ul>
+      <li><p>One <c>&lt;match&gt;</c> per category: its <c>&lt;response&gt;</c> labels the category and each <c>&lt;premise&gt;</c> is a card that belongs there.</p></li>
+      <li><p>A <c>&lt;match&gt;</c> can hold several premises; both saddle points share one here.</p></li>
+      <li><p>Cards and labels are ordinary PreTeXt, so <c>&lt;m&gt;</c> works in both; a <c>&lt;solution&gt;</c> explains the sort.</p></li>
+    </ul>
+    <p>From <c>M13-Mehdi/source/review-problems-4.ptx</c></p>
+    <program language="xml">
+<code>
+&lt;exercise xml:id="rs-cardsort-critical"&gt;
+&lt;title&gt;Classify the Critical Points&lt;/title&gt;
+&lt;statement&gt;
+&lt;p&gt;
+The function &lt;m&gt;f(x,y) = x^3 - 3x + y^3 - 3y&lt;/m&gt; has four
+critical points. Drag each one into the correct category.
+&lt;/p&gt;
+&lt;/statement&gt;
+&lt;cardsort&gt;
+&lt;match&gt;
+&lt;premise&gt;&lt;m&gt;(1,1)&lt;/m&gt;&lt;/premise&gt;
+&lt;response&gt;Local minimum&lt;/response&gt;
+&lt;/match&gt;
+…
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Parsons</title>
+    <p><alert>How it’s coded · Exercise types · step 2 of 8.</alert> Triggered by <c>&lt;statement&gt;</c> + <c>&lt;blocks&gt;</c>.</p>
+    <ul>
+      <li><p>Write the <c>&lt;block&gt;</c>s in the correct order: the source order is the answer key.</p></li>
+      <li><p>Students see the blocks shuffled. The <c>order</c> numbers have no effect while <c>randomize="yes"</c>; with <c>randomize="no"</c> they fix the starting order.</p></li>
+      <li><p>A block marked <c>correct="no"</c> is a distractor that belongs nowhere in the proof.</p></li>
+    </ul>
+    <p>From <c>M13-Mehdi/source/review-problems-2.ptx</c></p>
+    <program language="xml">
+<code>
+&lt;exercise xml:id="rs-parsons-no-work"&gt;
+&lt;title&gt;Why a Magnetic Field Cannot Change a Particle's Speed&lt;/title&gt;
+&lt;statement&gt;
+&lt;p&gt;Arrange the steps below into a correct proof that the
+magnetic force does no work, …&lt;/p&gt;
+&lt;/statement&gt;
+&lt;!-- Keep each &lt;m&gt; on ONE source line inside a &lt;block&gt;. --&gt;
+&lt;blocks randomize="yes"&gt;
+&lt;block order="1"&gt;
+&lt;p&gt;
+Let a particle of mass &lt;m&gt;m&lt;/m&gt; and charge &lt;m&gt;q&lt;/m&gt; move with
+velocity &lt;m&gt;\mathbf v&lt;/m&gt; through a magnetic field &lt;m&gt;\mathbf B&lt;/m&gt;.
+&lt;/p&gt;
+…
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Clickable area</title>
+    <p><alert>How it’s coded · Exercise types · step 3 of 8.</alert> Triggered by <c>&lt;statement&gt;</c> + <c>&lt;areas&gt;</c>.</p>
+    <ul>
+      <li><p>Write the text students will see, with each clickable piece wrapped in <c>&lt;area&gt;</c>.</p></li>
+      <li><p>Mark each area <c>correct="yes"</c> or <c>correct="no"</c>; an unmarked area counts as correct.</p></li>
+      <li><p><c>&lt;feedback&gt;</c> holds the explanation students read after they check.</p></li>
+    </ul>
+    <p>From <c>M13-Mehdi/source/review-problems-3.ptx</c></p>
+    <program language="xml">
+<code>
+&lt;exercise xml:id="rs-clickable-error"&gt;
+&lt;title&gt;Find the Error&lt;/title&gt;
+&lt;statement&gt;
+&lt;p&gt;
+Below is a student's computation … Exactly one line contains
+the error. Click on that line.
+&lt;/p&gt;
+&lt;/statement&gt;
+&lt;feedback&gt; … &lt;/feedback&gt;
+&lt;areas&gt;
+&lt;p&gt;&lt;area correct="no"&gt;
+  &lt;m&gt;\nabla f = \left\langle 2xy,\; x^2\right\rangle&lt;/m&gt;&lt;/area&gt;&lt;/p&gt;
+&lt;p&gt;&lt;area correct="no"&gt;
+…
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Multiple choice</title>
+    <p><alert>How it’s coded · Exercise types · step 4 of 8.</alert> Triggered by <c>&lt;statement&gt;</c> + <c>&lt;choices&gt;</c>.</p>
+    <ul>
+      <li><p>Each <c>&lt;choice&gt;</c> has its own <c>&lt;statement&gt;</c> and <c>&lt;feedback&gt;</c>.</p></li>
+      <li><p>Mark the right one <c>correct="yes"</c>; <c>randomize="yes"</c> shuffles the choices.</p></li>
+      <li><p>A choice's feedback appears when it is picked, so each wrong answer gets its own explanation.</p></li>
+    </ul>
+    <p>From <c>M13-Mehdi/source/review-problems-2.ptx</c></p>
+    <program language="xml">
+<code>
+&lt;exercise xml:id="rs-mc-vector-identity"&gt;
+&lt;title&gt;Which Identity Fails?&lt;/title&gt;
+&lt;statement&gt;
+&lt;p&gt;
+Exactly one of the following is &lt;em&gt;not&lt;/em&gt; valid for all
+vectors &lt;m&gt;\mathbf a, \mathbf b, \mathbf c&lt;/m&gt; in &lt;m&gt;\R^3&lt;/m&gt;.
+Which one?
+&lt;/p&gt;
+&lt;/statement&gt;
+&lt;choices randomize="yes"&gt;
+&lt;choice&gt;
+&lt;statement&gt;&lt;p&gt;&lt;m&gt;\mathbf a\cdot(\mathbf b\times\mathbf c)
+  = (\mathbf a\times\mathbf b)\cdot\mathbf c&lt;/m&gt;&lt;/p&gt;&lt;/statement&gt;
+…
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Multiple select</title>
+    <p><alert>How it’s coded · Exercise types · step 5 of 8.</alert> The same element as multiple choice.</p>
+    <ul>
+      <li><p>Two or more <c>correct="yes"</c> choices switch the buttons to checkboxes.</p></li>
+      <li><p><c>multiple-correct="yes"</c> on <c>&lt;choices&gt;</c> forces checkboxes even with one.</p></li>
+      <li><p>Feedback on every choice, right or wrong, says why.</p></li>
+    </ul>
+    <p>From <c>M13-Mehdi/source/review-problems-2.ptx</c></p>
+    <program language="xml">
+<code>
+&lt;exercise xml:id="rs-multiselect-quadrics"&gt;
+&lt;title&gt;Which of These Are Hyperboloids?&lt;/title&gt;
+&lt;statement&gt;
+&lt;p&gt;
+None of the equations below is in standard position. … select
+&lt;em&gt;every&lt;/em&gt; equation whose surface is a hyperboloid, of one
+sheet or of two.
+&lt;/p&gt;
+&lt;/statement&gt;
+&lt;choices randomize="yes"&gt;
+&lt;choice correct="yes"&gt;
+&lt;statement&gt;&lt;p&gt;&lt;m&gt;x^2 + y^2 - z^2 - 2x = 0&lt;/m&gt;&lt;/p&gt;&lt;/statement&gt;
+&lt;feedback&gt;&lt;p&gt;Correct. Completing the square gives …&lt;/p&gt;&lt;/feedback&gt;
+…
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>True / False</title>
+    <p><alert>How it’s coded · Exercise types · step 6 of 8.</alert> Triggered by one attribute: <c>&lt;statement correct="no"&gt;</c>.</p>
+    <ul>
+      <li><p><c>correct="yes"</c> or <c>correct="no"</c> on the statement is all it takes.</p></li>
+      <li><p><c>&lt;feedback&gt;</c> explains the answer after students choose.</p></li>
+    </ul>
+    <p>From <c>M13-Mehdi/source/review-problems-3.ptx</c></p>
+    <program language="xml">
+<code>
+&lt;exercise xml:id="rs-tf-directional"&gt;
+&lt;title&gt;True or False&lt;/title&gt;
+&lt;statement correct="no"&gt;
+&lt;p&gt;
+If every directional derivative &lt;m&gt;D_{\mathbf u}f(P_0)&lt;/m&gt; exists
+at a point &lt;m&gt;P_0&lt;/m&gt;, then &lt;m&gt;f&lt;/m&gt; must be continuous at
+&lt;m&gt;P_0&lt;/m&gt;.
+&lt;/p&gt;
+&lt;p&gt;
+Justify your answer fully: …
+&lt;/p&gt;
+&lt;/statement&gt;
+&lt;feedback&gt;
+…
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Fill in</title>
+    <p><alert>How it’s coded · Exercise types · step 7 of 8.</alert> Triggered by <c>&lt;var/&gt;</c> in the statement.</p>
+    <ul>
+      <li><p>In <c>&lt;setup&gt;</c>, the first <c>&lt;var&gt;</c> grades the first blank, with <c>&lt;condition&gt;</c>s checked from the top.</p></li>
+      <li><p><c>number</c> with <c>tolerance</c> compares numerically; <c>string</c> matches a regular expression.</p></li>
+      <li><p>Later conditions catch particular mistakes, each with its own <c>&lt;feedback&gt;</c>.</p></li>
+    </ul>
+    <p>From <c>M13-Mehdi/source/review-problems-2.ptx</c></p>
+    <program language="xml">
+<code>
+&lt;exercise xml:id="rs-fillin-skew-lines"&gt;
+&lt;title&gt;Distance Between Skew Lines&lt;/title&gt;
+&lt;statement&gt;
+&lt;p&gt; … The absolute value of the scalar triple product
+&lt;m&gt;\left|\mathbf w\cdot(\mathbf u\times\mathbf v)\right|&lt;/m&gt;
+equals &lt;var width="6"/&gt;. &lt;/p&gt;
+&lt;p&gt; The distance between the two lines, to three decimal
+places, is &lt;var width="8"/&gt;. &lt;/p&gt;
+&lt;/statement&gt;
+&lt;setup&gt;
+&lt;var&gt;
+&lt;condition number="5"&gt;
+&lt;feedback&gt;&lt;p&gt;Correct.&lt;/p&gt;&lt;/feedback&gt;
+…
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Short answer</title>
+    <p><alert>How it’s coded · Exercise types · step 8 of 8.</alert> Triggered by <c>&lt;statement&gt;</c> + <c>&lt;response/&gt;</c>.</p>
+    <ul>
+      <li><p>Runestone stores each response for the instructor to grade.</p></li>
+      <li><p>A plain web build shows the prompt only.</p></li>
+    </ul>
+    <p>From <em>M13-Skeletal-Notes, July sampler</em></p>
+    <program language="xml">
+<code>
+&lt;exercise xml:id="rs-shortanswer-products"&gt;
+&lt;title&gt;The Roles of the Two Products&lt;/title&gt;
+&lt;statement&gt;
+&lt;p&gt;
+In two or three sentences, explain why a magnetic field can
+bend a charged particle's path into a circle but can never
+make it move faster. …
+&lt;/p&gt;
+&lt;/statement&gt;
+&lt;response/&gt;
+&lt;/exercise&gt;
+</code>
+</program>
+  </slide>
+
+  <!-- Notes: A replay of a real exchange from Assignment 1. Knows the page's problems;
+       coaches with questions; never fixes an error for the student; three hints per
+       problem for the quarter; a pause after each hint. Runs with the student's own free
+       key. Supported by the Faculty Development AI Exploration grant. -->
+  <slide>
+    <title>A Socratic tutor that won't give the answer</title>
+    <sidebyside widths="54% 40%" valign="top">
+      <stack>
+        <p><alert>How it coaches.</alert> Knows the problems on the page. Asks questions; says why a wrong answer fails, never how to fix it. Confirms an answer only with the student's justification.</p>
+        <p><alert>Built-in limits.</alert> Three hints per problem, for the whole quarter. A five-minute pause after each hint. No tutor on review sets: they rehearse exams.</p>
+        <p>Runs in the student's browser with their own free Google AI Studio key. Nothing passes through the course site.</p>
+      </stack>
+      <image source="images/tutor.png"><shortdescription>The tutor panel: the student says they used the standard parametrization and are stuck; the tutor asks whether the whole curve lies over that circle and what interval of t traces it once. Hints left: 2 of 3, next hint in 4:53.</shortdescription></image>
+    </sidebyside>
+  </slide>
+
+  <!-- ===== How it's coded: The AI tutor (6 steps) ===== -->
+  <slide>
+    <title>Add a script to every page</title>
+    <p><alert>How it’s coded · The AI tutor · step 1 of 6.</alert> One XSL template adds two scripts at the foot of every page the build writes.</p>
+    <p>From <c>MATH14-Skeletal/xsl/custom-html.xsl</c></p>
+    <program language="xml" highlight-lines="3">
+<code>
+&lt;xsl:template name="extra-js-footer"&gt;
+  &lt;script src="external/math-input-palette.js"&gt;&lt;/script&gt;
+  &lt;script src="external/custom.js"&gt;&lt;/script&gt;
+&lt;/xsl:template&gt;
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Collect the problems</title>
+    <p><alert>How it’s coded · The AI tutor · step 2 of 6.</alert> The script stops at once unless the page is an assignment. Otherwise it collects each exercise statement, without solutions, hints, or Runestone’s answer data.</p>
+    <p>From <c>MATH14-Skeletal/assets/custom.js</c></p>
+    <program language="javascript" highlight-lines="3,15">
+<code>
+(function () {
+    var page = window.location.pathname.split("/").pop() || "";
+    if (page.indexOf("sec-exercises-hw") !== 0) return;
+    var articles = document.querySelectorAll("article.exercise");
+    if (!articles.length) return;
+
+    // Harvest statements now, while the DOM still holds raw LaTeX.
+    // The &lt;script type="application/json"&gt; blobs inside each Runestone
+    // exercise carry the answer patterns and feedback, so scripts are
+    // stripped along with the solutions; the answer &lt;input&gt; boxes have
+    // no text content, so each is replaced by a visible "___" blank.
+    function clean(el) {
+        var c = el.cloneNode(true);
+        c.querySelectorAll(
+                        ".solutions, .solution, .hint, .answer, .autopermalink,
+              .knowl-output, iframe, script, style"
+        ).forEach(function (n) { n.remove(); });
+        c.querySelectorAll("input").forEach(function (n) {
+…
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Open the panel, pass the problems</title>
+    <p><alert>How it’s coded · The AI tutor · step 3 of 6.</alert> The Tutor button loads the widget in an iframe and hands it the problems with <c>postMessage</c>; the widget fills its problem list from that message.</p>
+    <p>From <c>MATH14-Skeletal/assets/custom.js · gemini-tutor.html</c></p>
+    <program language="javascript" highlight-lines="3,10">
+<code>
+// assets/custom.js
+function sendContext() {
+    if (frameReady) frame.contentWindow.postMessage(context, "*");
+}
+…
+function openPanel() {
+    if (!frame) {
+        frame = document.createElement("iframe");
+        frame.id = "m14-tutor-frame";
+        frame.src = "external/gemini-tutor.html";
+        frame.addEventListener("load", function () {
+            frameReady = true;
+            sendContext();
+        });
+        panel.appendChild(frame);
+    }
+    …
+
+…
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Ask the model</title>
+    <p><alert>How it’s coded · The AI tutor · step 4 of 6.</alert> Each reply is one request to Gemini with the student’s own key, the rules as the system instruction, and the conversation so far. A list of fallback models keeps it working when one is retired or busy.</p>
+    <p>From <c>MATH14-Skeletal/assets/gemini-tutor.html</c></p>
+    <program language="javascript" highlight-lines="3,7,11">
+<code>
+async function askGemini() {
+  const body = {
+    systemInstruction: { parts: [{ text: systemInstruction() }] },
+…
+  generationConfig: { temperature: 0.4, maxOutputTokens: 8192 },
+…
+    const url = "https://generativelanguage.googleapis.com/v1beta/models/"
+      + chain[idx] + ":generateContent";
+    resp = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "x-goog-api-key": apiKey() },
+      body: JSON.stringify(body),
+    });
+    if (resp.ok) { lastModelUsed = chain[idx]; break; }
+  …
+}
+…
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Enforce the limits</title>
+    <p><alert>How it’s coded · The AI tutor · step 5 of 6.</alert> The page enforces the limits, not the model: three replies per problem, counted in the browser. <alert>The five-minute wait is currently switched off for testing (<c>COOLDOWN_MS = 0</c>); set it back to <c>5 * 60 * 1000</c> before students rely on it.</alert></p>
+    <p>From <c>MATH14-Skeletal/assets/gemini-tutor.html</c></p>
+    <program language="javascript" highlight-lines="8-10,13">
+<code>
+/* ===== hint budget ======================================================= */
+// Hard limits enforced by the interface, not the model: per problem, at
+// most HINT_LIMIT tutor replies in total — EVERY reply counts, there is no
+// free intake reply — with COOLDOWN_MS between replies. Counters live in
+// localStorage, survive restarts and reloads, and never reset — solutions
+// are published after the due date.
+
+const HINT_LIMIT = 3;
+// TEMPORARY — the wait between hints is switched off for testing. Restore it
+// with  5 * 60 * 1000  (five minutes). Everything else follows this constant:
+// at 0 the countdown never appears and the system prompt stops telling the
+// student a wait exists, so the two can never drift apart.
+const COOLDOWN_MS = 0;
+const HINT_STORE = "math14-hints-v1";
+…
+function recordReply(label) {
+  const d = loadHints();
+  const p = d.probs[label] || { replies: 0 };
+…
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>The rules</title>
+    <p><alert>How it’s coded · The AI tutor · step 6 of 6.</alert> The instructions open with one rule that nothing overrides, then list the only five things the tutor may do.</p>
+    <p>From <c>MATH14-Skeletal/assets/gemini-tutor.html</c></p>
+    <program highlight-lines="4">
+<code>
+const BASE_INSTRUCTION = `You are a Socratic tutor for MATH 14 (Santa Clara University),
+  embedded on an assignment page of the course's notes, …
+
+THE ONE RULE, above everything else: never reveal any part of a final answer or
+  completed solution to any exercise. …
+
+What you MAY do — these are your only tools:
+1. Very gentle starting nudges: one small question per message about how to begin
+  thinking about the problem at hand. …
+2. Explain why wrong answers are wrong — but never how to fix them. …
+3. Point to the book — and when a student is stuck on how to BEGIN, reach for this
+  FIRST, ahead of tool 1. …
+4. Definitions and course conventions: vectors are written in bold, … 
+5. Confirm answers the student has JUSTIFIED. …
+</code>
+</program>
+  </slide>
+
+  <!-- Notes: The real form wording from the tutor panel; the right shows the row the
+       Apps Script appends. No identity is recorded. -->
+  <slide>
+    <title>Every hint is a data point</title>
+    <image source="images/feedback.png" width="92%"><shortdescription>The feedback form under a tutor reply (rating, comment, optional transcript) and the row it adds to the spreadsheet: time, session, page, problem, hints used, model, rating, comment, device.</shortdescription></image>
+    <p>Never sent: name, email, student ID, or API key. A small Google Apps Script appends each note to a sheet I own.</p>
+  </slide>
+
+  <!-- ===== How it's coded: The feedback form (4 steps) ===== -->
+  <slide>
+    <title>What a note carries</title>
+    <p><alert>How it’s coded · The feedback form · step 1 of 4.</alert> Every note carries the same context: page, problem, hints used, model, screen size, and a random browser id. The thumb or the form fills in the rating, comment, and transcript.</p>
+    <p>From <c>MATH14-Skeletal/assets/gemini-tutor.html</c></p>
+    <program language="javascript" highlight-lines="4,13">
+<code>
+function feedbackPayload(extra) {
+  return Object.assign({
+    sentAt: new Date().toISOString(),
+    session: sessionId(),
+    page: (pageContext &amp;&amp; pageContext.page) || "",
+    section: (pageContext &amp;&amp; pageContext.section) || "",
+    problem: currentProb || "",
+    hintsUsed: currentProb ? hintsUsed(currentProb) : 0,
+    model: currentModel().id,     // which model the student had chosen
+    modelUsed: lastModelUsed,     // the model id that actually answered last
+    rating: "",
+    comment: "",
+    transcript: "",
+    device: (window.innerWidth &lt;= 600 ? "small" : "large") + " " +
+      window.innerWidth + "x" + window.innerHeight,
+  }, extra);
+}
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Send it once</title>
+    <p><alert>How it’s coded · The feedback form · step 2 of 4.</alert> Sent as text/plain with no-cors, so Apps Script accepts it without a preflight and a redirect cannot file it twice.</p>
+    <p>From <c>MATH14-Skeletal/assets/gemini-tutor.html</c></p>
+    <program language="javascript" highlight-lines="2,13-14">
+<code>
+function postFeedback(payload) {
+  // text/plain keeps this a "simple" cross-origin request, which Apps Script
+  // accepts without a preflight; it reads the JSON from the request body.
+  //
+  // no-cors from the first try, deliberately. Apps Script answers a POST with
+  // a redirect to a different host, which the browser refuses to expose to
+  // us: a plain fetch REJECTS even though the row was already written. Doing
+  // that and then retrying files every note twice, one second apart. We never
+  // read the response anyway, so send once and let an opaque reply stand.
+  // What still rejects is a genuine network failure.
+  return fetch(FEEDBACK_URL, {
+    method: "POST",
+    mode: "no-cors",
+    headers: { "Content-Type": "text/plain;charset=utf-8" },
+    body: JSON.stringify(payload),
+  });
+}
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Append a row</title>
+    <p><alert>How it’s coded · The feedback form · step 3 of 4.</alert> The Apps Script parses the note and appends one row; an error comes back as a reply, never as a failure the student sees.</p>
+    <p>From <c>MATH14-Skeletal/ai-tutor/feedback-endpoint.gs</c></p>
+    <program language="javascript" highlight-lines="6">
+<code>
+function doPost(e) {
+  try {
+    var raw = (e &amp;&amp; e.postData &amp;&amp; e.postData.contents) || '';
+    var d = JSON.parse(raw || '{}');
+    var sheet = getSheet_();
+    sheet.appendRow([
+      new Date(),
+      clip_(d.sentAt, LIMITS.field),
+      clip_(d.session, LIMITS.field),
+      clip_(d.page, LIMITS.field),
+      clip_(d.section, LIMITS.field),
+      clip_(d.problem, LIMITS.field),
+      Number(d.hintsUsed) || 0,
+      rating_(d.rating),
+      clip_(d.comment, LIMITS.comment),
+      clip_(d.transcript, LIMITS.transcript),
+      clip_(d.device, LIMITS.field),
+      clip_(d.model, LIMITS.field),
+…
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Turn it on</title>
+    <p><alert>How it’s coded · The feedback form · step 4 of 4.</alert> About two minutes, once per course.</p>
+    <p>From <c>MATH14-Skeletal/ai-tutor/README.md</c></p>
+    <program highlight-lines="3,5,7">
+<code>
+1. Make a spreadsheet (personal Google account).
+2. Extensions › Apps Script: paste feedback-endpoint.gs, save.
+3. Deploy › New deployment › Web app
+     Execute as: Me      Who has access: Anyone
+4. Copy the Web app URL (it ends in /exec).
+5. In assets/gemini-tutor.html set
+     const FEEDBACK_URL = "https://script.google.com/macros/s/…/exec";
+   then rebuild: the feedback button appears.
+6. Send one test note and check that a row appears.
+</code>
+</program>
+  </slide>
+
+  <!-- Notes: The report is the script's real output run on invented sample rows (the
+       banner says so). Before the talk, run it on the sheet export. -->
+  <slide>
+    <title>From the sheet to a report in one command</title>
+    <sidebyside widths="38% 58%" valign="top">
+      <stack>
+        <program>
+<code>
+python3 scripts/tutor_feedback_report.py \
+  feedback.csv --html report.html
+</code>
+        </program>
+        <p>How the hints landed overall; careful versus quick model; which assignments and problems draw complaints; every comment, negative ones first.</p>
+      </stack>
+      <interactive xml:id="int-slide-report" iframe="report.html" aspect="4:3">
+        <description><p>The feedback report generated from sample rows: rating counts, a model comparison, complaints by problem, and comments.</p></description>
+      </interactive>
+    </sidebyside>
+  </slide>
+
+  <!-- ===== How it's coded: The feedback report (3 steps) ===== -->
+  <slide>
+    <title>Run it</title>
+    <p><alert>How it’s coded · The feedback report · step 1 of 3.</alert> Export the sheet as CSV and run the script; <c>--html</c> writes the page shown here.</p>
+    <p>From <c>MATH14-Skeletal/scripts/tutor_feedback_report.py</c></p>
+    <program language="python" highlight-lines="9">
+<code>
+"""Summarize the Socratic tutor's student feedback.
+
+Reads the CSV exported from the feedback spreadsheet (File -&gt; Download -&gt;
+Comma-separated values; see ai-tutor/README.md) and writes a report: what
+students think overall, which assignments and problems the complaints cluster
+on, and every open-ended comment grouped so the negative ones are read first.
+
+    python3 scripts/tutor_feedback_report.py feedback.csv
+    python3 scripts/tutor_feedback_report.py feedback.csv --html report.html
+    python3 scripts/tutor_feedback_report.py feedback.csv --since 2026-09-01
+    python3 scripts/tutor_feedback_report.py feedback.csv --assignment 3
+"""
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Read the export</title>
+    <p><alert>How it’s coded · The feedback report · step 2 of 3.</alert> Columns are matched by name, dates parsed, and duplicate rows from an older widget removed.</p>
+    <p>From <c>MATH14-Skeletal/scripts/tutor_feedback_report.py</c></p>
+    <program language="python" highlight-lines="3,15">
+<code>
+def load(path, since=None, assignment=None):
+    with open(path, newline="", encoding="utf-8-sig") as handle:
+        rows = list(csv.DictReader(handle))
+
+    # Tolerate a renamed or reordered header row: match on lowercased names.
+    cleaned = []
+    for row in rows:
+        item = {(k or "").strip().lower(): (v or "").strip() for k, v in row.items()}
+        item["when"] = parse_date(item.get("sentat")) or parse_date(item.get("received"))
+                item["hintsused"] = int(item["hintsused"]) if item.get("hintsused",
+          "").isdigit() else 0
+        item["rating"] = known_rating(item.get("rating", ""))
+        cleaned.append(item)
+
+    cleaned = dedupe(cleaned)
+…
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Count and sort</title>
+    <p><alert>How it’s coded · The feedback report · step 3 of 3.</alert> Ratings are tallied in a fixed order; assignments and problems are sorted with the most complaints first.</p>
+    <p>From <c>MATH14-Skeletal/scripts/tutor_feedback_report.py</c></p>
+    <program language="python" highlight-lines="4,16,18">
+<code>
+…
+    unrecognized rather than quietly left out of the table.
+    """
+    counts = Counter(r.get("rating", "") for r in rows)
+    named = [(name, counts.get(name, 0)) for name in RATINGS]
+    unknown = sum(n for value, n in counts.items() if value and value not in RATINGS)
+    return named, counts.get("", 0), unknown
+…
+def group_scores(rows, key):
+    """Per group: total, positives, negatives — sorted worst-first."""
+    groups = defaultdict(lambda: {"n": 0, "pos": 0, "neg": 0, "hints": []})
+    for row in rows:
+        name = row.get(key, "") or "(not recorded)"
+        bucket = groups[name]
+        bucket["n"] += 1
+        if row.get("rating") in POSITIVE:
+            bucket["pos"] += 1
+        elif row.get("rating") in NEGATIVE:
+            bucket["neg"] += 1
+…
+</code>
+</program>
+  </slide>
+
+</section>

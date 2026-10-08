@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project ptx-version="2">
+  <targets>
+    <target name="talk"
+            format="revealjs"
+            source="talk.ptx"
+            publication="publication.ptx"
+            output-dir="talk"/>
+  </targets>
+</project>

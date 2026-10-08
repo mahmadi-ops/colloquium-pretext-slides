@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Part 0: what PreTeXt is (about 4 minutes) -->
+<section xml:id="sec-why-pretext">
+  <title>Why PreTeXt</title>
+
+  <!-- Notes: Three usual homes for notes. A LaTeX PDF: beautiful on paper, but on a
+       phone you pinch and scroll, and a screen reader cannot read the equations without
+       extra work. Slides carry the lecture and are thin afterwards. A publisher platform:
+       students pay and we cannot change a word. -->
+  <slide>
+    <title>Where course notes usually live</title>
+    <p><alert>The PDF.</alert> A fixed page. Zooming in means scrolling sideways, and a screen reader often meets the mathematics as a picture.</p>
+    <p><alert>The slides.</alert> Made for the lecture, thin afterwards: no search, no cross-references, nothing to practice on.</p>
+    <p><alert>The platform.</alert> Polished but closed. Students pay, and the instructor cannot fix a typo or add an example.</p>
+    <p>PreTeXt starts from one structured source that becomes all of these, and does things none of them can.</p>
+  </slide>
+
+  <!-- Notes: Semantic markup: you say "this is a theorem, this is an exercise with a
+       hint", not "bold, indented". The mathematics is ordinary LaTeX. Each output makes its
+       own choices from the same structure. These slides are themselves a PreTeXt
+       slideshow. -->
+  <slide>
+    <title>Describe the mathematics; PreTeXt lays it out</title>
+    <p>A free, open-source authoring system. You mark up what each piece of text <em>is</em> (a definition, a theorem, an example, an exercise, a figure) and PreTeXt decides how it looks in each output.</p>
+    <p><alert>Authors write meaning. The software handles layout.</alert></p>
+    <sidebyside widths="48% 48%" valign="top">
+      <stack>
+        <p><term>Web book.</term> HTML with MathJax: searchable, reflowing, interactive.</p>
+        <p><term>PDF.</term> Typeset through LaTeX for print and download.</p>
+        <p><term>Slides.</term> reveal.js decks in the same markup, like this one.</p>
+      </stack>
+      <stack>
+        <p><term>Braille and tactile.</term> Embosser-ready braille; tactile figures through PreFigure.</p>
+        <p><term>EPUB and notebooks.</term> E-readers and Jupyter, from the same files.</p>
+        <p><term>Editions.</term> Student and instructor versions by a switch.</p>
+      </stack>
+    </sidebyside>
+    <p>Started by Rob Beezer (University of Puget Sound); now a community project behind many open textbooks, such as <pubtitle>Active Calculus</pubtitle> and Judson's <pubtitle>Abstract Algebra</pubtitle>.</p>
+  </slide>
+
+  <!-- ===== How it's coded: Setting up a project (4 steps) ===== -->
+  <slide>
+    <title>Create a project</title>
+    <p><alert>How it’s coded · Setting up a project · step 1 of 4.</alert> Install the command-line tool once; <c>pretext new book</c> creates the folders and a starter book. <c>build</c> turns the source into an output and <c>view</c> serves the web version on your machine. In a GitHub Codespace all of this is already installed.</p>
+    <p>From <em>Terminal</em></p>
+    <program highlight-lines="6,9-10">
+<code>
+# once: the command-line tool (or open a GitHub Codespace,
+# where .devcontainer already provides it)
+pip install pretext
+
+# a new book in its own folder
+pretext new book -d my-notes
+cd my-notes
+
+pretext build web       # the HTML book, in output/web
+pretext view            # preview it in a browser
+pretext build print     # the PDF, typeset through LaTeX
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Name the outputs</title>
+    <p><alert>How it’s coded · Setting up a project · step 2 of 4.</alert> <c>project.ptx</c> lists the targets. Each has a name and a format, and can carry its own publication file, XSL, or extra CSS and JavaScript. MATH 13 builds a web book, a Runestone version that withholds solutions, and a PDF.</p>
+    <p>From <c>M13-Mehdi/project.ptx</c></p>
+    <program language="xml" highlight-lines="3,9,11">
+<code>
+&lt;project ptx-version="2"&gt;
+  &lt;targets&gt;
+    &lt;target name="web" format="html"&gt;
+            &lt;stringparams html.css.extra="external/custom.css"
+        html.js.extra="external/custom.js" /&gt;
+    &lt;/target&gt;
+    &lt;!-- publication-runestone.ptx withholds hints/answers/solutions, since
+         these exercises are auto-graded on Runestone. --&gt;
+    &lt;target name="runestone" format="html" platform="runestone"
+            publication="publication-runestone.ptx" /&gt;
+    &lt;target name="print" format="pdf" /&gt;
+  &lt;/targets&gt;
+&lt;/project&gt;
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Choose what a build keeps</title>
+    <p><alert>How it’s coded · Setting up a project · step 3 of 4.</alert> The publication file holds a build’s settings: where external files live, which <c>component</c>s survive, how the book splits into pages, and how deep the table of contents goes.</p>
+    <p>From <c>M13-Mehdi/publication/publication.ptx</c></p>
+    <program language="xml" highlight-lines="4,11,19">
+<code>
+…
+    &lt;!-- directories are relative to the main source PreTeXt file --&gt;
+    &lt;source&gt;
+        &lt;directories external="../assets" generated="../generated-assets"/&gt;
+        &lt;!-- Selects which @component-marked elements survive assembly. The
+             Assignments and Review Problems chapter (copied from the skeletal
+             book) marks its interactive figures component="web" and their
+             one-paragraph paper stand-ins component="print"; without this
+             switch PreTeXt keeps both, so each page would show the figure and
+             the note saying the figure is only online. --&gt;
+        &lt;version include="web"/&gt;
+    &lt;/source&gt;
+
+    &lt;common&gt;
+
+
+
+
+  &lt;exercise-divisional solution="yes"/&gt; 
+…
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Slides from the same markup</title>
+    <p><alert>How it’s coded · Setting up a project · step 4 of 4.</alert> A <c>&lt;slideshow&gt;</c> of <c>&lt;slide&gt;</c>s, built with <c>format="revealjs"</c>. MATH-14-Slides builds a deck per topic and a combined deck from the same section files.</p>
+    <p>From <em>MATH-14-Slides</em></p>
+    <program language="xml" highlight-lines="4,9,14">
+<code>
+…
+&lt;targets&gt;
+  &lt;target name="slides"
+          format="revealjs"
+          source="path-independence.ptx"
+          publication="publication.ptx"
+          output-dir="slides"/&gt;
+  &lt;target name="line-integrals"
+          format="revealjs"
+          source="line-integrals.ptx"
+          publication="publication.ptx"
+          output-dir="line-integrals"/&gt;
+  &lt;target name="main"
+          format="revealjs"
+          source="main.ptx"
+          publication="publication.ptx"
+          output-dir="main"/&gt;
+&lt;/targets&gt;
+&lt;!-- MATH-14-Slides/source/main.ptx --&gt;
+…
+</code>
+</program>
+  </slide>
+
+  <!-- Notes: Left is what I type, trimmed from MATH 14 Assignment 1. The var element
+       becomes an answer box; each condition can match a specific answer and give
+       feedback. The next slide is the same exercise rendered by PreTeXt. -->
+  <slide>
+    <title>One exercise: what the author writes</title>
+    <program language="xml" highlight-lines="8,11-18">
+<code>
+&lt;exercise xml:id="ex-hw1o-motion-i"&gt;
+  &lt;title&gt;Describing a Motion, I&lt;/title&gt;
+  &lt;statement&gt;
+    &lt;p&gt;An object moves … it has coordinates
+      &lt;me&gt;x(t) = \frac{3t}{\sqrt{t^2+1}}, \qquad
+          y(t) = \frac{3}{\sqrt{t^2+1}}.&lt;/me&gt;
+      Describe the motion.&lt;/p&gt;
+    &lt;p&gt;… it is a &lt;var width="10"/&gt; …&lt;/p&gt;
+  &lt;/statement&gt;
+  &lt;setup&gt;
+    &lt;var case="insensitive"&gt;
+      &lt;condition string="circle"&gt;
+        &lt;feedback&gt;&lt;p&gt;Correct.&lt;/p&gt;&lt;/feedback&gt;
+      &lt;/condition&gt;
+      &lt;condition string="ellipse"&gt; … &lt;/condition&gt;
+    &lt;/var&gt;
+  &lt;/setup&gt;
+&lt;/exercise&gt;
+</code>
+</program>
+    <p>From <c>MATH-14/source/hw1-online.ptx</c>, trimmed.</p>
+  </slide>
+
+  <!-- Notes: The same source in two outputs. Web: the var element is an answer box;
+       "ellipse" gets its own feedback, "circle" is correct. PDF: a numbered problem with a
+       blank. (PreTeXt's slide output does not render exercises, so these are the two
+       outputs as screenshots.) -->
+  <slide>
+    <title>One exercise: what readers get</title>
+    <sidebyside widths="49% 49%" valign="top">
+      <stack>
+        <image source="images/exercise-web.png"><shortdescription>The exercise in the web book, with circle typed in the answer box, the Check me button, and the feedback Correct.</shortdescription></image>
+        <p><alert>Web book:</alert> an answer box that checks.</p>
+      </stack>
+      <stack>
+        <image source="images/exercise-print.png"><shortdescription>The same exercise in the printed PDF, numbered 1.3, with a blank line for the answer.</shortdescription></image>
+        <p><alert>PDF:</alert> a numbered problem with a blank.</p>
+      </stack>
+    </sidebyside>
+    <p><url href="https://mahmadi-ops.github.io/MATH14-Skeletal/sec-exercises-hw1-online.html" visual="mahmadi-ops.github.io/MATH14-Skeletal">Assignment 1 in the book</url></p>
+  </slide>
+
+  <!-- ===== How it's coded: Writing the content (5 steps) ===== -->
+  <slide>
+    <title>The outline</title>
+    <p><alert>How it’s coded · Writing the content · step 1 of 5.</alert> The outline lives in <c>main.ptx</c>. Each section is its own file, pulled in with <c>&lt;xi:include&gt;</c>, so reordering or hiding a section is a one-line change.</p>
+    <p>From <c>MATH-14/source/main.ptx</c></p>
+    <program language="xml" highlight-lines="3,7-11">
+<code>
+&lt;book xml:id="math14"&gt;
+  &lt;title&gt;MATH 14: Calculus and Analytic Geometry IV&lt;/title&gt;
+  &lt;xi:include href="frontmatter.ptx" /&gt;
+
+  &lt;chapter xml:id="ch-curves-and-fields"&gt;
+    &lt;title&gt;Line Integrals&lt;/title&gt;
+    &lt;xi:include href="section-parametrization.ptx" /&gt;
+    &lt;xi:include href="section-arc-length.ptx" /&gt;
+    &lt;xi:include href="section-line-integrals.ptx" /&gt;
+    &lt;xi:include href="section-vector-fields.ptx" /&gt;
+    &lt;xi:include href="conservative-fields.ptx" /&gt;
+  &lt;/chapter&gt;
+  …
+&lt;/book&gt;
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>A section file</title>
+    <p><alert>How it’s coded · Writing the content · step 2 of 5.</alert> Structure is markup: <c>&lt;subsection&gt;</c>, <c>&lt;definition&gt;</c>, <c>&lt;example&gt;</c>, <c>&lt;exercise&gt;</c>. Every <c>xml:id</c> becomes a stable web address and something you can cite.</p>
+    <p>From <c>MATH-14/source/section-parametrization.ptx</c></p>
+    <program language="xml" highlight-lines="1,5,8">
+<code>
+&lt;section xml:id="sec-parametrization"&gt;
+  &lt;title&gt;Parametrization of Curves&lt;/title&gt;
+&lt;objectives&gt; … &lt;/objectives&gt;
+…
+  &lt;subsection xml:id="subsec-parametric-equations"&gt;
+    &lt;title&gt;Parametric Equations&lt;/title&gt;
+…
+    &lt;definition xml:id="def-parametric-equations"&gt;
+      &lt;title&gt;Parametric Equations&lt;/title&gt;
+      &lt;statement&gt; … &lt;/statement&gt;
+    &lt;/definition&gt;
+    …
+  &lt;/subsection&gt;
+  …
+&lt;/section&gt;
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Mathematics</title>
+    <p><alert>How it’s coded · Writing the content · step 3 of 5.</alert> Mathematics is LaTeX: <c>&lt;m&gt;</c> inline, <c>&lt;md&gt;</c> displayed, with an <c>&lt;mrow&gt;</c> per line for aligned rows. <c>number="yes"</c> numbers a row; its <c>xml:id</c> lets you cite it. (Older sources, these books included, write <c>&lt;me&gt;</c> for one displayed line; PreTeXt deprecated it in May 2026.)</p>
+    <p>From <c>MATH-14/source/section-parametrization.ptx</c></p>
+    <program language="xml" highlight-lines="4,6-7">
+<code>
+&lt;p&gt;
+  Assume that we are interested in describing the path of an object in
+  space. To this aim, we can specify its location at each instant of
+  time; that is, we can write its coordinates in &lt;m&gt;\R^3&lt;/m&gt; as
+
+&lt;md&gt;
+  &lt;mrow xml:id="eq-space-parametric" number="yes"&gt;
+    x = f(t), \qquad y = g(t), \qquad z = h(t).
+  &lt;/mrow&gt;
+&lt;/md&gt;
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>An exercise with an answer box</title>
+    <p><alert>How it’s coded · Writing the content · step 4 of 5.</alert> An exercise has a <c>&lt;statement&gt;</c> and optional <c>&lt;hint&gt;</c>, <c>&lt;answer&gt;</c>, <c>&lt;solution&gt;</c>. A <c>&lt;var/&gt;</c> is an answer box; <c>&lt;setup&gt;</c> says what counts as right and what to say about a likely wrong answer.</p>
+    <p>From <c>MATH14-Skeletal/source/hw1-online.ptx</c></p>
+    <program language="xml" highlight-lines="4,14-15">
+<code>
+…
+    &lt;p&gt;
+      Identify the curve the object travels on: it
+      is a &lt;var width="10"/&gt; (type &lt;c&gt;line&lt;/c&gt;, &lt;c&gt;parabola&lt;/c&gt;, &lt;c&gt;circle&lt;/c&gt;,
+      &lt;c&gt;ellipse&lt;/c&gt;, or &lt;c&gt;hyperbola&lt;/c&gt;).
+    &lt;/p&gt;
+    &lt;p&gt;
+      Then graph the path and indicate the direction of motion. There is
+      no box for this part: include the graph in the solution you submit
+      to the grader.
+    &lt;/p&gt;
+  &lt;/statement&gt;
+  &lt;setup&gt;
+    &lt;var case="insensitive"&gt;
+      &lt;condition string="circle"&gt;
+        &lt;feedback&gt;
+          &lt;p&gt;Correct.&lt;/p&gt;
+        &lt;/feedback&gt;
+      &lt;/condition&gt;
+…
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Macros and TikZ, once</title>
+    <p><alert>How it’s coded · Writing the content · step 5 of 5.</alert> Declare LaTeX macros and the TikZ preamble once in <c>&lt;docinfo&gt;</c>. <c>\R</c> then works on the web, in the PDF, and in every <c>&lt;latex-image&gt;</c>; named colours keep the figures consistent.</p>
+    <p>From <c>M13-Mehdi/source/main.ptx</c></p>
+    <program language="xml" highlight-lines="4,8,17">
+<code>
+…
+     \newcommand{\deriv}[2]{\displaystyle \frac{d#1}{d#2}}
+     \newcommand{\real}{\Bbb R}
+     \newcommand{\R}{\mathbb{R}}
+   &lt;/macros&gt;
+
+ &lt;latex-image-preamble&gt;
+   \usepackage{tikz}
+   \usepackage{amsmath}
+   \usetikzlibrary{decorations.pathmorphing, arrows.meta, calc}
+   \usepackage{tikz-3dplot}
+   \usepackage{pgfplots}
+ \pgfplotsset{compat=1.17}
+   &lt;!-- Palette used by the figures in ch-12-5.ptx, matching the colors of
+        the animations they were drawn from.  msky is the light fill for
+        planes; the others are used for lines, vectors and points. --&gt;
+   \definecolor{mblue}{HTML}{2B6CB0}
+   \definecolor{msky}{HTML}{58C4DD}
+   \definecolor{mred}{HTML}{E04B4B}
+…
+</code>
+</program>
+  </slide>
+
+</section>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Closing (about 2 minutes, then questions) -->
+<section xml:id="sec-closing">
+  <title>What I've learned</title>
+
+  <!-- Notes: [Adjust to your experience.] Accessibility is cheapest at authoring time.
+       Tools have quirks (PreFigure treats single-letter names like n, s, e, w as compass
+       directions). -->
+  <slide>
+    <title>Lessons from a year of building</title>
+    <dl>
+      <li><title>The first chapter is the expensive one</title><p>XML, a build pipeline, and figure tools take time to learn; later chapters go much faster.</p></li>
+      <li><title>Describe a figure while drawing it</title><p>Writing the description alongside the figure costs minutes; adding it afterwards costs far more.</p></li>
+      <li><title>Figures are most of the work</title><p>Diagrams, interactives, and animations take far more time than the prose around them.</p></li>
+      <li><title>Notes become a living document</title><p>A fixed typo or a clearer example reaches every student the same day.</p></li>
+    </dl>
+  </slide>
+
+  <!-- Notes: Start small: one chapter or one handout. Offer to share the build workflow,
+       posting scripts, and tutor, and to sit down with anyone converting a first
+       chapter. -->
+  <slide>
+    <title>Try it on one chapter</title>
+    <sidebyside widths="48% 48%" valign="top">
+      <program>
+<code>
+# the command-line tool
+pip install pretext
+
+# a new book, built and viewed
+pretext new book
+pretext build web
+pretext view
+</code>
+      </program>
+      <stack>
+        <p>Or skip the install: a GitHub Codespace runs the same tools in the browser.</p>
+        <p><url href="https://pretextbook.org" visual="pretextbook.org">pretextbook.org</url>: guides, sample books, and community support.</p>
+        <p><url href="https://prefigure.org" visual="prefigure.org">prefigure.org</url>: accessible diagrams, inside PreTeXt or on their own.</p>
+        <p><alert>Come find me.</alert> I'm glad to share my setup and help convert a first chapter.</p>
+      </stack>
+    </sidebyside>
+  </slide>
+
+  <!-- Notes: Thank Norman Paris and the Faculty Development AI program. Leave this up for
+       questions; Esc shows every slide to jump back to a demo. -->
+  <slide>
+    <title>Thank you</title>
+    <p>Questions, and a second look at any demo.</p>
+    <p><alert>MATH 13 notes:</alert> <url href="https://mahmadi-ops.github.io/M13-Mehdi/" visual="mahmadi-ops.github.io/M13-Mehdi">mahmadi-ops.github.io/M13-Mehdi</url></p>
+    <p><alert>MATH 14 notes:</alert> <url href="https://mahmadi-ops.github.io/MATH-14/" visual="mahmadi-ops.github.io/MATH-14">mahmadi-ops.github.io/MATH-14</url></p>
+    <p><alert>MATH 53 notes, in progress:</alert> <url href="https://mahmadi-ops.github.io/MATH-53/" visual="mahmadi-ops.github.io/MATH-53">mahmadi-ops.github.io/MATH-53</url></p>
+    <p>Supported by SCU's Teaching and Technology Innovation Grant (with Norman Paris) and a Faculty Development AI Exploration grant.</p>
+  </slide>
+</section>

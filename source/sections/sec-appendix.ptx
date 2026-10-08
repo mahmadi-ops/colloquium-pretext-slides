@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Appendix: for questions and handouts -->
+<section xml:id="sec-appendix">
+  <title>Appendix</title>
+
+  <!-- Notes: Two files decide every build: project.ptx names the outputs, and the
+       publication file says what each one keeps. Generated assets are committed
+       deliberately: CI's PreFigure would otherwise skip the accessible SVGs. -->
+  <slide>
+    <title>Anatomy of a PreTeXt project</title>
+    <pre>
+M13-Mehdi/
+├── project.ptx                  # targets: web · runestone · print
+├── publication/
+│   ├── publication.ptx          # what the web and PDF builds keep
+│   └── publication-runestone.ptx  # the same, minus hints and solutions
+├── source/                      # 50 .ptx files
+│   ├── main.ptx                 # the outline: one xi:include per chapter
+│   ├── ch-series-sequences.ptx  # a chapter; it includes its sections
+│   ├── Taylor.ptx  Conics.ptx … # one section per file
+│   └── assignment-8-chain-rule.ptx …  # one worksheet per assignment
+├── assets/                      # your files; the web build copies them
+├── generated-assets/            # made by the build, committed on purpose
+├── output/                      # the built books, not committed
+├── .github/workflows/           # build and publish; the Posting Desk
+├── .devcontainer/               # the Codespace: PreTeXt's Docker image
+├── requirements.txt             # pretext == 2.44.0 · prefig == 0.6.7
+└── CLAUDE.md  .claude/skills/   # rules and routines for Claude Code
+    </pre>
+    <p><alert>You edit</alert> <c>source/</c> and <c>assets/</c>. <alert>The build makes</alert> <c>generated-assets/</c> and <c>output/</c>. <alert>The rest keeps it running:</alert> <c>project.ptx</c> and <c>publication/</c> say what to build, the workflows publish it, <c>.devcontainer/</c> and <c>requirements.txt</c> pin the tools.</p>
+  </slide>
+
+  <!-- Notes: Steps 1 to 4 take an afternoon for one chapter. pretext import is
+       experimental, so expect to tidy its output. -->
+  <slide>
+    <title>From zero to a live book, steps 1 to 4</title>
+    <dl>
+      <li><title>1. Get the tools</title><p><c>pip install pretext</c>. Or skip the install: a Codespace from PreTeXt's <c>pretext-codespace</c> template has everything, in the browser.</p></li>
+      <li><title>2. Start a book</title><p><c>pretext new book -d my-notes</c> makes <c>project.ptx</c>, a publication file, and <c>source/</c> with <c>main.ptx</c>, a chapter, and a section to copy.</p></li>
+      <li><title>3. Bring your notes</title><p><c>pretext import notes.tex</c> (experimental) turns a LaTeX file into PreTeXt to start from. Or write sections by hand; each is one <c>&lt;xi:include&gt;</c> in its chapter.</p></li>
+      <li><title>4. Build and look</title><p><c>pretext build web</c>, then <c>pretext view</c> serves the book on your machine. Add <c>-x</c> and an <c>xml:id</c> to build one part.</p></li>
+    </dl>
+  </slide>
+
+  <!-- Notes: The deploy workflow PreTeXt supplies runs only when started by hand until
+       its push trigger is uncommented. -->
+  <slide>
+    <title>From zero to a live book, steps 5 to 8</title>
+    <dl>
+      <li><title>5. Add figures and media</title><p>files go in <c>assets/</c>, then <c>&lt;interactive&gt;</c>, <c>&lt;image&gt;</c>, <c>&lt;video&gt;</c>. The build makes PreFigure diagrams, previews, and QR codes into <c>generated-assets/</c> whenever their source changes.</p></li>
+      <li><title>6. Typeset the PDF</title><p><c>pretext build print</c>, through LaTeX, with a preview image and a QR code in place of each interactive.</p></li>
+      <li><title>7. Publish</title><p><c>pretext deploy</c> puts the web book on GitHub Pages. PreTeXt's <c>pretext-deploy.yml</c> workflow runs on demand; uncomment its <c>push</c> lines to publish on every push.</p></li>
+      <li><title>8. Get help</title><p><url href="https://pretextbook.org" visual="pretextbook.org">pretextbook.org</url> has the Guide, an annotated sample book that shows the source of each example, and the pretext-support forum.</p></li>
+    </dl>
+  </slide>
+
+  <slide>
+    <title>PreTeXt markup at a glance: content, figures, and media</title>
+    <tabular halign="left">
+      <col width="38%"/><col width="62%"/>
+      <row header="yes" bottom="minor"><cell>You want</cell><cell>You write</cell></row>
+      <row><cell>A section in its own file</cell><cell><c>&lt;xi:include href="section.ptx"/&gt;</c></cell></row>
+      <row><cell>Math: inline, display, aligned</cell><cell><c>&lt;m&gt;</c> · <c>&lt;md&gt;</c> · <c>&lt;md&gt;&lt;mrow&gt;</c></cell></row>
+      <row><cell>A numbered, linkable item</cell><cell><c>xml:id="…"</c> then <c>&lt;xref ref="…"/&gt;</c></cell></row>
+      <row><cell>A photo with alt text</cell><cell><c>&lt;image source="…"&gt;&lt;shortdescription&gt;</c></cell></row>
+      <row><cell>A diagram from code</cell><cell><c>&lt;image&gt;&lt;prefigure&gt;</c> · <c>&lt;latex-image&gt;</c></cell></row>
+      <row><cell>Your own HTML figure</cell><cell><c>&lt;interactive iframe="file.html"&gt;</c></cell></row>
+      <row><cell>A script-driven widget</cell><cell><c>&lt;interactive platform="javascript"&gt;&lt;slate&gt;</c></cell></row>
+      <row><cell>GeoGebra</cell><cell><c>&lt;interactive geogebra="id"&gt;</c> · <c>&lt;slate surface="geogebra"&gt;</c></cell></row>
+      <row><cell>Desmos</cell><cell><c>&lt;interactive desmos="id"/&gt;</c></cell></row>
+      <row><cell>A video</cell><cell><c>&lt;video source="videos/….mp4"/&gt;</c></cell></row>
+      <row><cell>Live code</cell><cell><c>&lt;sage&gt;&lt;input&gt;…&lt;/input&gt;&lt;/sage&gt;</c></cell></row>
+      <row><cell>Web-only or print-only</cell><cell><c>component="web"</c> · <c>component="print"</c></cell></row>
+    </tabular>
+  </slide>
+
+  <slide>
+    <title>PreTeXt markup at a glance: exercises, editions, and builds</title>
+    <tabular halign="left">
+      <col width="38%"/><col width="62%"/>
+      <row header="yes" bottom="minor"><cell>You want</cell><cell>You write</cell></row>
+      <row><cell>Answer boxes that check</cell><cell><c>&lt;var/&gt;</c> · <c>&lt;setup&gt;&lt;var&gt;&lt;condition&gt;</c></cell></row>
+      <row><cell>True / False</cell><cell><c>&lt;statement correct="yes"&gt;</c> + <c>&lt;feedback&gt;</c></cell></row>
+      <row><cell>Multiple choice or select</cell><cell><c>&lt;choices&gt;&lt;choice correct="yes"&gt;</c></cell></row>
+      <row><cell>Parsons problem</cell><cell><c>&lt;blocks&gt;&lt;block&gt;</c>, written in the right order</cell></row>
+      <row><cell>Card sort</cell><cell><c>&lt;cardsort&gt;&lt;match&gt;&lt;premise&gt;&lt;response&gt;</c></cell></row>
+      <row><cell>Clickable area</cell><cell><c>&lt;areas&gt;&lt;area correct="yes"&gt;</c></cell></row>
+      <row><cell>Short answer</cell><cell><c>&lt;response/&gt;</c></cell></row>
+      <row><cell>Hints and solutions</cell><cell><c>&lt;hint&gt;</c> · <c>&lt;answer&gt;</c> · <c>&lt;solution&gt;</c></cell></row>
+      <row><cell>Release solutions by date</cell><cell><c>component="hw3-solutions"</c> + <c>&lt;version include="…"/&gt;</c></cell></row>
+      <row><cell>Slides like these</cell><cell><c>&lt;slideshow&gt;&lt;section&gt;&lt;slide&gt;</c>, built with <c>format="revealjs"</c></cell></row>
+      <row><cell>Build and preview</cell><cell><c>pretext build</c> · <c>pretext view</c></cell></row>
+    </tabular>
+  </slide>
+</section>

@@ -1,0 +1,1322 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Part one: MATH 13 (about 11 minutes) -->
+<section xml:id="sec-math13">
+  <title>MATH 13: Calculus and Analytic Geometry III</title>
+
+  <!-- Notes: Same mathematics as a traditional third-quarter text, written as a web book
+       from the start; the PDF is a by-product. Numbers straight from the repository.
+       Supported by the Teaching and Technology Innovation Grant with Norman Paris. -->
+  <slide>
+    <title>A web book first, a printed text second</title>
+    <p>Hyperbolic functions · series and Taylor approximation · vectors, lines, planes, and quadric surfaces · partial derivatives, gradients, extreme values, and Lagrange multipliers.</p>
+    <tabular halign="center">
+      <row bottom="minor">
+        <cell>169</cell><cell>37</cell><cell>58</cell><cell>205</cell>
+      </row>
+      <row>
+        <cell>accessible diagrams</cell><cell>live figures</cell><cell>short animations</cell><cell>exercises</cell>
+      </row>
+      <row>
+        <cell>PreFigure, every part described</cell><cell>Plotly, Three.js, GeoGebra, Desmos</cell><cell>Manim videos of constructions</cell><cell>solutions after the due date</cell>
+      </row>
+    </tabular>
+    <p>Counted from the book's source repository, October 2026.</p>
+  </slide>
+
+  <!-- Notes: The applications are where the mathematics is worked out: the catenary with
+       hyperbolic functions, each quadric with a real object, conics with whispering
+       galleries, LORAN, and comet Borisov. -->
+  <slide>
+    <title>The mathematics is worked out where it lives</title>
+    <sidebyside widths="23% 23% 23% 23%" valign="top">
+      <figure>
+        <caption>Catenary: the Gateway Arch</caption>
+        <image source="images/photo-arch.jpg"><shortdescription>The Gateway Arch in St. Louis against a clear sky.</shortdescription></image>
+      </figure>
+      <figure>
+        <caption>Hyperboloid of one sheet: cooling towers</caption>
+        <image source="images/photo-tower.jpg"><shortdescription>Two cooling towers with hyperboloid profiles.</shortdescription></image>
+      </figure>
+      <figure>
+        <caption>Paraboloid: the Very Large Array</caption>
+        <image source="images/photo-vla.jpg"><shortdescription>Radio dishes of the Very Large Array.</shortdescription></image>
+      </figure>
+      <figure>
+        <caption>Hyperbolic paraboloid: the Saddledome</caption>
+        <image source="images/photo-saddledome.jpg"><shortdescription>The saddle-shaped roof of the Saddledome in Calgary.</shortdescription></image>
+      </figure>
+    </sidebyside>
+    <p>Also in the book: whispering galleries, LORAN navigation, an interstellar comet's orbit, the torque on a wrench, a dipole's field, isobars around a low, and the small-angle pendulum.</p>
+  </slide>
+
+  <!-- ===== How it's coded: Photos and alt text (3 steps) ===== -->
+  <slide>
+    <title>A figure around the image</title>
+    <p><alert>How it’s coded · Photos and alt text · step 1 of 3.</alert> A <c>&lt;figure&gt;</c> gives the photo a number and a caption. <c>&lt;image source&gt;</c> points at the file and sets its width; <c>&lt;shortdescription&gt;</c> is the alt text a screen reader speaks.</p>
+    <p>From <c>M13-Mehdi/source/ch-7-3.ptx</c></p>
+    <program language="xml" highlight-lines="9-10">
+<code>
+&lt;figure xml:id="fig-hyp-gateway-arch"&gt;
+&lt;caption&gt;
+The Gateway Arch in St. Louis, Missouri. Its centerline follows the
+curve &lt;m&gt;y = A\left(\cosh(Cx/L) - 1\right)&lt;/m&gt;, an upside-down catenary.
+(Photograph by John Margolies, 1988; John Margolies Roadside America
+photograph archive, Library of Congress, Prints and Photographs
+Division.)
+&lt;/caption&gt;
+&lt;image source="app-catenary-gateway-arch.jpg" width="48%"&gt;
+&lt;shortdescription&gt;
+The stainless steel Gateway Arch rising from a line of trees against a
+clear blue sky, curving up to a rounded peak and back down.
+&lt;/shortdescription&gt;
+&lt;/image&gt;
+&lt;/figure&gt;
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Where the file lives</title>
+    <p><alert>How it’s coded · Photos and alt text · step 2 of 3.</alert> Files named in <c>source</c> live in assets/. The web build copies them to external/; the PDF build reads them where they are.</p>
+    <p>From <c>M13-Mehdi/publication/publication.ptx</c></p>
+    <program language="xml" highlight-lines="2">
+<code>
+&lt;!-- publication/publication.ptx --&gt;
+&lt;directories external="../assets" generated="../generated-assets"/&gt;
+
+&lt;!-- so source="app-catenary-gateway-arch.jpg" is the file
+     assets/app-catenary-gateway-arch.jpg, which the web build
+     copies to external/ next to the pages --&gt;
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Point to it</title>
+    <p><alert>How it’s coded · Photos and alt text · step 3 of 3.</alert> Any paragraph can cite the figure with <c>&lt;xref&gt;</c>. PreTeXt writes its current number and keeps it right when figures are added or moved.</p>
+    <p>From <c>M13-Mehdi/source/ch-7-3.ptx</c></p>
+    <program language="xml" highlight-lines="6">
+<code>
+thicker at the base than at the top. It stands 630 feet tall and 630
+feet wide at the base; the National Park Service describes its
+construction and its geometry at
+&lt;url href="https://www.nps.gov/jeff/index.htm" visual="nps.gov"&gt;Gateway Arch National
+  Park&lt;/url&gt;.
+See &lt;xref ref="fig-hyp-gateway-arch"/&gt;.
+</code>
+</program>
+  </slide>
+
+  <!-- Notes: In the web book, clicking (1.1.1) unfolds the equation right under the
+       sentence (a knowl), and in-context jumps to where it lives. Every xref works this
+       way with no extra markup. In a reveal.js slideshow PreTeXt prints references as
+       plain text, so this slide shows the book. -->
+  <slide>
+    <title>Cross-references open in place</title>
+    <sidebyside widths="60% 36%" valign="top">
+      <image source="images/knowl.png"><shortdescription>A page of MATH 14 Section 1.1 with the reference (1.1.1) clicked open: the equation appears in a box right under the sentence, with an in-context link.</shortdescription></image>
+      <stack>
+        <p><alert>Click (1.1.1).</alert> The equation drops down right under the sentence. Nobody loses their place.</p>
+        <p><alert>Click in-context.</alert> The page jumps to where the equation lives, inside its definition.</p>
+        <p><alert>Every reference works this way:</alert> definitions, theorems, equations, figures, and exercises, with no extra markup.</p>
+        <p><url href="https://mahmadi-ops.github.io/MATH-14/sec-parametrization.html" visual="mahmadi-ops.github.io/MATH-14">Try it in Section 1.1</url></p>
+      </stack>
+    </sidebyside>
+  </slide>
+
+  <!-- ===== How it's coded: Cross-references (3 steps) ===== -->
+  <slide>
+    <title>Name the target</title>
+    <p><alert>How it’s coded · Cross-references · step 1 of 3.</alert> Put an <c>xml:id</c> on whatever you want to cite: here the definition and the numbered equation row inside it.</p>
+    <p>From <c>MATH-14/source/section-parametrization.ptx</c></p>
+    <program language="xml" highlight-lines="1,9">
+<code>
+&lt;definition xml:id="def-parametric-equations"&gt;
+  &lt;title&gt;Parametric Equations&lt;/title&gt;
+  &lt;statement&gt;
+    &lt;p&gt;
+      If &lt;m&gt;x&lt;/m&gt; and &lt;m&gt;y&lt;/m&gt; are given as functions of a third
+      variable &lt;m&gt;t&lt;/m&gt;, called a &lt;term&gt;parameter&lt;/term&gt;, by
+
+    &lt;md&gt;
+      &lt;mrow xml:id="eq-parametric-equations" number="yes"&gt;
+        x = f(t), \qquad y = g(t),
+      &lt;/mrow&gt;
+    &lt;/md&gt;
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Cite it</title>
+    <p><alert>How it’s coded · Cross-references · step 2 of 3.</alert> <c>&lt;xref ref="eq-parametric-equations"/&gt;</c> prints the number, (1.1.1). On the web it opens the equation in place; in the PDF it is a link.</p>
+    <p>From <c>MATH-14/source/section-parametrization.ptx</c></p>
+    <program language="xml" highlight-lines="6">
+<code>
+&lt;p&gt;
+  Here &lt;m&gt;t&lt;/m&gt; is the time parameter, which varies from some initial
+  time &lt;m&gt;t_i&lt;/m&gt; to some final time &lt;m&gt;t_f&lt;/m&gt;, that is,
+  &lt;m&gt;t \in [t_i, t_f]&lt;/m&gt;. Nothing has changed, except that where a
+  plane curve needed the two equations
+  &lt;xref ref="eq-parametric-equations"/&gt;, a space curve needs three.
+&lt;/p&gt;
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Cite by title</title>
+    <p><alert>How it’s coded · Cross-references · step 3 of 3.</alert> <c>text="title"</c> prints the target’s title instead of its number: the assignment names the sections it draws on, and each name is a link.</p>
+    <p>From <c>MATH-14/source/hw1-online.ptx</c></p>
+    <program language="xml" highlight-lines="2-3">
+<code>
+&lt;p&gt;
+  Sections: &lt;xref ref="sec-parametrization" text="title"/&gt; and
+    &lt;xref ref="sec-arc-length" text="title"/&gt;. Work each problem, then type your answers
+    into the boxes and have them checked here.
+&lt;/p&gt;
+</code>
+</program>
+  </slide>
+
+  <!-- Notes: The book's own figure file. Choose x = c, y = c or z = c and drag c. -->
+  <slide>
+    <title>Interactive figures: the quadric slicer</title>
+    <sidebyside widths="52% 44%" valign="top">
+      <interactive xml:id="int-slide-quadric" iframe="hyperbolic-paraboloid-slices.html" aspect="8:7">
+        <description><p>Slicing the hyperbolic paraboloid z = x squared over 4 minus y squared over 9 with planes x = c, y = c, and z = c.</p></description>
+      </interactive>
+      <stack>
+        <p>Pick <m>x = c</m>, <m>y = c</m>, or <m>z = c</m> and drag <m>c</m>. The traces switch between parabolas and hyperbolas; <m>z = 0</m> gives two crossing lines.</p>
+        <p>Plotly, in an ordinary web page placed with <c>&lt;interactive iframe&gt;</c>.</p>
+        <p><url href="https://mahmadi-ops.github.io/MATH13-Instructor/section-quadric-surfaces.html" visual="mahmadi-ops.github.io/MATH13-Instructor">Open in the book</url></p>
+      </stack>
+    </sidebyside>
+  </slide>
+
+  <!-- Notes: Press Play: the plane swings from horizontal to steep, ellipse to parabola
+       at m = 1 to hyperbola. -->
+  <slide>
+    <title>Interactive figures: cone and conics</title>
+    <sidebyside widths="58% 38%" valign="top">
+      <interactive xml:id="int-slide-conic" iframe="conic-slicer-manim.html" aspect="4:3">
+        <description><p>A double cone cut by a tilting plane; the cut changes from ellipse to parabola to hyperbola.</p></description>
+      </interactive>
+      <stack>
+        <p>Press Play: the plane <m>z = my + 1</m> swings from horizontal to steep. The circle stretches to an ellipse, opens into a parabola at <m>m = 1</m>, then breaks into a hyperbola.</p>
+        <p>Three.js, drawn in the Manim style.</p>
+        <p><url href="https://mahmadi-ops.github.io/MATH13-Instructor/section-conics.html" visual="mahmadi-ops.github.io/MATH13-Instructor">Open in the book</url></p>
+      </stack>
+    </sidebyside>
+  </slide>
+
+  <!-- Notes: Press Play: the tangent to the cut is green along the gradient, red against
+       it, yellow along the level curve. -->
+  <slide>
+    <title>Interactive figures: the slice behind a directional derivative</title>
+    <sidebyside widths="58% 38%" valign="top">
+      <interactive xml:id="int-slide-dirderiv" iframe="dirderiv-surface-slice-manim.html" aspect="4:3">
+        <description><p>The surface z = 1 + x squared + y squared cut by a vertical plane through P zero that turns around; the tangent to the cut is colored by direction.</p></description>
+      </interactive>
+      <stack>
+        <p>Press Play: the vertical plane through <m>P_0(1, 1)</m> turns once around. The tangent to the cut is steepest along <m>\nabla f</m>, steepest down along <m>-\nabla f</m>, and level along the level curve.</p>
+        <p><url href="https://mahmadi-ops.github.io/MATH13-Instructor/section-directional-derivatives.html" visual="mahmadi-ops.github.io/MATH13-Instructor">Open in the book</url></p>
+      </stack>
+    </sidebyside>
+  </slide>
+
+  <!-- Notes: Circle the low, then Run for open water, and watch the barometer. -->
+  <slide>
+    <title>Interactive figures: sailing the isobars of a low</title>
+    <sidebyside widths="62% 34%" valign="top">
+      <interactive xml:id="int-slide-isobars" iframe="isobars-low-3d.html" aspect="16:10">
+        <description><p>The pressure field around a low, with a ship that either circles the eye along an isobar or runs outward along the gradient, and a barometer reading.</p></description>
+      </interactive>
+      <stack>
+        <p>Press <q>Circle the low</q>, then <q>Run for open water</q>, and watch the barometer: along an isobar the pressure stays put; across them it changes fastest.</p>
+        <p>Web only: the PDF prints a sentence in its place.</p>
+      </stack>
+    </sidebyside>
+  </slide>
+
+  <!-- Notes: MATH 14. This one is not an iframe page but a script with a slate, the
+       second way of embedding. -->
+  <slide>
+    <title>Interactive figures: a script and a slate (MATH 14)</title>
+    <sidebyside widths="44% 52%" valign="top">
+      <interactive xml:id="int-slide-polar-rose" platform="javascript" source="polar-widget.js" aspect="10:11">
+        <slate xml:id="int-slide-polar-rose-slate" surface="html">
+<div data-widget="rose" style="text-align:center; font-family: 'IBM Plex Sans', 'Open Sans', Helvetica, Arial, sans-serif;">
+<canvas width="460" height="460" style="width:460px; max-width:100%; height:auto; border:1px solid #ddd;"></canvas>
+<div style="margin-top:0.6em; display:flex; align-items:center; justify-content:center; gap:0.7em; flex-wrap:wrap;">
+<label for="rose-theta" style="font-family: 'Source Serif 4', 'PT Serif', Times, serif; font-style:italic; font-size:1.2em;">&#952;</label>
+<input id="rose-theta" type="range" min="0" max="48" value="0" step="1" style="width:60%; max-width:340px;"/>
+</div>
+<div class="pw-readout" style="margin-top:0.5em; line-height:1.5;"></div>
+</div>
+        </slate>
+      </interactive>
+      <stack>
+        <p>The rose <m>r = \cos 3\theta</m> and the circle <m>r = \tfrac12</m>. Drag <m>\theta</m>: the dots mark where the ray meets each curve, which is what fixes the limits of <m>r</m> in the double integral.</p>
+        <p><c>platform="javascript"</c> loads a script; <c>&lt;slate surface="html"&gt;</c> holds the canvas and slider it draws into.</p>
+        <p><url href="https://mahmadi-ops.github.io/MATH-14-Instructor/section-double-integrals-polar-form.html" visual="mahmadi-ops.github.io/MATH-14-Instructor">Open in the book</url></p>
+      </stack>
+    </sidebyside>
+  </slide>
+
+  <!-- ===== How it's coded: The quadric slicer (5 steps) ===== -->
+  <slide>
+    <title>An ordinary web page</title>
+    <p><alert>How it’s coded · The quadric slicer · step 1 of 5.</alert> MathJax and Plotly come from a CDN; three buttons choose the slicing plane, a slider sets c, and an empty <c>div</c> is where Plotly draws.</p>
+    <p>From <c>M13-Mehdi/assets/hyperbolic-paraboloid-slices.html</c></p>
+    <program language="html" highlight-lines="2,6-8,11,16">
+<code>
+&lt;script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"&gt;&lt;/script&gt;
+&lt;script src="https://cdn.plot.ly/plotly-2.35.2.min.js"&gt;&lt;/script&gt;
+…
+&lt;div class="controls"&gt;
+  &lt;span class="btn-group"&gt;
+    &lt;button class="axis-btn" data-axis="x"&gt;\(x = c\)&lt;/button&gt;
+    &lt;button class="axis-btn" data-axis="y"&gt;\(y = c\)&lt;/button&gt;
+    &lt;button class="axis-btn" data-axis="z"&gt;\(z = c\)&lt;/button&gt;
+  &lt;/span&gt;
+  &lt;span class="slider-box"&gt;
+    &lt;input type="range" id="cslider"&gt;
+    &lt;span class="cval"&gt;&lt;span class="cname"&gt;c&lt;/span&gt; = &lt;span id="cval"&gt;&lt;/span&gt;&lt;/span&gt;
+  &lt;/span&gt;
+  &lt;button id="rotateBtn"&gt;Rotate&lt;/button&gt;
+&lt;/div&gt;
+&lt;div id="plot"&gt;&lt;/div&gt;
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Sample the surface</title>
+    <p><alert>How it’s coded · The quadric slicer · step 2 of 5.</alert> A <m>41 \times 41</m> grid of <m>(x, y)</m> values with <m>z = x^2/4 - y^2/9</m> at each. Plotly shades the grid as a surface.</p>
+    <p>From <c>M13-Mehdi/assets/hyperbolic-paraboloid-slices.html</c></p>
+    <program language="javascript" highlight-lines="11">
+<code>
+var CONFIG = {
+  ranges: { x: [-4.6, 4.6], y: [-6.9, 6.9], z: [-4.6, 4.6] },
+  sliders: { x: [-4, 4], y: [-6, 6], z: [-4, 4] },
+  defaults: { axis: 'x', c: 2 },
+  surface: function () {
+    var n = 41, X = [], Y = [], Z = [];
+    for (var i = 0; i &lt; n; i++) {
+      var y = -6 + 12 * i / (n - 1), xr = [], yr = [], zr = [];
+      for (var j = 0; j &lt; n; j++) {
+        var x = -4 + 8 * j / (n - 1);
+        xr.push(x); yr.push(y); zr.push(x * x / 4 - y * y / 9);
+      }
+      X.push(xr); Y.push(yr); Z.push(zr);
+    }
+    return { x: X, y: Y, z: Z };
+},
+…
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Code each trace</title>
+    <p><alert>How it’s coded · The quadric slicer · step 3 of 5.</alert> Each trace is worked out by hand and coded: <m>x = c</m> gives the parabola <m>z = c^2/4 - y^2/9</m>; <m>z = c</m> gives a hyperbola, parametrized with <m>\cosh</m> and <m>\sinh</m>, one branch for each sign.</p>
+    <p>From <c>M13-Mehdi/assets/hyperbolic-paraboloid-slices.html</c></p>
+    <program language="javascript" highlight-lines="4,13,19">
+<code>
+…
+    var latex = 'z = ' + (v ? fmt(v) + ' - ' : '-') + '\\frac{y^2}{9}';
+    return {
+      curves: [curve(function (y) { return [c, y, v - y * y / 9]; }, -6, 6, 121)],
+      latex: latex, kind: 'parabola'
+  };
+}
+…
+    var branches = [];
+    if (c &gt; 0) {
+      [1, -1].forEach(function (sg) {
+        branches.push(curve(function (t) {
+          return [sg * 2 * s * Math.cosh(t), 3 * s * Math.sinh(t), c];
+        }, -T, T, 121));
+      });
+    } else {
+      [1, -1].forEach(function (sg) {
+        branches.push(curve(function (t) {
+          return [2 * s * Math.sinh(t), sg * 3 * s * Math.cosh(t), c];
+…
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Redraw on every change</title>
+    <p><alert>How it’s coded · The quadric slicer · step 4 of 5.</alert> Each slider move rebuilds the traces and calls <c>Plotly.react</c>, which redraws in place. The equation above the plot is typeset again only when its text changes.</p>
+    <p>From <c>M13-Mehdi/assets/hyperbolic-paraboloid-slices.html</c></p>
+    <program language="javascript" highlight-lines="6,17">
+<code>
+…
+      type: 'scatter3d', mode: 'markers', x: [p[0]], y: [p[1]], z: [p[2]],
+      marker: { color: col, size: 5 }, hoverinfo: 'skip'
+    });
+  });
+  Plotly.react(gd, data, layout, { displayModeBar: false, responsive: true });
+  cval.textContent = fmt(c);
+  var html = '\\(' + axis + ' = ' + fmt(c) + ':\\;\\;\\; ' + s.latex + '\\)' +
+    ' &lt;span class="kind"&gt;(' + s.kind + ')&lt;/span&gt;';
+  if (html !== lastTypeset) {
+    lastTypeset = html;
+    readout.innerHTML = html;
+    if (window.MathJax &amp;&amp; MathJax.typesetPromise) MathJax.typesetPromise([readout]);
+  }
+}
+…
+slider.addEventListener('input', function () {
+  c = parseFloat(slider.value);
+  update();
+…
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Put it in the book</title>
+    <p><alert>How it’s coded · The quadric slicer · step 5 of 5.</alert> Save the page in assets/ and embed it with one <c>&lt;interactive iframe&gt;</c>. For the PDF, <c>pretext generate interactive -t print</c> takes a screenshot, and a QR code links to the live figure.</p>
+    <p>From <c>M13-Mehdi/source/QuadricSurface.ptx</c></p>
+    <program language="xml">
+<code>
+&lt;figure xml:id="fig-hyperbolic-paraboloid-slices"&gt;
+  &lt;caption&gt;
+    Slicing the hyperbolic paraboloid
+    &lt;m&gt;z = \frac{x^2}{4} - \frac{y^2}{9}&lt;/m&gt;
+    with planes &lt;m&gt;x = c&lt;/m&gt;, &lt;m&gt;y = c&lt;/m&gt;, and &lt;m&gt;z = c&lt;/m&gt;.
+  &lt;/caption&gt;
+  &lt;interactive xml:id="interactive-hyperbolic-paraboloid-slices"
+               iframe="hyperbolic-paraboloid-slices.html"
+               width="100%" aspect="8:7"&gt;
+    &lt;instructions&gt;
+      &lt;p&gt;
+      Use the buttons to slice the surface with planes &lt;m&gt;x=c&lt;/m&gt;,
+      &lt;m&gt;y=c&lt;/m&gt;, or &lt;m&gt;z=c&lt;/m&gt;, and drag the slider to vary &lt;m&gt;c&lt;/m&gt;.
+      The equation of each cross-section is displayed above the
+      figure. Drag the figure to view it from a different angle, or
+      press the &lt;q&gt;Rotate&lt;/q&gt; button to spin it automatically.&lt;/p&gt;
+    &lt;/instructions&gt;
+  &lt;/interactive&gt;
+…
+</code>
+</program>
+  </slide>
+
+  <!-- ===== How it's coded: The isobars figure (3 steps) ===== -->
+  <slide>
+    <title>The field, its gradient, the isobars</title>
+    <p><alert>How it’s coded · The isobars figure · step 1 of 3.</alert> The pressure field, its gradient, and the isobars sit in one configuration object; the rest of the file draws whatever it describes, so a new field means editing this block.</p>
+    <p>From <c>M13-Mehdi/assets/isobars-low-3d.html</c></p>
+    <program language="javascript" highlight-lines="4-5,8">
+<code>
+const CFG = {
+  xmin:-72, xmax:72, ymin:-44.2, ymax:44.2,
+  vmin:988, vmax:1017,
+  f:function(x,y){return 988+0.004*(x*x+y*y);},
+  grad:function(x,y){return [0.008*x,0.008*y];},
+  palette:[[0,[46,8,40]],[.22,[122,26,74]],[.44,[196,66,58]],
+           [.64,[214,142,54]],[.82,[70,140,110]],[1,[26,62,104]]],
+  contours:[992,996,1000,1004,1008],
+  level:990, levelColor:'#FFD166',
+  levelLabel:'isobar   990 mb   \u00B7   r = 22.4 mi',
+  axisLabel:'P(x,y) = 988 + 0.004(x\u00B2 + y\u00B2)',
+  curve:function(v,t){var r=Math.sqrt((v-988)/0.004);
+    return [r*Math.cos(t), r*Math.sin(t)];},
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Two headings</title>
+    <p><alert>How it’s coded · The isobars figure · step 2 of 3.</alert> Each heading is a path and a rate of change: zero around the isobar, <m>\nabla P \cdot \mathbf{u}</m> running outward.</p>
+    <p>From <c>M13-Mehdi/assets/isobars-low-3d.html</c></p>
+    <program language="javascript" highlight-lines="6,11">
+<code>
+modes:[
+  {id:'iso', label:'Circle the low', tint:'#FFD166', loop:true,
+   rate:0.30, smax:Math.PI*2,
+   pos:function(s){var r=Math.sqrt(500), t=Math.atan2(10,20)+s;
+     return [r*Math.cos(t), r*Math.sin(t)];},
+   du:function(){return 0;},
+   status:function(){return 'Holding 990 mb';}},
+  {id:'out', label:'Run for open water', tint:'#7FE3C0', loop:false,
+   rate:11, smax:54,
+   pos:function(s){return [20+2/Math.sqrt(5)*s, 10+1/Math.sqrt(5)*s];},
+   du:function(x,y){return 0.008*x*(2/Math.sqrt(5))+0.008*y*(1/Math.sqrt(5));},
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Web and print versions</title>
+    <p><alert>How it’s coded · The isobars figure · step 3 of 3.</alert> <c>component="web"</c> and <c>component="print"</c> mark two versions; each build’s <c>&lt;version include&gt;</c> keeps one.</p>
+    <p>From <c>M13-Mehdi/source/assignment-8-chain-rule.ptx</c></p>
+    <program language="xml">
+<code>
+&lt;!-- Assignment 8, in the answer to the sailing problem --&gt;
+&lt;p component="print"&gt;
+  An interactive figure of the pressure field &lt;mdash/&gt; the two
+  headings switchable, with the barometer responding as the ship
+  moves &lt;mdash/&gt; accompanies the online version of these notes.
+&lt;/p&gt;
+&lt;sidebyside component="web" width="100%"&gt;
+  &lt;figure xml:id="figure-isobars-low"&gt;
+    &lt;caption&gt;The pressure field &lt;m&gt;P(x,y) = 988 + 0.004(x^2+y^2)&lt;/m&gt;
+      around a low. One heading circles the eye at constant
+      &lt;m&gt;990&lt;/m&gt; mb; the other runs outward along &lt;m&gt;\nabla P&lt;/m&gt;. …
+    &lt;/caption&gt;
+    &lt;interactive xml:id="interactive-isobars-low"
+                 iframe="isobars-low-3d.html"
+                 width="100%" aspect="16:10"/&gt;
+  &lt;/figure&gt;
+&lt;/sidebyside&gt;
+</code>
+</program>
+  </slide>
+
+  <!-- ===== How it's coded: The polar rose (4 steps) ===== -->
+  <slide>
+    <title>Describe each widget</title>
+    <p><alert>How it’s coded · The polar rose · step 1 of 4.</alert> Each widget is a configuration: its window, two polar curves and their colours, where the labels go, and the text of the readout.</p>
+    <p>From <c>MATH-14/assets/polar-widget.js</c></p>
+    <program language="javascript" highlight-lines="4-5">
+<code>
+var WIDGETS = {
+  rose: {
+    xmin: -1.25, xmax: 1.25, ymin: -1.25, ymax: 1.25, rings: 2, raylen: 1.2,
+    f1: function (t) { return Math.cos(3 * t); }, c1: "#CC0000",
+    f2: function () { return 0.5; }, c2: "#0072B2",
+    l1: "r = cos(3θ)", l1p: [0.42, -1.05],
+    l2: "r = 1/2", l2p: [-1.15, 0.62],
+    readout: function (t, k) {
+      var rose = Math.cos(3 * t);
+      var top = Math.min(Math.max(rose, 0), 0.5);
+      return "&lt;b&gt;θ = " + piFraction(k) + "&lt;/b&gt;&lt;br/&gt;" +
+        "cos(3θ) = " + rose.toFixed(3) + ", so inside both curves " +
+        "&lt;i&gt;r&lt;/i&gt; runs from 0 to " + top.toFixed(3) +
+        (rose &gt; 0.5 ? " (the circle)" : (rose &gt; 0 ? " (the rose)" : " (nothing)"));
+    }
+  },
+  cardioids: { … }
+};
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Draw in polar coordinates</title>
+    <p><alert>How it’s coded · The polar rose · step 2 of 4.</alert> Points (r cos t, r sin t) for 1,441 values of t; <c>X</c> and <c>Y</c> turn math coordinates into canvas pixels.</p>
+    <p>From <c>MATH-14/assets/polar-widget.js</c></p>
+    <program language="javascript" highlight-lines="8">
+<code>
+function X(x) { return (x - (cfg.xmin + cfg.xmax) / 2) * s + W / 2; }
+function Y(y) { return H / 2 - (y - (cfg.ymin + cfg.ymax) / 2) * s; }
+
+function polarCurve(f, stroke) {
+  ctx.beginPath();
+  for (var i = 0; i &lt;= 1440; i++) {
+    var t = i * Math.PI / 720, r = f(t);
+    var px = X(r * Math.cos(t)), py = Y(r * Math.sin(t));
+    if (i === 0) { ctx.moveTo(px, py); } else { ctx.lineTo(px, py); }
+  }
+  ctx.strokeStyle = stroke;
+  ctx.lineWidth = 2.5;
+  ctx.stroke();
+}
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Find the slates</title>
+    <p><alert>How it’s coded · The polar rose · step 3 of 4.</alert> The script finds every element marked <c>data-widget</c> and builds a widget in each.</p>
+    <p>From <c>MATH-14/assets/polar-widget.js</c></p>
+    <program language="javascript" highlight-lines="2,7">
+<code>
+function init() {
+  var boxes = document.querySelectorAll("[data-widget]"), i;
+  for (i = 0; i &lt; boxes.length; i++) { build(boxes[i]); }
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", init);
+} else {
+  init();
+}
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>The slate in the book</title>
+    <p><alert>How it’s coded · The polar rose · step 4 of 4.</alert> <c>platform="javascript"</c> loads the script; <c>&lt;slate surface="html"&gt;</c> holds the canvas, slider, and readout it fills in.</p>
+    <p>From <c>MATH-14/source/double-integrals-polar-form.ptx</c></p>
+    <program language="xml">
+<code>
+&lt;figure xml:id="fig-polar-rose-circle"&gt;
+  &lt;caption&gt;
+    Figure (2): the rose &lt;m&gt;r=\cos(3\theta)&lt;/m&gt; and the circle
+    &lt;m&gt;r=\frac12&lt;/m&gt;. Drag the slider to turn the ray of angle
+    &lt;m&gt;\theta&lt;/m&gt;; …
+  &lt;/caption&gt;
+  &lt;interactive xml:id="int-polar-rose" platform="javascript"
+               source="polar-widget.js" width="100%" aspect="10:11"&gt;
+    &lt;slate surface="html"&gt;
+      &lt;!-- inline styles trimmed --&gt;
+      &lt;div data-widget="rose"&gt;
+        &lt;canvas width="460" height="460"&gt;&lt;/canvas&gt;
+        &lt;label for="rose-theta"&gt;&amp;#952;&lt;/label&gt;
+        &lt;input id="rose-theta" type="range" min="0" max="48"
+               value="0" step="1"/&gt;
+        &lt;div class="pw-readout"&gt;&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/slate&gt;
+…
+</code>
+</program>
+  </slide>
+
+  <!-- Notes: The applet loads live from GeoGebra's servers by its material id. Section
+       2.3, Taylor's formula: e^x against p_2 with the error at 0.5. MATH 14 keeps ten .ggb
+       files in its repository and loads them as slates. -->
+  <slide>
+    <title>GeoGebra: bring in the tools students already know</title>
+    <interactive xml:id="int-slide-ggb-exp" geogebra="xzdc5jpq" width="100%" aspect="16:11" resize-behavior="fixed-height">
+      <description>
+        <p>The red curve is the graph of <m>f(x) = e^x</m> and the blue curve is the graph of the Taylor polynomial <m>p_2(x)</m>. The vertical distance between the red and blue points at <m>x = 0.5</m> is the error of the approximation, which stays below the bound <m>0.03435</m>.</p>
+      </description>
+    </interactive>
+    <p>Taylor's formula: <m>e^x</m> against <m>p_2</m>, with the error at <m>x = 0.5</m>. The whole embed is one element, <c>&lt;interactive geogebra="xzdc5jpq"&gt;</c>. <url href="https://mahmadi-ops.github.io/M13-Mehdi/section-taylor.html" visual="mahmadi-ops.github.io/M13-Mehdi">Section 2.3 in the book</url></p>
+  </slide>
+
+  <!-- ===== How it's coded: GeoGebra (4 steps) ===== -->
+  <slide>
+    <title>Build the applet</title>
+    <p><alert>How it’s coded · GeoGebra · step 1 of 4.</alert> Build the applet in GeoGebra. MATH 14 keeps each construction as commands pasted one per row into the input bar, so it can be rebuilt or changed later.</p>
+    <p>From <c>MATH-14/assets/geogebra/paraglider_arclength.commands.txt</c></p>
+    <program highlight-lines="5,7,10">
+<code>
+# GeoGebra Classic (3D view) — Paraglider distance travelled (3D)
+# Open a 3D Graphics view, paste these into the input bar one per row,
+# then File &gt; Share to publish and obtain a material ID.
+
+t = Slider(0, 9, 0.01)
+SetValue(t, 4.5)
+path = Curve(u cos(u), u sin(u), 9 sqrt(8) - sqrt(8)/3 u^(3/2), u, 0, 9)
+SetColor(path, 0, 102, 204)
+SetLineThickness(path, 5)
+P = (t cos(t), t sin(t), 9 sqrt(8) - sqrt(8)/3 t^(3/2))
+SetColor(P, 255, 102, 0)
+SetPointSize(P, 6)
+A = (0, 0, 9 sqrt(8))
+SetColor(A, 204, 0, 0)
+B = (9 cos(9), 9 sin(9), 0)
+SetColor(B, 204, 0, 0)
+s = t^2 / 2 + t
+speed = Text("|v(t)| = t + 1", (-9, 9, 27))
+…
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Keep the file</title>
+    <p><alert>How it’s coded · GeoGebra · step 2 of 4.</alert> Save the .ggb in assets/geogebra and load it with a <c>&lt;slate&gt;</c>, as MATH 14 does, or share it and use its material id.</p>
+    <p>From <c>MATH-14/source/conservative-fields.ptx</c></p>
+    <program language="xml" highlight-lines="2">
+<code>
+&lt;interactive platform="geogebra" width="100%" aspect="600:500"&gt;
+&lt;slate surface="geogebra" source="geogebra/vf-fig3-segment.ggb"
+       aspect="600:500" material-width="600" material-height="500"/&gt;
+&lt;instructions&gt;
+&lt;p&gt;
+Drag the slider to move the point along the segment from &lt;m&gt;A&lt;/m&gt; to
+&lt;m&gt;B&lt;/m&gt;. The applet draws the field vector &lt;m&gt;\mathbf{F}&lt;/m&gt; and the unit
+tangent &lt;m&gt;\hat{\mathbf{T}}&lt;/m&gt; at that point, so what the integral
+accumulates is the length of the projection of &lt;m&gt;\mathbf{F}&lt;/m&gt; onto
+&lt;m&gt;\hat{\mathbf{T}}&lt;/m&gt;. Rotate the view to see how the segment sits
+relative to the field.
+&lt;/p&gt;
+&lt;/instructions&gt;
+&lt;/interactive&gt;
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Embed by material id</title>
+    <p><alert>How it’s coded · GeoGebra · step 3 of 4.</alert> With a material id the embed is one element. <c>&lt;description&gt;</c> tells a screen-reader user what the applet shows.</p>
+    <p>From <c>M13-Mehdi/source/Taylor.ptx</c></p>
+    <program language="xml">
+<code>
+&lt;!-- Example: the error in approximating e^0.5 by p_2(0.5) --&gt;
+&lt;interactive geogebra="xzdc5jpq" width="95%" aspect="16:11"&gt;
+  &lt;description&gt;
+    &lt;p&gt;
+    The red curve is the graph of &lt;m&gt;f(x) = e^x&lt;/m&gt; and the blue
+    curve is the graph of the Taylor polynomial &lt;m&gt;p_2(x)&lt;/m&gt;.
+    The exact value of &lt;m&gt;e^{0.5}&lt;/m&gt; is represented by the red point
+    and the approximation given by &lt;m&gt;p_2(0.5)&lt;/m&gt; is represented by
+    the blue point. The vertical distance between the two points
+    represents the error in the approximation. Note that the error
+    is less than the upper bound we calculated, i.e., &lt;m&gt;0.03435&lt;/m&gt;.
+    &lt;/p&gt;
+  &lt;/description&gt;
+&lt;/interactive&gt;
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Add a fullscreen button</title>
+    <p><alert>How it’s coded · GeoGebra · step 4 of 4.</alert> A small template gives every applet GeoGebra’s fullscreen button, then hands off to PreTeXt’s own template with <c>apply-imports</c>.</p>
+    <p>From <c>MATH14-Skeletal/xsl/custom-html.xsl</c></p>
+    <program language="xml" highlight-lines="5,7,10">
+<code>
+  &lt;!-- Every GeoGebra applet gets GeoGebra's own fullscreen button.        --&gt;
+  &lt;!-- The core slate template writes the applet-parameter object inline   --&gt;
+  &lt;!-- and offers no hook for extra parameters, so instead of copying the  --&gt;
+  &lt;!-- whole template we emit a small shim first and then defer to it via  --&gt;
+  &lt;!-- apply-imports.  The shim wraps window.GGBApplet so that any         --&gt;
+  &lt;!-- parameter object passing through it picks up                        --&gt;
+  &lt;!-- showFullscreenButton: true (unless the author set it).  deployggb   --&gt;
+  &lt;!-- loads synchronously in the head, so GGBApplet exists by the time    --&gt;
+  &lt;!-- this body script runs; the setter branch covers it loading later.   --&gt;
+  &lt;xsl:template match="slate[@surface='geogebra']"&gt;
+    &lt;script&gt;
+&lt;![CDATA[(function () {
+  if (window.ggbFullscreenShim) { return; }
+…
+</code>
+</program>
+  </slide>
+
+  <!-- Notes: Desmos graph 7b85e78f17, from the solution of the example on choosing n so
+       the error stays below a tolerance (Section 2.3). Switch on p1, p3, p5. -->
+  <slide>
+    <title>Desmos: a graph is one empty element</title>
+    <sidebyside widths="58% 38%" valign="top">
+      <interactive xml:id="int-slide-desmos" desmos="7b85e78f17" aspect="4:3"/>
+      <stack>
+        <p>Switch on <m>p_1, p_3, p_5</m> for <m>\sin x</m> and see where each one peels away.</p>
+        <program language="xml">
+<code>
+&lt;interactive desmos="7b85e78f17"
+             width="70%" aspect="1:2"/&gt;
+</code>
+        </program>
+        <p><url href="https://www.desmos.com/calculator/7b85e78f17" visual="desmos.com/calculator/7b85e78f17">Open in Desmos</url></p>
+      </stack>
+    </sidebyside>
+  </slide>
+
+  <!-- ===== How it's coded: Desmos (4 steps) ===== -->
+  <slide>
+    <title>Build the graph in Desmos</title>
+    <p><alert>How it’s coded · Desmos · step 1 of 4.</alert> Braces restrict each curve to <m>[-\pi/2, \pi/2]</m>. The Taylor polynomials are left switched off so students turn them on.</p>
+    <p>From <em>Desmos expression list</em></p>
+    <program highlight-lines="1,3-5">
+<code>
+f(x) = sin(x) {-π/2 ≤ x ≤ π/2}
+"Plot the Taylor polynomials by clicking on the circles on the left."
+p_1(x) = x {-π/2 ≤ x ≤ π/2}
+p_3(x) = x - x^3/3! {-π/2 ≤ x ≤ π/2}
+p_5(x) = x - x^3/3! + x^5/5! {-π/2 ≤ x ≤ π/2}
+…   the exact error and the error bound follow
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Share it</title>
+    <p><alert>How it’s coded · Desmos · step 2 of 4.</alert> The id PreTeXt needs is the last part of the share link.</p>
+    <p>From <em>Desmos</em></p>
+    <program highlight-lines="2">
+<code>
+Share › copy link:
+https://www.desmos.com/calculator/7b85e78f17
+                                  ^^^^^^^^^^ the id PreTeXt needs
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Embed it</title>
+    <p><alert>How it’s coded · Desmos · step 3 of 4.</alert> One empty element, here inside the solution of the example on choosing n.</p>
+    <p>From <c>M13-Mehdi/source/Taylor.ptx</c></p>
+    <program language="xml">
+<code>
+&lt;example xml:id="ex-error-bound-sin-degree"&gt;
+  &lt;title&gt; Finding the value of &lt;m&gt;n&lt;/m&gt; such that the error is less
+    than a given tolerance&lt;/title&gt;
+  …
+  &lt;solution&gt;
+    …
+    &lt;p&gt;
+      We can check the values of &lt;m&gt;n&lt;/m&gt; starting from &lt;m&gt;n=0&lt;/m&gt;
+      until we find the smallest value of &lt;m&gt;n&lt;/m&gt; that satisfies the
+      inequality. After checking, we find that the smallest value of
+      &lt;m&gt;n&lt;/m&gt; that satisfies the inequality is &lt;m&gt;n=8&lt;/m&gt;.
+    &lt;/p&gt;
+    &lt;interactive desmos="7b85e78f17" width="70%" aspect="1:2" /&gt;
+  &lt;/solution&gt;
+&lt;/example&gt;
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>The print version</title>
+    <p><alert>How it’s coded · Desmos · step 4 of 4.</alert> The CLI screenshots each interactive into generated-assets/preview, named after the enclosing example; a QR code links to the live graph.</p>
+    <p>From <em>Terminal</em></p>
+    <program highlight-lines="2,5">
+<code>
+# screenshot every interactive for the PDF
+pretext generate interactive -t print
+
+# M13-Mehdi/generated-assets/preview/
+ex-error-bound-sin-degree-3-8-preview.png   # this Desmos graph
+ex-error-bound-exp-3-6-preview.png          # a GeoGebra applet
+interactive-conic-slicer-preview.png        # an HTML figure
+</code>
+</program>
+  </slide>
+
+  <!-- Notes: The video is rendered once with Manim, the Python library behind
+       3Blue1Brown. The next slide rebuilds the same scene in the browser. -->
+  <slide>
+    <title>Manim, two ways: a video to watch</title>
+    <video xml:id="vid-slide-secant" source="videos/secant-tangent.mp4" preview="videos/secant-tangent.jpg" width="72%" aspect="16:9"/>
+    <p>The secant rotating onto the tangent, on <m>z = 1 + x^2 + y^2</m> at <m>(1, 1)</m>. <url href="https://mahmadi-ops.github.io/MATH13-Instructor/section-directional-derivatives.html" visual="mahmadi-ops.github.io/MATH13-Instructor">Section 4.5</url></p>
+  </slide>
+
+  <!-- Notes: The same scene in Three.js, in the same visual style: students press Play,
+       step s toward 0 themselves, and spin the surface; the secant slope readout approaches
+       the tangent slope 2 sqrt 2. -->
+  <slide>
+    <title>Manim, two ways: a scene to drive</title>
+    <sidebyside widths="54% 42%" valign="top">
+      <interactive xml:id="int-slide-secant" iframe="dirderiv-secant-3d-manim.html" aspect="1:1">
+        <description><p>The secant through two points of the surface z = 1 + x squared + y squared rotating onto the tangent line as s goes to zero.</p></description>
+      </interactive>
+      <stack>
+        <p>The secant slope is <m>2\sqrt2 + s</m>; as <m>s \to 0</m> it becomes the directional derivative <m>2\sqrt2 \approx 2.828</m>.</p>
+        <p>Videos for constructions; interactives where the student should drive.</p>
+      </stack>
+    </sidebyside>
+  </slide>
+
+  <!-- ===== How it's coded: The Manim video (5 steps) ===== -->
+  <slide>
+    <title>The scene file</title>
+    <p><alert>How it’s coded · The Manim video · step 1 of 5.</alert> A Manim scene is a Python file. The construction’s numbers sit at the top: <m>P_0</m>, the unit vector <m>\mathbf{u}</m>, the function, and how far the step <m>s</m> runs.</p>
+    <p>From <c>M13-Mehdi/assets/manim/dirderiv_secant_tangent.py</c></p>
+    <program language="python" highlight-lines="7,10,14">
+<code>
+from manim import *
+import numpy as np
+
+# ---- the construction -------------------------------------------------------
+X0, Y0 = 0.25, 0.25                     # P0
+C = 1.0 / np.sqrt(2.0)                  # u = (C, C), a unit vector
+S_START, S_END = 1.5, 0.05              # the step s runs from here to here
+
+
+def f(x, y):
+    return 1.0 + x * x + y * y
+
+
+def ray(t):
+    """The point P0 + t*u in the xy-plane."""
+    return X0 + t * C, Y0 + t * C
+
+
+…
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Build the objects</title>
+    <p><alert>How it’s coded · The Manim video · step 2 of 5.</alert> Axes turn math coordinates into scene points; the surface is a parametric patch with a checkerboard fill; the trace is f along the ray.</p>
+    <p>From <c>M13-Mehdi/assets/manim/dirderiv_secant_tangent.py</c></p>
+    <program language="python" highlight-lines="3,8,15">
+<code>
+class SecantToTangent(ThreeDScene):
+    def construct(self):
+        ax = ThreeDAxes(
+            x_range=[XY_MIN, XY_MAX, 1],
+            y_range=[XY_MIN, XY_MAX, 1],
+            z_range=[0, Z_MAX, 1],
+…
+        surf = Surface(
+            lambda r, th: p3(r * np.cos(th), r * np.sin(th), 1.0 + r * r),
+            u_range=[0.001, R_SURF], v_range=[0, TAU],
+            resolution=(16, 48), stroke_width=0.6, stroke_opacity=0.25,
+        )
+        surf.set_fill_by_checkerboard(BLUE_D, BLUE_E, opacity=0.45)
+…
+        trace = ParametricFunction(
+            lambda t: p3(*ray(t), g(t)),
+            t_range=[T_MIN, T_MAX], color=TRACE, stroke_width=7,
+)
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Tie the picture to s</title>
+    <p><alert>How it’s coded · The Manim video · step 3 of 5.</alert> One <c>ValueTracker</c> holds s. <c>always_redraw</c> rebuilds the point and the secant from s on every frame.</p>
+    <p>From <c>M13-Mehdi/assets/manim/dirderiv_secant_tangent.py</c></p>
+    <program language="python" highlight-lines="1,4,13">
+<code>
+s = ValueTracker(S_START)
+…
+def secant_line():
+    sv = s.get_value()
+    x1, y1 = ray(sv)
+    start, end = np.array(p3(X0, Y0, g(0.0))), np.array(p3(x1, y1, g(sv)))
+    d = end - start
+    n = np.linalg.norm(d)
+    d = d / n if n &gt; 1e-9 else d
+    return Line(start - 1.15 * d, end + 0.45 * d,
+                color=SECANT, stroke_width=9)
+…
+sec = always_redraw(secant_line)
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Animate and render</title>
+    <p><alert>How it’s coded · The Manim video · step 4 of 5.</alert> Moving the tracker from 1.5 to 0.05 swings the secant onto the tangent. The command in the file’s header renders the .mp4 into assets/videos.</p>
+    <p>From <c>M13-Mehdi/assets/manim/dirderiv_secant_tangent.py</c></p>
+    <program language="python" highlight-lines="6,10">
+<code>
+"""Figure 18.4: the secant through (P0, f(P0)) and (P, f(P)) rotating onto the
+tangent line at P0 as s -&gt; 0.
+
+Renders to assets/videos/dirderiv_secant_tangent_manim.mp4:
+
+    manim -qh --disable_caching -o dirderiv_secant_tangent_manim \
+        assets/manim/dirderiv_secant_tangent.py SecantToTangent
+"""
+…
+self.play(s.animate.set_value(S_END), run_time=6.5,
+          rate_func=rate_functions.ease_in_out_sine)
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Put it in the book</title>
+    <p><alert>How it’s coded · The Manim video · step 5 of 5.</alert> A <c>&lt;video&gt;</c> in a captioned figure; <c>width</c> and <c>aspect</c> size the player.</p>
+    <p>From <c>M13-Mehdi/source/directional-derivatives.ptx</c></p>
+    <program language="xml">
+<code>
+&lt;figure&gt;
+  &lt;caption&gt;
+    … The secant line through &lt;m&gt;(P_0, f(P_0))&lt;/m&gt; and
+    &lt;m&gt;(P, f(P))&lt;/m&gt; has slope &lt;m&gt;\big(f(P) - f(P_0)\big)/s&lt;/m&gt;, and
+    as &lt;m&gt;s \to 0&lt;/m&gt; it rotates onto the tangent line, whose slope is
+    the directional derivative &lt;m&gt;\left(D_{\hat{u}} f\right)_{P_0}&lt;/m&gt;.
+  &lt;/caption&gt;
+  &lt;video xml:id="video-dirderiv-setup"
+         source="videos/dirderiv_secant_tangent_manim.mp4"
+         width="100%" aspect="16:9"/&gt;
+&lt;/figure&gt;
+</code>
+</program>
+  </slide>
+
+  <!-- ===== How it's coded: The Manim-style interactive (4 steps) ===== -->
+  <slide>
+    <title>The construction in JavaScript</title>
+    <p><alert>How it’s coded · The Manim-style interactive · step 1 of 4.</alert> The same construction at the book’s point <m>P_0(1, 1)</m>, where <m>D_{\mathbf{u}} f = 2\sqrt{2}</m>.</p>
+    <p>From <c>M13-Mehdi/assets/dirderiv-secant-3d-manim.html</c></p>
+    <program language="javascript" highlight-lines="2">
+<code>
+var C = 1 / Math.sqrt(2);          // u = (C, C), a unit vector
+var R2 = 2 * Math.sqrt(2);         // the directional derivative itself
+function f(x, y) { return 1 + x * x + y * y; }
+
+// The surface is drawn over the disc of radius RMAX. Along the ray from
+// P0(1,1) in the direction u the point (1 + tC, 1 + tC) has radius
+// sqrt(2)|1 + tC|, so the ray stays over that disc for t in [T0, T1]:
+var RMAX = 2.2;
+var T1 = RMAX - Math.SQRT2;        // = 0.786, and the slider stops short of it
+var T0 = -RMAX - Math.SQRT2;
+var ZTOP = f(RMAX, 0);             // the rim of the drawn patch
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Redraw for each s</title>
+    <p><alert>How it’s coded · The Manim-style interactive · step 2 of 4.</alert> Each change of <m>s</m> rebuilds the moving point, its two dashed heights, and the secant through <m>P_0</m> and <m>P</m>.</p>
+    <p>From <c>M13-Mehdi/assets/dirderiv-secant-3d-manim.html</c></p>
+    <program language="javascript" highlight-lines="17">
+<code>
+…
+  var Q = new THREE.Vector3(p.x, p.y, g(sVal));
+  var P0 = new THREE.Vector3(1, 1, 3);
+
+  // the moving point, on the surface and on the ground
+  var qs = new THREE.Mesh(new THREE.SphereGeometry(0.075, 18, 18), redMat);
+  qs.position.copy(Q); movGroup.add(qs);
+  var qb = new THREE.Mesh(new THREE.SphereGeometry(0.055, 16, 16), redMat);
+  qb.position.set(p.x, p.y, 0); movGroup.add(qb);
+  pLabel.position.set(Q.x + 0.42, Q.y + 0.42, Q.z + 0.30);
+
+  // the two heights, dropped to the ground
+  dashed(new THREE.Vector3(1, 1, 0), P0, 0x8a8f9c);
+  dashed(new THREE.Vector3(p.x, p.y, 0), Q, 0xfc6255);
+
+  // the secant through the two points on the surface, extended a little
+  var dirv = Q.clone().sub(P0).normalize();
+  tube([P0.clone().addScaledVector(dirv, -1.3), Q.clone().addScaledVector(dirv, 0.9)],
+       RED_C, 0.030, movGroup);
+…
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Show the limit</title>
+    <p><alert>How it’s coded · The Manim-style interactive · step 3 of 4.</alert> The secant slope is exactly <m>2\sqrt{2} + s</m>, so the readout shows the limit happening; its colour moves to the tangent’s green as <m>s \to 0</m>.</p>
+    <p>From <c>M13-Mehdi/assets/dirderiv-secant-3d-manim.html</c></p>
+    <program language="javascript" highlight-lines="2,5">
+<code>
+function paintReadouts() {
+  var slope = R2 + sVal;                     // ( f(P) - f(P0) ) / s
+  elName.textContent = "secant slope = " + slope.toFixed(3);
+  // the closer s gets to 0, the more the secant reading takes the tangent's colour
+  elName.style.color = mix(GREEN_C, RED_C, Math.min(1, sVal / S_MAX));
+  elSec.textContent = slope.toFixed(3);
+  …
+}
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Put it in the book</title>
+    <p><alert>How it’s coded · The Manim-style interactive · step 4 of 4.</alert> It enters the book like any interactive, in the same section as the video.</p>
+    <p>From <c>M13-Mehdi/source/directional-derivatives.ptx</c></p>
+    <program language="xml">
+<code>
+&lt;figure xml:id="fig-int-dirderiv-secant-3d-manim"&gt;
+  &lt;caption&gt;
+    The secant through &lt;m&gt;(P_0, f(P_0))&lt;/m&gt; and &lt;m&gt;(P, f(P))&lt;/m&gt; on
+    the surface &lt;m&gt;z = 1 + x^2 + y^2&lt;/m&gt;, rotating onto the tangent
+    line at &lt;m&gt;P_0&lt;/m&gt; as &lt;m&gt;s \to 0&lt;/m&gt;, with slope
+    &lt;m&gt;2\sqrt2 + s \to 2\sqrt2&lt;/m&gt;.
+  &lt;/caption&gt;
+  &lt;interactive xml:id="interactive-dirderiv-secant-3d-manim"
+               iframe="dirderiv-secant-3d-manim.html"
+               width="100%" aspect="1:1"&gt;
+    &lt;instructions&gt;
+      &lt;p&gt;
+      Press &lt;q&gt;Play&lt;/q&gt; to watch the whole construction in one
+      continuous motion … The reading at the lower left compares the
+      secant slope &lt;m&gt;2\sqrt 2 + s&lt;/m&gt; with the tangent slope
+      &lt;m&gt;2\sqrt 2&lt;/m&gt;, which is the directional derivative
+      &lt;m&gt;\left(D_{\hat{u}} f\right)_{P_0}&lt;/m&gt;. …
+      &lt;/p&gt;
+…
+</code>
+</program>
+  </slide>
+
+  <!-- Notes: Optional if short on time. 58 animations in MATH 13 and 43 in MATH 14. -->
+  <slide>
+    <title>101 short animations, a sample of four</title>
+    <sidebyside widths="23% 23% 23% 23%" valign="top">
+      <stack>
+        <video source="videos/whispering-gallery.mp4" preview="videos/whispering-gallery.jpg" aspect="16:9"/>
+        <p>Whispering gallery · MATH 13</p>
+      </stack>
+      <stack>
+        <video source="videos/small-angle.mp4" preview="videos/small-angle.jpg" aspect="16:9"/>
+        <p>How good is <m>\sin\theta \approx \theta</m>? · MATH 13</p>
+      </stack>
+      <stack>
+        <video source="videos/curl-circulation.mp4" preview="videos/curl-circulation.jpg" aspect="16:9"/>
+        <p>Curl as circulation · MATH 14</p>
+      </stack>
+      <stack>
+        <video source="videos/green-proof.mp4" preview="videos/green-proof.jpg" aspect="16:9"/>
+        <p>Green's theorem, the proof idea · MATH 14</p>
+      </stack>
+    </sidebyside>
+  </slide>
+
+  <!-- ===== How it's coded: Videos (3 steps) ===== -->
+  <slide>
+    <title>One script per video</title>
+    <p><alert>How it’s coded · Videos · step 1 of 3.</alert> MATH 14 keeps a Python script for each video. Its docstring records what the video argues, what it leaves out, and how to run it.</p>
+    <p>From <c>MATH-14/scripts/make_green_proof_idea_video.py</c></p>
+    <program language="python" highlight-lines="17">
+<code>
+…
+integrals, and every line of the algebra in the written proof.  What is
+present is the chain of ideas that algebra exists to support:
+
+  1.  the statement: circulation around C, against the integral of the
+      k-component of the curl over the inside;
+  2.  that curl is circulation per unit area -- what one tiny rectangle says;
+  3.  chop R into such rectangles;
+  4.  add the circulation around every rectangle;
+  5.  every interior edge is travelled twice, once in each direction, so the
+      interior cancels in pairs;
+  6.  only the outer edges survive: the sum of the little circulations IS
+      the boundary integral, and the sum of (curl F . k) dA is the double
+      integral;
+  7.  the same bookkeeping the divergence theorem keeps, one dimension up.
+…
+Run with:  python3 scripts/make_green_proof_idea_video.py
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Where clips live</title>
+    <p><alert>How it’s coded · Videos · step 2 of 3.</alert> Rendered clips sit in assets/videos with the other external files.</p>
+    <p>From <c>assets/videos</c></p>
+    <program highlight-lines="2">
+<code>
+MATH-14/assets/videos/
+  green_proof_idea_1080p.mp4      # placed in greens-theorem.ptx
+  curl_circulation_1080p.mp4
+  stokes_proof_idea_1080p.mp4
+  divergence_proof_idea_1080p.mp4
+  …                               # 43 clips in all
+M13-Mehdi/assets/videos/          # 58 clips
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Put one in the book</title>
+    <p><alert>How it’s coded · Videos · step 3 of 3.</alert> <c>&lt;video source&gt;</c> in a captioned figure; <c>width</c> and <c>aspect</c> size the player.</p>
+    <p>From <c>M13-Mehdi/source/Conics.ptx</c></p>
+    <program language="xml">
+<code>
+&lt;figure xml:id="vid-whispering-gallery"&gt;
+  &lt;caption&gt;Animation: sound leaves one focus in many directions,
+  reflects off the wall, and reconverges at the other
+  focus&lt;mdash/&gt;every path the same length &lt;m&gt;2a&lt;/m&gt;.&lt;/caption&gt;
+  &lt;video xml:id="video-whispering-gallery"
+         source="videos/whispering_gallery_1080p.mp4"
+         width="90%" aspect="16:9"/&gt;
+&lt;/figure&gt;
+</code>
+</program>
+  </slide>
+
+  <!-- Notes: PreFigure, by David Austin (Grand Valley State). Click the figure, press the
+       down arrow, then left and right: each part is described. The same source builds the
+       web SVG, the PDF, and a tactile version for an embosser. 169 MATH 13 figures are
+       PreFigure. -->
+  <slide>
+    <title>PreFigure: one figure for every reader</title>
+    <sidebyside widths="54% 42%" valign="top">
+      <image>
+        <prefigure xmlns="https://prefigure.org" label="hyperbola-loran">
+          <diagram dimensions="(400,320)" margins="8">
+            <definition>cc = 3</definition>
+            <definition>aa = 1.5</definition>
+            <definition>bb = sqrt(cc^2 - aa^2)</definition>
+            <definition>H(x,y) = x^2/aa^2 - y^2/bb^2</definition>
+            <definition>aa2 = 0.7</definition>
+            <definition>bb2 = sqrt(cc^2 - aa2^2)</definition>
+            <definition>H2(x,y) = x^2/aa2^2 - y^2/bb2^2</definition>
+            <definition>sP = 0.9</definition>
+            <coordinates bbox="(-5.0, -4.0, 5.0, 4.0)">
+              <implicit-curve at="locus2" function="H2" k="1" stroke="gray" thickness="1.5" dash="4 4"/>
+              <implicit-curve at="locus" function="H" k="1" stroke="blue" thickness="3"/>
+              <group at="signals">
+                <line p1="(-cc,0)" p2="(aa*cosh(sP), bb*sinh(sP))" stroke="orange" thickness="2"/>
+                <line p1="(cc,0)" p2="(aa*cosh(sP), bb*sinh(sP))" stroke="green" thickness="2"/>
+              </group>
+              <point at="ship" p="(aa*cosh(sP), bb*sinh(sP))" fill="red" size="4"/>
+              <label at="ship-label" anchor="(aa*cosh(sP), bb*sinh(sP))" alignment="ne" offset="(6,2)"><m>A</m></label>
+              <point at="s2" p="(-cc,0)" fill="black" size="4"/>
+              <label at="sB-label" anchor="(-cc,0)" alignment="s" offset="(-6,-8)"><m>P_2</m></label>
+              <point at="s1" p="(cc,0)" fill="black" size="4"/>
+              <label at="sA-label" anchor="(cc,0)" alignment="s" offset="(4,-8)"><m>P_1</m></label>
+              <label at="locus-label" anchor="(3.75,-2.6)" alignment="center"><m>|r_2-r_1|=2a</m></label>
+              <label at="r2-label" anchor="(-1.2,0.93)" alignment="n" offset="(0,6)"><m>r_2</m></label>
+              <label at="r1-label" anchor="(2.586,1.3)" alignment="e" offset="(6,0)"><m>r_1</m></label>
+            </coordinates>
+            <annotations>
+              <annotation ref="locus"
+                  text="Hyperbolic navigation: a fixed difference in signal arrival times from two receivers places the unknown position A on a hyperbola whose foci are the receivers">
+                <annotation ref="locus"
+                    text="The hyperbola of all positions having the measured time difference from receivers P one and P two" sonify="yes"/>
+                <annotation ref="locus2"
+                    text="A second dashed hyperbola, the locus for a different time difference, showing that each delay picks out its own curve"/>
+                <annotation ref="signals"
+                    text="Two signal paths, of length r one from receiver P one and length r two from receiver P two, meeting at the point A"/>
+                <annotation ref="ship" text="The unknown position A, somewhere on the locus, closer to P one"/>
+                <annotation ref="s1" text="Receiver P one, the nearer focus"/>
+                <annotation ref="s2" text="Receiver P two, the farther focus"/>
+              </annotation>
+            </annotations>
+          </diagram>
+        </prefigure>
+      </image>
+      <stack>
+        <p>LORAN navigation, from the conics section. Click the figure, then press <kbd>↓</kbd> to step into its parts and <kbd>←</kbd> <kbd>→</kbd> to move between them: each part has a spoken description, and the curve can be heard.</p>
+        <p>One source builds the web picture, the PDF, and a tactile graphic (next slide).</p>
+      </stack>
+    </sidebyside>
+  </slide>
+
+  <!-- Notes: Built from the book's source with prefig build -f tactile; tactile mode
+       needed a whole-number line thickness. -->
+  <slide>
+    <title>PreFigure: the same source, embossed</title>
+    <sidebyside widths="56% 40%" valign="top">
+      <image source="images/loran-tactile.png"><shortdescription>The LORAN figure as a tactile graphic: thick black curves and braille labels on a white page.</shortdescription></image>
+      <stack>
+        <p><c>prefig build -f tactile</c> turns the same diagram into an embossable page, with braille labels and the annotations kept.</p>
+      </stack>
+    </sidebyside>
+  </slide>
+
+  <!-- ===== How it's coded: PreFigure (5 steps) ===== -->
+  <slide>
+    <title>Definitions first</title>
+    <p><alert>How it’s coded · PreFigure · step 1 of 5.</alert> Inside <c>&lt;image&gt;</c>, a <c>&lt;prefigure&gt;</c> diagram starts with definitions: constants and functions in ordinary notation.</p>
+    <p>From <c>M13-Mehdi/source/Conics.ptx</c></p>
+    <program language="xml" highlight-lines="9,13,17">
+<code>
+&lt;figure xml:id="fig-hyperbola-loran"&gt;
+            &lt;caption&gt;Hyperbolic navigation. The measured delay places the unknown position
+        &lt;m&gt;A&lt;/m&gt; on the
+            solid hyperbola with foci at the receivers &lt;m&gt;P_1&lt;/m&gt; and &lt;m&gt;P_2&lt;/m&gt;; a
+        different delay
+      would place it on the dashed one instead.&lt;/caption&gt;
+      &lt;image width="65%"&gt;
+        &lt;prefigure xmlns="https://prefigure.org" label="hyperbola-loran"&gt;
+          &lt;diagram dimensions="(400,320)" margins="8"&gt;
+            &lt;definition&gt;cc = 3&lt;/definition&gt;
+            &lt;definition&gt;aa = 1.5&lt;/definition&gt;
+            &lt;definition&gt;bb = sqrt(cc^2 - aa^2)&lt;/definition&gt;
+            &lt;definition&gt;H(x,y) = x^2/aa^2 - y^2/bb^2&lt;/definition&gt;
+            &lt;definition&gt;aa2 = 0.7&lt;/definition&gt;
+            &lt;definition&gt;bb2 = sqrt(cc^2 - aa2^2)&lt;/definition&gt;
+            &lt;definition&gt;H2(x,y) = x^2/aa2^2 - y^2/bb2^2&lt;/definition&gt;
+            &lt;definition&gt;sP = 0.9&lt;/definition&gt;
+            &lt;coordinates bbox="(-5.0, -4.0, 5.0, 4.0)"&gt;
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Draw with mathematical objects</title>
+    <p><alert>How it’s coded · PreFigure · step 2 of 5.</alert> Inside a coordinate box: an implicit curve H = 1, segments, points, and labels typeset as math. Each part gets an <c>at</c> name.</p>
+    <p>From <c>M13-Mehdi/source/Conics.ptx</c></p>
+    <program language="xml" highlight-lines="3,8-9">
+<code>
+&lt;coordinates bbox="(-5.0, -4.0, 5.0, 4.0)"&gt;
+  &lt;implicit-curve at="locus2" function="H2" k="1" stroke="gray" thickness="1.5" dash="4 4"/&gt;
+  &lt;implicit-curve at="locus" function="H" k="1" stroke="blue" thickness="3"/&gt;
+  &lt;group at="signals"&gt;
+    &lt;line p1="(-cc,0)" p2="(aa*cosh(sP), bb*sinh(sP))" stroke="orange" thickness="2"/&gt;
+    &lt;line p1="(cc,0)" p2="(aa*cosh(sP), bb*sinh(sP))" stroke="green" thickness="2"/&gt;
+  &lt;/group&gt;
+  &lt;point at="ship" p="(aa*cosh(sP), bb*sinh(sP))" fill="red" size="4"/&gt;
+    &lt;label at="ship-label" anchor="(aa*cosh(sP), bb*sinh(sP))" alignment="ne"
+    offset="(6,2)"&gt;&lt;m&gt;A&lt;/m&gt;&lt;/label&gt;
+  &lt;point at="s2" p="(-cc,0)" fill="black" size="4"/&gt;
+  &lt;label at="sB-label" anchor="(-cc,0)" alignment="s" offset="(-6,-8)"&gt;&lt;m&gt;P_2&lt;/m&gt;&lt;/label&gt;
+  &lt;point at="s1" p="(cc,0)" fill="black" size="4"/&gt;
+  &lt;label at="sA-label" anchor="(cc,0)" alignment="s" offset="(4,-8)"&gt;&lt;m&gt;P_1&lt;/m&gt;&lt;/label&gt;
+    &lt;label at="locus-label" anchor="(3.75,-2.6)"
+    alignment="center"&gt;&lt;m&gt;|r_2-r_1|=2a&lt;/m&gt;&lt;/label&gt;
+  &lt;label at="r2-label" anchor="(-1.2,0.93)" alignment="n" offset="(0,6)"&gt;&lt;m&gt;r_2&lt;/m&gt;&lt;/label&gt;
+  &lt;label at="r1-label" anchor="(2.586,1.3)" alignment="e" offset="(6,0)"&gt;&lt;m&gt;r_1&lt;/m&gt;&lt;/label&gt;
+…
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Describe every part</title>
+    <p><alert>How it’s coded · PreFigure · step 3 of 5.</alert> The annotations form a tree over those names, from the whole figure to each part. A screen-reader user walks it with the arrow keys; <c>sonify="yes"</c> makes a curve audible.</p>
+    <p>From <c>M13-Mehdi/source/Conics.ptx</c></p>
+    <program language="xml" highlight-lines="8">
+<code>
+&lt;annotations&gt;
+  &lt;annotation ref="locus"
+            text="Hyperbolic navigation: a fixed difference in signal arrival times from two
+        receivers places the unknown position A on a hyperbola whose foci are the
+        receivers"&gt;
+    &lt;annotation ref="locus"
+                text="The hyperbola of all positions having the measured time difference
+          from receivers P one and P two" sonify="yes"/&gt;
+    &lt;annotation ref="locus2"
+                text="A second dashed hyperbola, the locus for a different time difference,
+          showing that each delay picks out its own curve"/&gt;
+    &lt;annotation ref="signals"
+                text="Two signal paths, of length r one from receiver P one and length r two
+          from receiver P two, meeting at the point A"/&gt;
+        &lt;annotation ref="ship" text="The unknown position A, somewhere on the locus, closer
+      to P one"/&gt;
+    &lt;annotation ref="s1" text="Receiver P one, the nearer focus"/&gt;
+    &lt;annotation ref="s2" text="Receiver P two, the farther focus"/&gt;
+…
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Build every version</title>
+    <p><alert>How it’s coded · PreFigure · step 4 of 5.</alert> The PreTeXt build makes the diagrams; <c>prefig</c> builds a single diagram, including the tactile version.</p>
+    <p>From <em>Terminal</em></p>
+    <program highlight-lines="3,7">
+<code>
+# inside the project, the build makes every diagram
+pretext build web
+pretext generate prefigure     # rebuild the diagrams on demand
+
+# one diagram on its own, as for this talk's tactile image
+prefig build loran.xml               # the SVG for the web
+prefig build -f tactile loran.xml    # the version for an embosser
+
+# requirements.txt pins prefig == 0.6.7: without it CI emits plain
+# SVGs and no -diagcess variants, which the web pages reference
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Four things that tripped us up</title>
+    <p><alert>How it’s coded · PreFigure · step 5 of 5.</alert> Small rules that save an afternoon each.</p>
+    <p>From <em>Notes from this project</em></p>
+    <program language="xml" highlight-lines="2,6,8-9,12">
+<code>
+&lt;!-- less-than inside a math label --&gt;
+&lt;label anchor="(0,1)"&gt;&lt;m&gt;a \mathrel{\unicode{x3C}} b&lt;/m&gt;&lt;/label&gt;
+
+&lt;!-- no single-letter names n, s, e, w: they collide with the
+     compass words used for label alignment (hence sP, not s) --&gt;
+&lt;definition&gt;sP = 0.9&lt;/definition&gt;
+
+&lt;!-- TikZ inside a latex-image goes in CDATA --&gt;
+&lt;latex-image&gt;&lt;![CDATA[ \begin{tikzpicture} … \end{tikzpicture} ]]&gt;&lt;/latex-image&gt;
+
+&lt;!-- tactile mode wants whole-number line thickness --&gt;
+&lt;implicit-curve function="H2" k="1" thickness="2"/&gt;
+</code>
+</program>
+  </slide>
+
+</section>

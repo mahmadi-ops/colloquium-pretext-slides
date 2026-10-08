@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- How it is built, and MATH 53 (about 7 minutes) -->
+<section xml:id="sec-build-math53">
+  <title>How it's built, and MATH 53</title>
+
+  <!-- Notes: Edit in VS Code or a Codespace; push to main; GitHub Actions builds; GitHub
+       Pages serves. Posting during the term goes through the Posting Desk. Claude Code
+       handles mechanical work under a rules file in each repository. -->
+  <slide>
+    <title>From a commit to a live page in minutes</title>
+    <p><alert>Write</alert> in VS Code or a GitHub Codespace → <alert>push</alert> to main → GitHub Actions <alert>builds</alert> → GitHub Pages <alert>publishes</alert>.</p>
+    <dl>
+      <li><title>Posting Desk</title><p>A private control panel: one click posts a section, or locks or releases an assignment's solutions.</p></li>
+      <li><title>Solutions on a timer</title><p>Locked solutions wait in the source inside comment markers; releasing them deletes two lines.</p></li>
+      <li><title>AI-assisted upkeep</title><p>Claude Code works in each repository under written rules: validate every build, never invent mathematics.</p></li>
+    </dl>
+    <p>Each course is five sites from one toolchain: course notes, skeletal notes and assignments, instructor editions, lecture slides, and the syllabus.</p>
+  </slide>
+
+  <!-- ===== How it's coded: Build and publish (5 steps) ===== -->
+  <slide>
+    <title>Build on every push</title>
+    <p><alert>How it’s coded · Build and publish · step 1 of 5.</alert> A push to main builds the book in PreTeXt’s Docker image, which includes LaTeX, Sage, and PreFigure, and publishes it to GitHub Pages.</p>
+    <p>From <c>M13-Mehdi/.github/workflows/pretext-deploy.yml</c></p>
+    <program>
+<code>
+# .github/workflows/pretext-deploy.yml (trimmed)
+on:
+  push:
+    branches: ["main"]
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    container: pretextbook/pretext-full:1.9
+    steps:
+      - uses: actions/checkout@v4
+      - run: pip install -r requirements.txt --break-system-packages
+      - run: prefig init
+      - run: pretext build --deploys
+      - run: pretext deploy --no-push
+      - run: git push origin gh-pages --force
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>The same tools everywhere</title>
+    <p><alert>How it’s coded · Build and publish · step 2 of 5.</alert> A Codespace uses the same image and pinned versions, so a local build matches the published one.</p>
+    <p>From <c>M13-Mehdi/.devcontainer · requirements.txt</c></p>
+    <program highlight-lines="2-3,5-6">
+<code>
+// .devcontainer/devcontainer.json
+"image": "pretextbook/pretext-full:1.9", // uses latest image from
+  https://hub.docker.com/r/PreTeXtBook/pretext-full/tags
+# requirements.txt
+pretext == 2.44.0
+prefig == 0.6.7
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Post with one click</title>
+    <p><alert>How it’s coded · Build and publish · step 3 of 5.</alert> A click on the Posting Desk commits a small request file; this workflow applies it with desk_action.py, commits, and rebuilds.</p>
+    <p>From <c>M13-Mehdi/.github/workflows/desk-requests.yml</c></p>
+    <program highlight-lines="3-4,10">
+<code>
+name: Posting Desk requests
+# The Posting Desk panel commits small JSON request files into
+# desk-requests/ (via the instructor's GitHub connector). This workflow
+# reacts to that push, applies each request with scripts/desk_action.py,
+# removes the request files, and kicks the site build when the source
+# actually changed.
+on:
+  push:
+    branches: [main]
+    paths: ["desk-requests/**"]
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: posting-desk
+  cancel-in-progress: false
+…
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Lock a solution until its due date</title>
+    <p><alert>How it’s coded · Build and publish · step 4 of 5.</alert> A locked solution waits in a comment that records its due date; releasing it deletes the two marker lines.</p>
+    <p>From <c>M13-Mehdi/CLAUDE.md</c></p>
+    <program language="xml">
+<code>
+&lt;!-- the SOLUTION-LOCKED convention (CLAUDE.md) --&gt;
+&lt;exercise xml:id="a3-p2"&gt;
+  &lt;statement&gt;
+    &lt;p&gt; ... the question, always visible ... &lt;/p&gt;
+  &lt;/statement&gt;
+&lt;!-- SOLUTION-LOCKED assignment="3" due="2026-10-09"
+  &lt;solution&gt;
+    &lt;p&gt; ... &lt;/p&gt;
+  &lt;/solution&gt;
+END SOLUTION-LOCKED --&gt;
+&lt;/exercise&gt;
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Rules for the assistant</title>
+    <p><alert>How it’s coded · Build and publish · step 5 of 5.</alert> Each repository’s CLAUDE.md says how to post, lock, and release, and how to check the work before pushing.</p>
+    <p>From <c>M13-Mehdi/CLAUDE.md</c></p>
+    <program highlight-lines="2,11,14">
+<code>
+&lt;!-- CLAUDE.md, the rules the coding assistant follows --&gt;
+3. Never invent content: a request that needs material not in the repo
+   (e.g. an assignment with no problem set in `source/`) is not posted —
+   set its `status` to `"needs-input"` and a one-line `result` saying what
+   to provide (the page shows it to the instructor).
+…
+## Validating a change
+
+Before any push:
+1. Well-formedness of every touched file:
+   `xmllint --noout source/&lt;file&gt;.ptx` (locked blocks are comments, so a
+   malformed marker shows up here).
+2. If the PreTeXt CLI is available (`pip install -r requirements.txt`),
+   run `pretext build web` and confirm it succeeds; then confirm the target
+   page exists in `output/web/` to get its exact filename. If the CLI
+   can't be installed in the session, say so and derive the filename from
+   the section's `xml:id` instead.
+&lt;!-- .claude/skills/: post-notes, post-assignment, release-solutions --&gt;
+</code>
+</program>
+  </slide>
+
+  <!-- Notes: MATH 53 Section 9.3, Epidemic Dynamics: susceptible, infected, recovered,
+       deceased. These cells run live on the SageMathCell server; cells on one page share a
+       session, so evaluate them in order. -->
+  <slide>
+    <title>Code that runs on the page: an epidemic as a Markov chain</title>
+    <p>Each day <m>5\%</m> of the susceptible fall ill; the infected recover, die, or relapse. Press Evaluate.</p>
+    <sage>
+      <input>
+T = matrix(QQ, [[0.95, 0.04, 0, 0],
+                [0.05, 0.85, 0, 0],
+                [0,    0.10, 1, 0],
+                [0,    0.01, 0, 1]])
+S0 = vector(QQ, [1, 0, 0, 0])
+T
+      </input>
+    </sage>
+    <sage>
+      <input>
+S = S0
+for k in range(1, 6):
+    S = T*S
+    print(k, S.n(digits=4))
+      </input>
+    </sage>
+  </slide>
+
+  <slide>
+    <title>Two hundred days, plotted</title>
+    <sage>
+      <input>
+N = 200
+history = [S0]
+for k in range(N):
+    history.append(T * history[-1])
+
+labels = ["susceptible", "infected", "recovered", "deceased"]
+colors = ["blue", "red", "green", "black"]
+p = sum(line([(k, history[k][j]) for k in range(N + 1)],
+             color=colors[j], legend_label=labels[j], thickness=2)
+        for j in range(4))
+p.axes_labels(["day $k$", "fraction of population"])
+p.show(ymin=0, ymax=1, figsize=[7, 3.5])
+      </input>
+    </sage>
+  </slide>
+
+  <slide>
+    <title>The long run</title>
+    <sage>
+      <input>
+(T^1000 * S0).n(digits=4)
+      </input>
+    </sage>
+    <sage>
+      <input>
+T.eigenvectors_right()
+      </input>
+    </sage>
+    <p>About <m>90.9\%</m> recovered and <m>9.1\%</m> deceased; the exact limits are <m>\frac{10}{11}</m> and <m>\frac{1}{11}</m>. <url href="https://mahmadi-ops.github.io/MATH-53/sec-epidemic-sage.html" visual="mahmadi-ops.github.io/MATH-53">Section 9.3 in the book</url></p>
+  </slide>
+
+  <!-- ===== How it's coded: Sage cells (4 steps) ===== -->
+  <slide>
+    <title>A cell</title>
+    <p><alert>How it’s coded · Sage cells · step 1 of 4.</alert> Wrap Sage code in <c>&lt;sage&gt;&lt;input&gt;</c>. On the web it becomes a cell with an Evaluate button, run on the SageMathCell server.</p>
+    <p>From <c>MATH-53/source/applications/sec-epidemic-sage.ptx</c></p>
+    <program language="xml" highlight-lines="3">
+<code>
+&lt;sage&gt;
+  &lt;input&gt;
+    T = matrix(QQ, [[0.95, 0.04, 0, 0],
+                    [0.05, 0.85, 0, 0],
+                    [0,    0.10, 1, 0],
+                    [0,    0.01, 0, 1]])
+    S0 = vector(QQ, [1, 0, 0, 0])
+    T
+  &lt;/input&gt;
+&lt;/sage&gt;
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Cells build on each other</title>
+    <p><alert>How it’s coded · Sage cells · step 2 of 4.</alert> Cells on a page share a session, so this one iterates the T and S0 defined above.</p>
+    <p>From <c>MATH-53/source/applications/sec-epidemic-sage.ptx</c></p>
+    <program language="xml" highlight-lines="5">
+<code>
+&lt;sage&gt;
+  &lt;input&gt;
+    S = S0
+    for k in range(1, 6):
+        S = T*S
+        print(k, S.n(digits=4))
+  &lt;/input&gt;
+&lt;/sage&gt;
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Plots</title>
+    <p><alert>How it’s coded · Sage cells · step 3 of 4.</alert> Plots work as in Sage: build the lines and <c>show()</c> them; the picture appears under the cell.</p>
+    <p>From <c>MATH-53/source/applications/sec-epidemic-sage.ptx</c></p>
+    <program language="xml" highlight-lines="10,14">
+<code>
+&lt;sage&gt;
+  &lt;input&gt;
+    N = 200
+    history = [S0]
+    for k in range(N):
+        history.append(T * history[-1])
+
+    labels = ["susceptible", "infected", "recovered", "deceased"]
+    colors = ["blue", "red", "green", "black"]
+    p = sum(line([(k, history[k][j]) for k in range(N + 1)],
+                 color=colors[j], legend_label=labels[j], thickness=2)
+            for j in range(4))
+    p.axes_labels(["day $k$", "fraction of population"])
+    p.show(ymin=0, ymax=1)
+  &lt;/input&gt;
+&lt;/sage&gt;
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Back to the theory</title>
+    <p><alert>How it’s coded · Sage cells · step 4 of 4.</alert> Two short cells connect the computation to the chapter: the long-run state and the eigenvectors of T.</p>
+    <p>From <c>MATH-53/source/applications/sec-epidemic-sage.ptx</c></p>
+    <program language="xml" highlight-lines="3,9">
+<code>
+&lt;sage&gt;
+  &lt;input&gt;
+    (T^1000 * S0).n(digits=4)
+  &lt;/input&gt;
+&lt;/sage&gt;
+
+&lt;sage&gt;
+  &lt;input&gt;
+    T.eigenvectors_right()
+  &lt;/input&gt;
+&lt;/sage&gt;
+</code>
+</program>
+  </slide>
+
+  <!-- Notes: Chapters 1 to 10 are drafted and online; orthogonality is newest. Goal:
+       ready for the coming winter quarter, with the MATH 13 and 14 framework. -->
+  <slide>
+    <title>MATH 53, Linear Algebra: ten chapters drafted</title>
+    <sidebyside widths="44% 52%" valign="top">
+      <ol>
+        <li><p>Systems of linear equations</p></li>
+        <li><p>Vectors in <m>\R^n</m></p></li>
+        <li><p>Linear transformations</p></li>
+        <li><p>Matrix algebra</p></li>
+        <li><p>Subspaces, basis, dimension</p></li>
+        <li><p>Determinants</p></li>
+        <li><p>Vector spaces</p></li>
+        <li><p>Eigenvalues and eigenvectors</p></li>
+        <li><p>Spectral applications</p></li>
+        <li><p>Orthogonality (newest)</p></li>
+      </ol>
+      <stack>
+        <p>Goal: ready for the coming winter quarter, bringing over the MATH 13 and 14 framework.</p>
+        <p>Applications already in: images as matrices, recognizing a cat, PageRank, normal modes, least squares.</p>
+      </stack>
+    </sidebyside>
+  </slide>
+
+  <!-- Notes: The MATH 53 demo for T(x) = Ax: drag x; drag b off the range to show
+       inconsistency. -->
+  <slide>
+    <title>Demos you can drag: <m>T(\mathbf{x}) = A\mathbf{x}</m></title>
+    <sidebyside widths="56% 40%" valign="top">
+      <interactive xml:id="int-slide-axb-plane" iframe="demos-manim/axb.html?mat=2,0:1,1:0,3&amp;x=2,1&amp;show=true&amp;theme=dark" aspect="5:4">
+        <description><p>A linear map from the plane to space: dragging x on the left moves b = Ax on the right, inside a plane that is the range.</p></description>
+      </interactive>
+      <stack>
+        <p><m>\R^2 \to \R^3</m>: the range is a plane. Drag <m>\mathbf{x}</m> on the left; <m>\mathbf{b} = A\mathbf{x}</m> moves on the right. Drag <m>\mathbf{b}</m> off the range and the equation becomes inconsistent.</p>
+        <p>One page serves every figure of this kind; the matrix comes in the URL.</p>
+      </stack>
+    </sidebyside>
+  </slide>
+
+  <!-- ===== How it's coded: The MATH 53 demos (4 steps) ===== -->
+  <slide>
+    <title>Settings from the URL</title>
+    <p><alert>How it’s coded · The MATH 53 demos · step 1 of 4.</alert> The page reads its matrix, starting vector, and options from the URL, so one file serves every figure of this kind.</p>
+    <p>From <c>MATH-53/assets/demos-manim/axb.html</c></p>
+    <program language="javascript" highlight-lines="3,8">
+<code>
+// ---------------- URL parameters ----------------
+var Q = {};
+location.search.slice(1).split("&amp;").forEach(function (kv) {
+  if (!kv) return; var p = kv.split("=");
+  Q[decodeURIComponent(p[0])] = decodeURIComponent(p[1] || "");
+});
+document.body.className = Q.theme === "light" ? "light" : "dark";
+var A = (Q.mat || "1,0:1,1:0,1").split(":").map(function (r) {
+  return r.split(",").map(Number); });
+var m = A.length, n = A[0].length;
+var RANGE = parseFloat(Q.range || "5");
+var SHOW = Q.show === "true";
+var LOCK = Q.lock === "true";
+var x0 = (Q.x || "").split(",").map(Number).filter(function (v) {
+  return !isNaN(v); });
+while (x0.length &lt; n) x0.push([-1, 2, 1][x0.length]);
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Row-reduce in the page</title>
+    <p><alert>How it’s coded · The MATH 53 demos · step 2 of 4.</alert> Pivots give the rank; free columns give a basis for the null space, pivot columns a basis for the range.</p>
+    <p>From <c>MATH-53/assets/demos-manim/axb.html</c></p>
+    <program language="javascript" highlight-lines="5,17">
+<code>
+…
+      val = M[i][lead];
+      for (k = 0; k &lt; cols; k++) M[i][k] -= val * M[r][k];
+    }
+    pivots.push(lead); lead++;
+  }
+  return { M: M, pivots: pivots };
+}
+var RA = rref(A), rank = RA.pivots.length;
+var nullB = [];                                   // null-space basis in R^n
+(function () {
+  var free = [], j, i;
+  for (j = 0; j &lt; n; j++) if (RA.pivots.indexOf(j) &lt; 0) free.push(j);
+  free.forEach(function (f) {
+    var v = [0, 0, 0]; v[f] = 1;
+    RA.pivots.forEach(function (p, pi) { v[p] = -RA.M[pi][f]; });
+    nullB.push(v);
+  });
+})();
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Solve, or say it cannot be done</title>
+    <p><alert>How it’s coded · The MATH 53 demos · step 3 of 4.</alert> Solving Ax = b row-reduces the augmented matrix; a zero row with a nonzero right side means no solution, and the figure says so.</p>
+    <p>From <c>MATH-53/assets/demos-manim/axb.html</c></p>
+    <program language="javascript" highlight-lines="7">
+<code>
+function solve(b) {                               // particular solution or null
+  var aug = A.map(function (r, i) { return r.concat([b[i]]); });
+  var R = rref(aug), i, j;
+  for (i = 0; i &lt; m; i++) {
+    var allz = true;
+    for (j = 0; j &lt; n; j++) if (Math.abs(R.M[i][j]) &gt; 1e-8) allz = false;
+    if (allz &amp;&amp; Math.abs(R.M[i][n]) &gt; 1e-8) return null;
+  }
+  var v = [0, 0, 0];
+  R.pivots.forEach(function (p, pi) { if (p &lt; n) v[p] = R.M[pi][n]; });
+  return v;
+}
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Embed with parameters</title>
+    <p><alert>How it’s coded · The MATH 53 demos · step 4 of 4.</alert> Each figure is one element with its own parameters. Write <c>&amp;amp;</c> between them, because the source is XML.</p>
+    <p>From <c>MATH-53/source</c></p>
+    <program language="xml">
+<code>
+&lt;interactive xml:id="int-indep-two-plane"
+  iframe="demos-manim/axb.html?mat=2,0:1,1:0,3&amp;amp;x=2,1&amp;amp;show=true&amp;amp;theme=dark"
+  width="100%" aspect="5:4"/&gt;
+</code>
+</program>
+  </slide>
+
+</section>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ===================================================================== -->
+<!-- Write once, read everywhere: Math & CS colloquium, Fall 2026.         -->
+<!-- A reveal.js slideshow; each part of the talk is one section file.     -->
+<!-- Speaker notes are the XML comments above each slide.                  -->
+<!-- ===================================================================== -->
+<pretext xml:lang="en-US" xmlns:xi="http://www.w3.org/2001/XInclude">
+
+  <xi:include href="docinfo.ptx"/>
+
+  <slideshow>
+    <title>Write once, read everywhere</title>
+    <subtitle>Interactive, accessible course notes with PreTeXt</subtitle>
+
+    <frontmatter>
+      <bibinfo>
+        <author>
+          <personname>Mehdi Ahmadi</personname>
+          <institution>Mathematics and Computer Science, Santa Clara University</institution>
+        </author>
+        <event>Math &amp; CS Colloquium · Fall 2026</event>
+      </bibinfo>
+      <titlepage>
+        <titlepage-items/>
+      </titlepage>
+    </frontmatter>
+
+    <xi:include href="sections/sec-why-pretext.ptx"/>
+    <xi:include href="sections/sec-math13.ptx"/>
+    <xi:include href="sections/sec-math14.ptx"/>
+    <xi:include href="sections/sec-build-math53.ptx"/>
+    <xi:include href="sections/sec-closing.ptx"/>
+    <xi:include href="sections/sec-appendix.ptx"/>
+  </slideshow>
+</pretext>
