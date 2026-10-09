@@ -1,26 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- How it is built, and MATH 53 (about 7 minutes) -->
+<!-- How it is built, Camino, the syllabus, the Posting Desks, and MATH 53 (about 11 minutes) -->
 <section xml:id="sec-build-math53">
   <title>How it's built, and MATH 53</title>
 
   <!-- Notes: Edit in VS Code or a Codespace; push to main; GitHub Actions builds; GitHub
-       Pages serves. Posting during the term goes through the Posting Desk. Claude Code
-       handles mechanical work under a rules file in each repository. -->
+       Pages serves. Posting during the term goes through the Posting Desk (the next slides).
+       Solutions wait in the source until their due date. Claude Code handles mechanical work
+       under a rules file in each repository. -->
   <slide>
     <title>From a commit to a live page in minutes</title>
     <p><alert>Write</alert> in VS Code or a GitHub Codespace → <alert>push</alert> to main → GitHub Actions <alert>builds</alert> → GitHub Pages <alert>publishes</alert>.</p>
     <dl>
-      <li><title>Posting Desk</title><p>A private control panel: one click posts a section, or locks or releases an assignment's solutions.</p></li>
-      <li><title>Solutions on a timer</title><p>Locked solutions wait in the source inside comment markers; releasing them deletes two lines.</p></li>
+      <li><title>Posting Desk</title><p>A private page per course: click Post, Lock, or Release, then tell Claude in a chat. More in a minute.</p></li>
+      <li><title>Solutions on a timer</title><p>Solutions wait in the source until their due date: behind a comment in MATH 13, a one-line switch in MATH 14.</p></li>
       <li><title>AI-assisted upkeep</title><p>Claude Code works in each repository under written rules: validate every build, never invent mathematics.</p></li>
     </dl>
     <p>Each course is five sites from one toolchain: course notes, skeletal notes and assignments, instructor editions, lecture slides, and the syllabus.</p>
   </slide>
 
-  <!-- ===== How it's coded: Build and publish (5 steps) ===== -->
+  <!-- ===== How it's coded: Build and publish (3 steps) ===== -->
   <slide>
     <title>Build on every push</title>
-    <p><alert>How it’s coded · Build and publish · step 1 of 5.</alert> A push to main builds the book in PreTeXt’s Docker image, which includes LaTeX, Sage, and PreFigure, and publishes it to GitHub Pages.</p>
+    <p><alert>How it’s coded · Build and publish · step 1 of 3.</alert> A push to main builds the book in PreTeXt’s Docker image, which includes LaTeX, Sage, and PreFigure, and publishes it to GitHub Pages.</p>
     <p>From <c>M13-Mehdi/.github/workflows/pretext-deploy.yml</c></p>
     <program>
 <code>
@@ -45,7 +46,7 @@ jobs:
 
   <slide>
     <title>The same tools everywhere</title>
-    <p><alert>How it’s coded · Build and publish · step 2 of 5.</alert> A Codespace uses the same image and pinned versions, so a local build matches the published one.</p>
+    <p><alert>How it’s coded · Build and publish · step 2 of 3.</alert> A Codespace uses the same image and pinned versions, so a local build matches the published one.</p>
     <p>From <c>M13-Mehdi/.devcontainer · requirements.txt</c></p>
     <program highlight-lines="2-3,5-6">
 <code>
@@ -60,8 +61,436 @@ prefig == 0.6.7
   </slide>
 
   <slide>
-    <title>Post with one click</title>
-    <p><alert>How it’s coded · Build and publish · step 3 of 5.</alert> A click on the Posting Desk commits a small request file; this workflow applies it with desk_action.py, commits, and rebuilds.</p>
+    <title>Rules for the assistant</title>
+    <p><alert>How it’s coded · Build and publish · step 3 of 3.</alert> Each repository’s CLAUDE.md says how to post, lock, and release, and how to check the work before pushing.</p>
+    <p>From <c>M13-Mehdi/CLAUDE.md</c></p>
+    <program highlight-lines="2,11,14">
+<code>
+&lt;!-- CLAUDE.md, the rules the coding assistant follows --&gt;
+3. Never invent content: a request that needs material not in the repo
+   (e.g. an assignment with no problem set in `source/`) is not posted —
+   set its `status` to `"needs-input"` and a one-line `result` saying what
+   to provide (the page shows it to the instructor).
+…
+## Validating a change
+
+Before any push:
+1. Well-formedness of every touched file:
+   `xmllint --noout source/&lt;file&gt;.ptx` (locked blocks are comments, so a
+   malformed marker shows up here).
+2. If the PreTeXt CLI is available (`pip install -r requirements.txt`),
+   run `pretext build web` and confirm it succeeds; then confirm the target
+   page exists in `output/web/` to get its exact filename. If the CLI
+   can't be installed in the session, say so and derive the filename from
+   the section's `xml:id` instead.
+&lt;!-- .claude/skills/: post-notes, post-assignment, release-solutions --&gt;
+</code>
+</program>
+  </slide>
+
+  <!-- Notes: This is the MATH 13 home page on Camino, SCU's Canvas. Students start here.
+       One card, six links: the syllabus (web and PDF), the completed course notes, the
+       skeletal notes (web and PDF), and the assignments and review problems. The line under
+       the buttons says which book is for what. Camino keeps what it does well, the calendar
+       and the points: Assignment 3 and Exam #1 under Coming Up. The books are public GitHub
+       Pages sites, so the links work without a login and never change; when I post a
+       section, it appears behind the same link. -->
+  <slide>
+    <title>Students start on Camino</title>
+    <image source="images/camino-math13.png" width="100%">
+      <shortdescription>The MATH 13 home page on Camino, with one card of six links to the course sites</shortdescription>
+      <description><p>The MATH 13 Fall 2026 home page on Camino. A card titled MATH 13, Multivariable Calculus, Fall 2026, Course sites, holds six buttons: Syllabus, Syllabus PDF, Course notes, Skeletal notes, Skeletal notes PDF, and Assignments and Review Problems, with one line on what each book is for. On the right, Coming Up lists Assignment 3, due October 7, and Exam 1, October 9.</p></description>
+    </image>
+    <sidebyside widths="31% 31% 31%" valign="top">
+      <p><alert>One card, six links.</alert> Each opens a PreTeXt site: public pages, no login, the same links all term.</p>
+      <p><alert>Which book is for what.</alert> Completed notes go up topic by topic; the skeletal notes are for class and hold the assignments.</p>
+      <p><alert>Camino keeps the calendar.</alert> Due dates and points stay in Camino; the content lives in the books.</p>
+    </sidebyside>
+  </slide>
+
+  <!-- Notes: Both syllabi, MATH 13 and MATH 14, are PreTeXt articles in their own
+       repositories, built and published exactly like the books; Camino's Syllabus and
+       Syllabus PDF buttons point to them. The same section from the same file, as the
+       website and as page 5 of the PDF. (These pictures were built from the repository's
+       source for the slide.) -->
+  <slide>
+    <title>The syllabus is written in PreTeXt too</title>
+    <sidebyside widths="55% 41%" valign="top">
+      <stack>
+        <p><alert>Website</alert></p>
+        <image source="images/syllabus-web-top.png">
+          <shortdescription>Section 3 of the MATH 13 syllabus website, with the grading table</shortdescription>
+          <description><p>The MATH 13 syllabus website, section 3, Summary of Course Components: a contents sidebar on the left, and Table 3.1 with the points for the three exams, the final exam, and the assignments, followed by the start of the exam topic lists.</p></description>
+        </image>
+      </stack>
+      <stack>
+        <p><alert>PDF</alert></p>
+        <image source="images/syllabus-pdf-top.png">
+          <shortdescription>The same section 3 on page 5 of the syllabus PDF</shortdescription>
+          <description><p>Page 5 of the MATH 13 syllabus PDF: the same section 3 typeset by LaTeX, with Table 3.1 and the start of the exam topic lists as blue links.</p></description>
+        </image>
+      </stack>
+    </sidebyside>
+    <p>Both from one file, <c>source/grading.ptx</c>, on every push: the <url href="https://mahmadi-ops.github.io/MATH13-Syllabus-Fall2026/">website</url> and the <url href="https://mahmadi-ops.github.io/MATH13-Syllabus-Fall2026/math13-syllabus-fall2026.pdf">PDF</url>.</p>
+  </slide>
+
+  <!-- Notes: Why bother for a syllabus. A change mid-term is one edit, and the history
+       records it: on October 4, the binomial series came off the Exam #1 list. MATH 14's
+       syllabus is the same files, so next term starts from a copy. -->
+  <slide>
+    <title>Why the syllabus is PreTeXt too</title>
+    <ul>
+      <li><p><alert>One source, two outputs.</alert> Every push builds the website and the PDF from the same files, so they never disagree.</p></li>
+      <li><p><alert>Accessible.</alert> Real headings and table headers; alt text and a long description for every picture.</p></li>
+      <li><p><alert>Linkable.</alert> Every section and table has its own address, and <q>Table 5.2</q> stays right when things move.</p></li>
+      <li><p><alert>Linked to the books.</alert> Each exam's topics link to their sections in the skeletal notes and to the review set.</p></li>
+      <li><p><alert>Easy to change mid-term.</alert> One edit updates both, and the history keeps every change: Oct 4, <q>Exam #1 topics: drop the binomial series.</q></p></li>
+      <li><p><alert>Reusable.</alert> MATH 14's syllabus has the same files and sections; next term starts from a copy.</p></li>
+    </ul>
+  </slide>
+
+  <!-- ===== How it's coded: The syllabus (5 steps) ===== -->
+  <slide>
+    <title>An article, one file per section</title>
+    <p><alert>How it’s coded · The syllabus · step 1 of 5.</alert> The syllabus is a PreTeXt <c>&lt;article&gt;</c>: a title, then one file per section, organized like the course books.</p>
+    <p>From <c>MATH13-Syllabus-Fall2026/source/main.ptx</c></p>
+    <program language="xml" highlight-lines="7,13-15">
+<code>
+&lt;!-- MATH13-Syllabus-Fall2026/source/main.ptx --&gt;
+&lt;pretext xml:lang="en-US" xmlns:xi="http://www.w3.org/2001/XInclude"&gt;
+  &lt;docinfo&gt;
+    &lt;directories external="../assets"/&gt;
+    …
+  &lt;/docinfo&gt;
+  &lt;article xml:id="math13-syllabus"&gt;
+    &lt;title&gt;MATH 13&lt;/title&gt;
+    &lt;subtitle&gt;Fall Quarter 2026 &lt;ndash/&gt; Santa Clara University&lt;/subtitle&gt;
+
+    &lt;xi:include href="./frontmatter.ptx" /&gt;
+
+    &lt;xi:include href="./course-info.ptx" /&gt;
+    &lt;xi:include href="./materials.ptx" /&gt;
+    &lt;xi:include href="./grading.ptx" /&gt;
+    &lt;xi:include href="./assignments.ptx" /&gt;
+    &lt;xi:include href="./schedule.ptx" /&gt;
+    …
+…
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Tables and cross-references</title>
+    <p><alert>How it’s coded · The syllabus · step 2 of 5.</alert> A table gets an <c>xml:id</c>, a title, and a header row. <c>&lt;xref&gt;</c> prints “Table 5.2” or a section’s title, and keeps the number right when sections move.</p>
+    <p>From <c>MATH13-Syllabus-Fall2026/source/grading.ptx</c></p>
+    <program language="xml" highlight-lines="4,8,19">
+<code>
+…
+  &lt;title&gt;Summary of Course Components&lt;/title&gt;
+  &lt;introduction&gt;
+    &lt;table xml:id="table-components"&gt;
+      &lt;title&gt;Course components and the points each one is worth&lt;/title&gt;
+      &lt;tabular halign="left" top="minor" bottom="minor"&gt;
+        &lt;col width="28%"/&gt; …
+        &lt;row header="yes" bottom="minor"&gt;
+          &lt;cell&gt;Course component&lt;/cell&gt;
+          &lt;cell&gt;Maximum points&lt;/cell&gt;
+          &lt;cell&gt;Date&lt;/cell&gt;
+        &lt;/row&gt;
+        &lt;row&gt;
+          &lt;cell&gt;Exam #1&lt;/cell&gt; &lt;cell&gt;20&lt;/cell&gt; &lt;cell&gt;Friday, October 9 (week 3)&lt;/cell&gt;
+        &lt;/row&gt;
+        …
+        &lt;row bottom="minor"&gt;
+          &lt;cell&gt;Assignments&lt;/cell&gt; &lt;cell&gt;10&lt;/cell&gt;
+          &lt;cell&gt;See &lt;xref ref="assignments" text="title"/&gt;&lt;/cell&gt;
+…
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Links into the books</title>
+    <p><alert>How it’s coded · The syllabus · step 3 of 5.</alert> Each exam’s topic list links to its review set and to every section in the skeletal notes, so the syllabus doubles as a study map.</p>
+    <p>From <c>MATH13-Syllabus-Fall2026/source/grading.ptx</c></p>
+    <program language="xml" highlight-lines="5,12,16">
+<code>
+&lt;!-- source/grading.ptx; "…" stands for https://mahmadi-ops.github.io,
+     and long lines are wrapped for the slide --&gt;
+&lt;p&gt;
+  &lt;em&gt;Exam #1&lt;/em&gt; (Friday, October 9) &lt;mdash/&gt; see
+  &lt;url href="…/M13-Skeletal-Notes/worksheet-review-problems-1.html"&gt;Review
+    Problems #1&lt;/url&gt;:
+&lt;/p&gt;
+
+&lt;p&gt;
+  &lt;ul&gt;
+    &lt;li&gt;
+      &lt;p&gt;&lt;url href="…/M13-Skeletal-Notes/skel-chapter-hyperbolic-functions.html"&gt;
+        Hyperbolic Functions&lt;/url&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;&lt;url href="…/M13-Skeletal-Notes/sec-skel-series-infinite.html"&gt;
+        Infinite Series&lt;/url&gt;&lt;/p&gt;
+    &lt;/li&gt;
+…
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Pictures with descriptions</title>
+    <p><alert>How it’s coded · The syllabus · step 4 of 5.</alert> Every picture has alt text and a longer description for screen readers; the PDF gets the same figure and caption.</p>
+    <p>From <c>MATH13-Syllabus-Fall2026/source/assignments.ptx</c></p>
+    <program language="xml" highlight-lines="6-8,15">
+<code>
+&lt;!-- source/assignments.ptx --&gt;
+&lt;figure xml:id="fig-gradescope"&gt;
+  &lt;caption&gt;Write your solutions by hand, scan them into a single PDF, then
+  assign pages to questions in Gradescope.&lt;/caption&gt;
+  &lt;image source="gradescope-submission.png" width="88%"&gt;
+    &lt;shortdescription&gt;Handwritten pages are scanned with a phone into a
+      single PDF, then submitted&lt;/shortdescription&gt;
+    &lt;description&gt;
+      &lt;p&gt;
+        A three-step cartoon. On the left, a stack of handwritten pages
+        covered in sketches of axes, surfaces, and integrals. An arrow
+        points to the middle, where a phone scans one of the pages, a bright
+        line sweeping down the screen. …
+      &lt;/p&gt;
+    &lt;/description&gt;
+  &lt;/image&gt;
+&lt;/figure&gt;
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Two outputs, one push</title>
+    <p><alert>How it’s coded · The syllabus · step 5 of 5.</alert> Two targets: on every push the workflow builds the website and the PDF and publishes them together, the PDF beside the site.</p>
+    <p>From <c>MATH13-Syllabus-Fall2026/project.ptx · deploy.yml</c></p>
+    <program highlight-lines="4-5,12,14,19">
+<code>
+…
+&lt;project ptx-version="2"&gt;
+  &lt;targets&gt;
+    &lt;target name="web" format="html" /&gt;
+    &lt;target name="print" format="pdf"
+            output-filename="math13-syllabus-fall2026.pdf" /&gt;
+  &lt;/targets&gt;
+&lt;/project&gt;
+
+# .github/workflows/deploy.yml, the build steps
+      - name: Build HTML
+        run: pretext build web
+      - name: Build PDF
+        run: pretext build print
+      - name: Assemble site (HTML at root, PDF alongside)
+        run: |
+          mkdir -p site
+          cp -r output/web/. site/
+          cp output/print/math13-syllabus-fall2026.pdf site/
+</code>
+</program>
+  </slide>
+
+  <!-- Notes: My link desk: one private page with every link for both courses, kept as a
+       PDF too; this copy is from September 21. Click a row on the right to highlight it on
+       the page. Most used: the Posting Desk first. Student-facing sites: what Camino links
+       to, plus the page-name patterns. My tools: each course's Posting Desk and the
+       instructor editions. Repositories and rulebooks: the CLAUDE.md files that tell Claude
+       how to post. The AI tutor: sheet, endpoint, report command. Administration: my
+       artifacts, Claude Code, the GitHub App list, the build page of every repository. -->
+  <slide>
+    <title>One page with every link I use</title>
+    <interactive xml:id="int-slide-link-desk" iframe="link-desk.html" aspect="11:5">
+      <description><p>The two pages of the link desk in a scrolling frame, and six zones beside it: most used, student-facing sites, my tools, repositories and rulebooks, the AI tutor, and posting and administration. Clicking a zone highlights it on the page. Below them: how posting works, in one line.</p></description>
+    </interactive>
+  </slide>
+
+  <!-- Notes: A replay of my two Posting Desks with their real rows and Activity log as of
+       October 9; nothing is posted from this slide. Click Post (or Release solutions): it
+       asks first, then queues a request, and the chip says Sent to Claude. Nothing in the
+       books changes until I say "check the posting desk" (MATH 13) or "check the MATH 14
+       posting desk" in a Claude chat. Claude reads the desk, makes the change in the right
+       repository, checks it with xmllint and a full build, commits to main, and updates the
+       desk. GitHub Actions rebuilds the site, live a few minutes later. Tabs switch desks;
+       Play it runs the next action by itself; Replay again resets. -->
+  <slide>
+    <title>Click on the desk, then tell Claude</title>
+    <interactive xml:id="int-slide-posting-desk" iframe="posting-desk-replay.html" aspect="11:5">
+      <description><p>A replay of the MATH 14 and MATH 13 Posting Desks beside a Claude chat. Clicking Post or Release solutions asks for confirmation and queues a request; the chat button then plays Claude's steps: read the desk, make the one-line change, check it, commit to main, update the desk, and rebuild the site.</p></description>
+    </interactive>
+    <p>A replay of the two desks as of Oct 9; nothing is posted from this slide.</p>
+  </slide>
+
+  <!-- Notes: How I use the desks week to week, with real dates from the MATH 14 Activity
+       log. [Adjust to your own rhythm.] The two desks work the same way; what differs is
+       the phrase I say, the repositories, and how solutions are hidden. -->
+  <slide>
+    <title>Two desks, one routine</title>
+    <sidebyside widths="38% 58%" valign="top">
+      <stack>
+        <p><alert>A week on the MATH 14 desk</alert></p>
+        <ol>
+          <li><p><alert>The skeletal section, for class:</alert> §2.1 · Oct 7</p></li>
+          <li><p><alert>The completed notes for it:</alert> §2.1 · Oct 8</p></li>
+          <li><p><alert>The next assignment, with its due date:</alert> Assignment 4 · posted Oct 9, due Fri Oct 16</p></li>
+          <li><p><alert>Solutions once the due date passes:</alert> Assignment 3 · due Wed Oct 7, released Oct 8</p></li>
+        </ol>
+      </stack>
+      <tabular halign="left">
+        <row header="yes"><cell/><cell>MATH 13</cell><cell>MATH 14</cell></row>
+        <row><cell>In the chat</cell><cell><q>check the posting desk</q></cell><cell><q>check the MATH 14 posting desk</q></cell></row>
+        <row><cell>Completed notes</cell><cell><c>M13-Mehdi</c></cell><cell><c>MATH-14</c></cell></row>
+        <row><cell>Skeletal notes, assignments</cell><cell><c>M13-Skeletal-Notes</c></cell><cell><c>MATH14-Skeletal</c></cell></row>
+        <row><cell>Solutions</cell><cell>Public; Lock hides them in SOLUTION-LOCKED comments with the due date</cell><cell>Hidden; Release adds <c>hwN-solutions</c> to one line</cell></row>
+        <row><cell>Rulebook</cell><cell><c>M13-Mehdi/CLAUDE.md</c></cell><cell>Each repository's <c>CLAUDE.md</c>, pointing to MATH 13's</cell></row>
+      </tabular>
+    </sidebyside>
+    <p><alert>Both desks:</alert> every click asks first; every action can be undone; validated before every push; never marked posted before the push; only what the books contain; the desk is the only posting record.</p>
+  </slide>
+
+  <!-- ===== How it's coded: The Posting Desk (6 steps) ===== -->
+  <slide>
+    <title>A page that carries its own state</title>
+    <p><alert>How it’s coded · The Posting Desk · step 1 of 6.</alert> Each desk is one HTML page. Its state is a JSON block inside the page: every section, assignment, and solution set with its dates, the request queue, and the Activity log. The page draws itself from that block.</p>
+    <p>From <em>MATH 14 Posting Desk · a private claude.ai page</em></p>
+    <program language="javascript" highlight-lines="4,6,10,15,18">
+<code>
+…
+  {"name": "Ch. 2 — Multiple Integrals", "topics": [
+    {"id": "section-double-integrals-rectangles", …
+     "posted": "2026-10-08", "live": true, "instant": false},
+    {"id": "section-double-integrals-general-regions", …
+     "posted": null, "live": false, "instant": false},
+    … ]},
+ "assignments": [
+  {"n": 4, "title": "Assignment 4", "due": "2026-10-16", …
+   "posted": "2026-10-09", "solutions": "locked", "released": null, …},
+  … ],
+ "requests": [
+  {"id": "req-1790193016520", "kind": "notes", "key": "sec-arc-length",
+   "payload": {"title": "Arc Length of a Curve", "repo": "MATH14-Skeletal"},
+   "status": "done", "result": "Posted to the skeletal site."},
+  … ],
+ "log": [
+  {"when": "2026-10-08", "text": "Assignment 3 solutions released."},
+  … ]
+…
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>A click queues a request</title>
+    <p><alert>How it’s coded · The Posting Desk · step 2 of 6.</alert> After the confirm, the click adds a request with status <c>"sent"</c> and republishes the page with the new state written into it. Nothing in the books has changed yet.</p>
+    <p>From <em>MATH 14 Posting Desk · the page’s script</em></p>
+    <program language="javascript" highlight-lines="4-7,16">
+<code>
+…
+function sendRequest(kind, key, payload, label, note){
+  var reqId = "req-" + Date.now();
+  state.requests.push({
+    id: reqId, kind: kind, key: key, payload: payload || {},
+    ts: new Date().toISOString(), status: "sent"
+  });
+  state.log.unshift({ when: today(), text: label,
+                      note: note || "sent to Claude" });
+  render();
+  save(reqId);
+}
+
+async function save(reqId){   // artifactNS = window.claude.use("artifact")
+  …
+  try { await artifactNS.publish(currentSource()); }
+  catch(e){ … }                // on failure the request is withdrawn
+}
+
+…
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>“Check the posting desk”</title>
+    <p><alert>How it’s coded · The Posting Desk · step 3 of 6.</alert> The rulebook says what to do with the queue: which repository each request acts on, permission to commit to <c>main</c> once the change is validated, never to invent content, and to mark the desk only after the push.</p>
+    <p>From <c>M13-Mehdi/CLAUDE.md</c></p>
+    <program highlight-lines="4-5,9,13,18-19">
+<code>
+…
+
+1. Read the artifact (Artifact tool, `action: "read"`). Its
+   `&lt;script id="state"&gt;` block holds JSON with `requests[]`; act on every
+   request whose `status` is `"sent"`. Requests carry a `payload.repo`
+   naming which repo they act on …
+2. **Standing authorization**: the instructor chose "publish live
+   immediately" for panel clicks, so commit panel-initiated changes
+   directly to `main` in both repos (still validate first).
+3. Never invent content: a request that needs material not in the repo
+   … is not posted — set its `status` to `"needs-input"` …
+4. Afterwards update the panel **on top of its current version** …
+   set each handled request's `status` to `"done"` (with a short `result`),
+   set the item's `posted`/`released` date (`YYYY-MM-DD`), prepend a `log`
+   entry, and republish to the same URL …
+5. If nothing is pending, do nothing — no commits, no messages.
+…
+3. Never mark a solution released, or notes posted, on the desk before
+   the corresponding push has actually been made.
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Posting is one line</title>
+    <p><alert>How it’s coded · The Posting Desk · step 4 of 6.</alert> A section waits in the source as a commented-out include. <c>desk_action.py</c> removes the wrapper to post and puts it back to unpost; when a change would break a cross-reference it cannot fix, it stops and restores every file.</p>
+    <p>From <c>M13-Mehdi/source/ch-series-sequences.ptx</c></p>
+    <program language="xml" highlight-lines="8,13">
+<code>
+&lt;!-- M13-Mehdi/source/ch-series-sequences.ptx --&gt;
+&lt;chapter xml:id="chapter-series-sequences" …&gt;
+  &lt;title&gt;Series and Sequences&lt;/title&gt;
+
+  &lt;xi:include href="ch-10-2.ptx" /&gt;
+  &lt;xi:include href="ch-10-8.ptx" /&gt;
+  &lt;xi:include href="Taylor.ptx" /&gt;
+  &lt;!-- UNPOSTED &lt;xi:include href="ch-10-10.ptx" /&gt; UNPOSTED --&gt;
+&lt;/chapter&gt;
+
+&lt;!-- $ python3 scripts/desk_action.py post-notes chapter-binomial-series --&gt;
+
+  &lt;xi:include href="ch-10-10.ptx" /&gt;
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Two ways to release solutions</title>
+    <p><alert>How it’s coded · The Posting Desk · step 5 of 6.</alert> MATH 14 hides a solution unless its component is on the version line, so a release adds one name. MATH 13 shows a solution unless it sits inside SOLUTION-LOCKED comments, so a release deletes the markers.</p>
+    <p>From <em>MATH14-Skeletal · M13-Skeletal-Notes</em></p>
+    <program language="xml" highlight-lines="4,9,14">
+<code>
+&lt;!-- MATH 14 · MATH14-Skeletal/publication/publication.ptx and
+     publication-print.ptx: a solution shows only if its component
+     is on this line, so a release adds hw4-solutions --&gt;
+&lt;version include="hw1-solutions hw2-solutions hw3-solutions review1-solutions"/&gt;
+
+&lt;!-- MATH 13 · M13-Skeletal-Notes/source/
+     assignment-4-space-vectors-dot-product.ptx: a solution shows
+     unless it sits in a comment, so a release deletes the markers --&gt;
+&lt;!-- SOLUTION-LOCKED assignment="4" due="2026-10-16"
+&lt;solution&gt;
+&lt;p&gt;
+…
+&lt;/solution&gt;
+END SOLUTION-LOCKED --&gt;
+</code>
+</program>
+  </slide>
+
+  <slide>
+    <title>Safe clicks can skip the chat</title>
+    <p><alert>How it’s coded · The Posting Desk · step 6 of 6.</alert> An item marked <c>instant</c> commits a small request file through the GitHub connection instead, and this workflow applies it with the same script. Today every item goes through Claude.</p>
     <p>From <c>M13-Mehdi/.github/workflows/desk-requests.yml</c></p>
     <program highlight-lines="3-4,10">
 <code>
@@ -88,54 +517,6 @@ concurrency:
 </program>
   </slide>
 
-  <slide>
-    <title>Lock a solution until its due date</title>
-    <p><alert>How it’s coded · Build and publish · step 4 of 5.</alert> A locked solution waits in a comment that records its due date; releasing it deletes the two marker lines.</p>
-    <p>From <c>M13-Mehdi/CLAUDE.md</c></p>
-    <program language="xml">
-<code>
-&lt;!-- the SOLUTION-LOCKED convention (CLAUDE.md) --&gt;
-&lt;exercise xml:id="a3-p2"&gt;
-  &lt;statement&gt;
-    &lt;p&gt; ... the question, always visible ... &lt;/p&gt;
-  &lt;/statement&gt;
-&lt;!-- SOLUTION-LOCKED assignment="3" due="2026-10-09"
-  &lt;solution&gt;
-    &lt;p&gt; ... &lt;/p&gt;
-  &lt;/solution&gt;
-END SOLUTION-LOCKED --&gt;
-&lt;/exercise&gt;
-</code>
-</program>
-  </slide>
-
-  <slide>
-    <title>Rules for the assistant</title>
-    <p><alert>How it’s coded · Build and publish · step 5 of 5.</alert> Each repository’s CLAUDE.md says how to post, lock, and release, and how to check the work before pushing.</p>
-    <p>From <c>M13-Mehdi/CLAUDE.md</c></p>
-    <program highlight-lines="2,11,14">
-<code>
-&lt;!-- CLAUDE.md, the rules the coding assistant follows --&gt;
-3. Never invent content: a request that needs material not in the repo
-   (e.g. an assignment with no problem set in `source/`) is not posted —
-   set its `status` to `"needs-input"` and a one-line `result` saying what
-   to provide (the page shows it to the instructor).
-…
-## Validating a change
-
-Before any push:
-1. Well-formedness of every touched file:
-   `xmllint --noout source/&lt;file&gt;.ptx` (locked blocks are comments, so a
-   malformed marker shows up here).
-2. If the PreTeXt CLI is available (`pip install -r requirements.txt`),
-   run `pretext build web` and confirm it succeeds; then confirm the target
-   page exists in `output/web/` to get its exact filename. If the CLI
-   can't be installed in the session, say so and derive the filename from
-   the section's `xml:id` instead.
-&lt;!-- .claude/skills/: post-notes, post-assignment, release-solutions --&gt;
-</code>
-</program>
-  </slide>
 
   <!-- Notes: MATH 53 Section 9.3, Epidemic Dynamics: susceptible, infected, recovered,
        deceased. These cells run live on the SageMathCell server; cells on one page share a
