@@ -1,0 +1,169 @@
+/* ==== Colloquium talk: the look of the live deck ======================= */
+/* Loaded after the reveal.js "simple" theme (publication.ptx: custom-css). */
+/* Warm paper ground, wine headings, olive labels, one serif for titles.   */
+
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;600&family=Source+Serif+4:ital,wght@0,400..700;1,400..700&display=swap');
+
+:root {
+  --paper: #FAF7F2;
+  --paper-2: #F2EDE3;
+  --card: #FFFDF9;
+  --line: #E4DBCD;
+  --ink: #231C1F;
+  --body: #4A4246;
+  --muted: #6B6266;
+  --wine: #5E011C;
+  --wine-soft: #F4E6E8;
+  --olive: #4A5D23;
+
+  --r-background-color: var(--paper);
+  --r-main-font: "IBM Plex Sans", Arial, sans-serif;
+  /* scales with the screen, so a slide looks the same on a laptop and a projector */
+  --r-main-font-size: clamp(18px, 1.8vw, 40px);
+  --r-main-color: var(--ink);
+  --r-heading-font: "Source Serif 4", Georgia, serif;
+  --r-heading-color: var(--wine);
+  --r-heading-text-transform: none;
+  --r-heading-font-weight: 600;
+  --r-heading-letter-spacing: normal;
+  --r-heading-line-height: 1.15;
+  --r-heading1-size: 2.3em;
+  --r-heading2-size: 1.7em;
+  --r-heading3-size: 1.45em;
+  --r-code-font: "JetBrains Mono", "Courier New", monospace;
+  --r-link-color: var(--wine);
+  --r-link-color-hover: var(--olive);
+  --r-selection-background-color: var(--wine-soft);
+}
+
+.reveal { font-family: var(--r-main-font); color: var(--ink); }
+.reveal .slides { text-align: left; }
+.reveal .slides section { line-height: 1.38; }
+.reveal h1, .reveal h2, .reveal h3 { font-family: var(--r-heading-font); color: var(--wine); text-transform: none; text-wrap: balance; }
+.reveal .slides section > h3 { margin: 0 0 0.45em; }
+.reveal p { margin: 0 0 0.55em; }
+.reveal a { color: var(--wine); text-decoration: underline; text-underline-offset: 0.15em; }
+
+/* title page and part dividers */
+.reveal .slides section:has(> h1) { text-align: center; }
+.reveal .slides section:has(> h1) h1 { font-size: 2.6em; }
+.reveal .slides section:has(> h1) h2 { font-style: italic; font-weight: 400; color: var(--body); font-size: 1.35em; }
+.reveal .slides section:has(> h1) th { font-size: 1em; color: var(--ink); }
+.reveal .slides section:has(> h1) td { font-size: 0.8em; color: var(--body); }
+.reveal .slides section:has(> h1) h3 { color: var(--olive); font-family: var(--r-main-font); font-size: 0.8em; letter-spacing: 0.12em; text-transform: uppercase; }
+.reveal .slides section:has(> h1) table, .reveal .slides section:has(> h1) th, .reveal .slides section:has(> h1) td { border: none !important; margin: 0.4em auto; text-align: center; }
+/* a part divider: PreTeXt writes a slide holding only the section title */
+.reveal .slides section:has(> h2:only-child) { background: var(--wine); box-shadow: 0 0 0 100vmax var(--wine); }
+.reveal .slides section > h2:only-child { color: #FAF1E8; font-size: 2.3em; margin-top: 34vh; text-align: center; }
+.reveal .slides section:has(> h1) { padding-top: 14vh; }
+
+/* emphasis */
+.reveal .alert, .reveal em.alert { color: var(--wine); font-style: normal; font-weight: 600; }
+.reveal dfn.terminology, .reveal .terminology { color: var(--olive); font-style: normal; font-weight: 600; }
+.reveal code.code-inline, .reveal .code-inline { font-family: var(--r-code-font); font-size: 0.76em; color: var(--wine); background: var(--wine-soft); padding: 0.06em 0.3em; border-radius: 4px; border: none !important; margin: 0 !important; display: inline !important; }
+.reveal kbd { font-family: var(--r-code-font); font-size: 0.8em; border: 1.5px solid var(--line); border-bottom-width: 3px; border-radius: 5px; padding: 0.05em 0.35em; background: var(--card); }
+
+/* lists */
+.reveal ul, .reveal ol { margin-left: 1.1em; }
+.reveal li { margin-bottom: 0.3em; }
+.reveal li::marker { color: var(--wine); font-weight: 600; }
+.reveal dl { margin: 0.2em 0 0.6em; }
+.reveal dl dt { color: var(--wine); font-weight: 600; margin-top: 0.35em; }
+.reveal dl dd { margin: 0 0 0.25em 0; color: var(--body); }
+.reveal dl dd p { margin: 0; }
+
+/* code: listings fill the width, scroll inside the slide, highlight in wine */
+.reveal pre, .reveal pre.program {
+  width: 100%; margin: 0.25em 0 0.5em; box-shadow: none; border: 1px solid var(--line); border-radius: 10px;
+  line-height: 1.45; background: #FFFFFF;
+}
+.reveal .program { font-size: calc(var(--r-main-font-size) * 0.66); max-height: 60vh; overflow: auto; }
+.reveal pre code, .reveal .program code { max-height: none; padding: 0.7em 1em; font-family: var(--r-code-font); line-height: 1.45; }
+.reveal .code-box { margin-bottom: 0.4em; }
+/* the project tree in the appendix is a plain pre */
+.reveal pre:not(.program) { font-family: var(--r-code-font); font-size: 0.7em; padding: 0.7em 1em; white-space: pre; }
+.reveal .line-highlight { background: linear-gradient(to right, rgba(94, 1, 28, 0.13) 75%, rgba(94, 1, 28, 0)); }
+.reveal .line-highlight::before, .reveal .line-highlight::after { display: none; }
+
+/* tables: stats and the markup cheat sheets */
+.reveal table { border-collapse: collapse; margin: 0.4em 0 0.6em; width: 100%; }
+.reveal table td, .reveal table th { border-bottom: 1px solid var(--line); padding: 0.28em 0.6em; vertical-align: top; font-size: 0.86em; }
+.reveal table th { color: var(--olive); text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.65em; border-bottom: 2px solid var(--ink); }
+.reveal table td .code-inline { white-space: nowrap; }
+/* a stats table: three rows, the first holds the big numbers */
+.reveal table:not(:has(th)) tr:first-child td { font-family: var(--r-heading-font); font-size: 2.4em; font-weight: 600; color: var(--wine); border-bottom: none; padding-bottom: 0; }
+.reveal table:not(:has(th)) tr:nth-child(2) td { font-weight: 600; border-bottom: none; }
+.reveal table:not(:has(th)) tr:nth-child(3) td { color: var(--muted); font-size: 0.7em; }
+
+/* figures, media, interactives */
+.reveal img { max-height: 64vh; object-fit: contain; }
+.reveal .sidebyside figure img { height: 34vh; object-fit: cover; }
+.reveal figure { margin: 0; }
+.reveal figcaption { font-size: 0.62em; color: var(--muted); }
+.reveal .sidebyside { margin-bottom: 0.5em; }
+.reveal .sidebyside > div + div { padding-left: 1.4em; }
+.reveal .sidebyside p { font-size: 0.92em; }
+.reveal iframe { border: 1px solid var(--line); border-radius: 10px; background: #FFFFFF; max-height: 68vh; }
+.reveal .interactive-iframe-container__opener { display: none; }
+.reveal details.image-description { font-size: 0.55em; color: var(--muted); margin-top: 0.2em; }
+.reveal video { border-radius: 10px; }
+
+/* the exercise rendered on a slide */
+.reveal article.exercise-like, .reveal .exercise-like { background: #EEF5FC; border: 1px solid #2B2B2B; padding: 0.6em 0.9em; font-size: 0.9em; }
+
+/* responsive interactives: inside a side-by-side panel, fill the panel */
+.reveal .sidebyside .interactive-iframe-container iframe { max-width: 100% !important; }
+.reveal .interactive-iframe-container iframe { margin: 0 auto; }
+
+/* a 2 x 2 group of screenshots must fit one slide */
+.reveal .sbsgroup img { max-height: 31vh; }
+
+/* GeoGebra keeps the book's fixed-size frame (its applet does not resize); enlarge it on big screens */
+.reveal iframe#int-slide-ggb-exp { margin: 0 auto; }
+@media (min-width: 1500px) { .reveal iframe#int-slide-ggb-exp { zoom: 1.45; } }
+@media (min-width: 1900px) { .reveal iframe#int-slide-ggb-exp { zoom: 1.7; } }
+
+/* Prism's line-highlight plugin measures lines while a slide is hidden, which fails in a
+   reveal.js deck; place each highlight from its data-start attribute instead. */
+.reveal .line-highlight { margin-top: 0 !important; left: 0 !important; right: 0 !important; width: auto !important; line-height: 1.45em !important; }
+.reveal pre[data-line] code { line-height: 1.45em; }
+.reveal .line-highlight[data-start="1"] { top: calc(0.7em + 0 * 1.45em) !important; }
+.reveal .line-highlight[data-start="2"] { top: calc(0.7em + 1 * 1.45em) !important; }
+.reveal .line-highlight[data-start="3"] { top: calc(0.7em + 2 * 1.45em) !important; }
+.reveal .line-highlight[data-start="4"] { top: calc(0.7em + 3 * 1.45em) !important; }
+.reveal .line-highlight[data-start="5"] { top: calc(0.7em + 4 * 1.45em) !important; }
+.reveal .line-highlight[data-start="6"] { top: calc(0.7em + 5 * 1.45em) !important; }
+.reveal .line-highlight[data-start="7"] { top: calc(0.7em + 6 * 1.45em) !important; }
+.reveal .line-highlight[data-start="8"] { top: calc(0.7em + 7 * 1.45em) !important; }
+.reveal .line-highlight[data-start="9"] { top: calc(0.7em + 8 * 1.45em) !important; }
+.reveal .line-highlight[data-start="10"] { top: calc(0.7em + 9 * 1.45em) !important; }
+.reveal .line-highlight[data-start="11"] { top: calc(0.7em + 10 * 1.45em) !important; }
+.reveal .line-highlight[data-start="12"] { top: calc(0.7em + 11 * 1.45em) !important; }
+.reveal .line-highlight[data-start="13"] { top: calc(0.7em + 12 * 1.45em) !important; }
+.reveal .line-highlight[data-start="14"] { top: calc(0.7em + 13 * 1.45em) !important; }
+.reveal .line-highlight[data-start="15"] { top: calc(0.7em + 14 * 1.45em) !important; }
+.reveal .line-highlight[data-start="16"] { top: calc(0.7em + 15 * 1.45em) !important; }
+.reveal .line-highlight[data-start="17"] { top: calc(0.7em + 16 * 1.45em) !important; }
+.reveal .line-highlight[data-start="18"] { top: calc(0.7em + 17 * 1.45em) !important; }
+.reveal .line-highlight[data-start="19"] { top: calc(0.7em + 18 * 1.45em) !important; }
+.reveal .line-highlight[data-start="20"] { top: calc(0.7em + 19 * 1.45em) !important; }
+.reveal .line-highlight[data-start="21"] { top: calc(0.7em + 20 * 1.45em) !important; }
+.reveal .line-highlight[data-start="22"] { top: calc(0.7em + 21 * 1.45em) !important; }
+.reveal .line-highlight[data-start="23"] { top: calc(0.7em + 22 * 1.45em) !important; }
+.reveal .line-highlight[data-start="24"] { top: calc(0.7em + 23 * 1.45em) !important; }
+.reveal .line-highlight[data-start="25"] { top: calc(0.7em + 24 * 1.45em) !important; }
+.reveal .line-highlight[data-start="26"] { top: calc(0.7em + 25 * 1.45em) !important; }
+.reveal .line-highlight[data-start="27"] { top: calc(0.7em + 26 * 1.45em) !important; }
+.reveal .line-highlight[data-start="28"] { top: calc(0.7em + 27 * 1.45em) !important; }
+.reveal .line-highlight[data-start="29"] { top: calc(0.7em + 28 * 1.45em) !important; }
+.reveal .line-highlight[data-start="30"] { top: calc(0.7em + 29 * 1.45em) !important; }
+.reveal .line-highlight[data-start="31"] { top: calc(0.7em + 30 * 1.45em) !important; }
+.reveal .line-highlight[data-start="32"] { top: calc(0.7em + 31 * 1.45em) !important; }
+.reveal .line-highlight[data-start="33"] { top: calc(0.7em + 32 * 1.45em) !important; }
+.reveal .line-highlight[data-start="34"] { top: calc(0.7em + 33 * 1.45em) !important; }
+.reveal .line-highlight[data-start="35"] { top: calc(0.7em + 34 * 1.45em) !important; }
+.reveal .line-highlight[data-start="36"] { top: calc(0.7em + 35 * 1.45em) !important; }
+.reveal .line-highlight[data-start="37"] { top: calc(0.7em + 36 * 1.45em) !important; }
+.reveal .line-highlight[data-start="38"] { top: calc(0.7em + 37 * 1.45em) !important; }
+.reveal .line-highlight[data-start="39"] { top: calc(0.7em + 38 * 1.45em) !important; }
+.reveal .line-highlight[data-start="40"] { top: calc(0.7em + 39 * 1.45em) !important; }

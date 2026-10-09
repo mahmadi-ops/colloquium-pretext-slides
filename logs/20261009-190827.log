@@ -1,0 +1,30 @@
+INFO    : Building target talk
+INFO    : XSL conversion of /workspaces/colloquium-pretext-slides/source/talk.ptx by /root/.ptx/2.44.0/core/xsl/utilities/pretext-enhanced-source.xsl
+INFO    : successful application of /root/.ptx/2.44.0/core/xsl/utilities/pretext-enhanced-source.xsl
+WARNING : Schema validation could not be completed: no validator was available (jing is not installed and lxml could not compile the schema). Continuing with build.
+INFO    : Generating any needed assets.
+INFO    : Finished generating assets.
+
+INFO    : Preparing to build into /workspaces/colloquium-pretext-slides/output/talk.
+INFO    : discovering source file's directory name: /workspaces/colloquium-pretext-slides/source
+INFO    : verifying and expanding input directory: /workspaces/colloquium-pretext-slides/source/../generated-assets
+INFO    : input directory expanded to absolute path: /workspaces/colloquium-pretext-slides/generated-assets
+INFO    : verifying and expanding input directory: /workspaces/colloquium-pretext-slides/source/../assets
+INFO    : input directory expanded to absolute path: /workspaces/colloquium-pretext-slides/assets
+INFO    : converting /workspaces/colloquium-pretext-slides/source/talk.ptx to HTML in /ptx-1wn19fyl
+INFO    : XSL conversion of /workspaces/colloquium-pretext-slides/source/talk.ptx by /root/.ptx/2.44.0/core/xsl/pretext-revealjs.xsl
+INFO    : messages from the log for XSL processing:
+INFO    : * ********************************************************************************
+INFO    : * Conversion to reveal.js presentations/slideshows is experimental
+INFO    : * Requests for additional specific constructions welcome
+INFO    : * Additional PreTeXt elements are subject to change
+INFO    : * PTX:INFO:   checking all deprecated elements.
+INFO    : successful application of /root/.ptx/2.44.0/core/xsl/pretext-revealjs.xsl
+INFO    : Removing temporary directory /ptx-1wn19fyl
+INFO    : 
+Finished build for target talk. The output is in /workspaces/colloquium-pretext-slides/output/talk.
+
+INFO    : 
+Success!  Built requested target(s) without errors.
+
+INFO    : 

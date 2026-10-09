@@ -5,6 +5,7 @@
             format="revealjs"
             source="talk.ptx"
             publication="publication.ptx"
-            output-dir="talk"/>
+            output-dir="talk"
+            deploy-dir="."/>
   </targets>
 </project>
