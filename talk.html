@@ -1,0 +1,2907 @@
+<!DOCTYPE html>
+<!--********************************************-->
+<!--*       Generated from PreTeXt source      *-->
+<!--*       on 2026-10-09T19:08:28Z       *-->
+<!--*   A recent stable commit (2022-07-01):   *-->
+<!--* 6c761d3dba23af92cba35001c852aac04ae99a5f *-->
+<!--*                                          *-->
+<!--*         https://pretextbook.org          *-->
+<!--*                                          *-->
+<!--********************************************-->
+<html xmlns:pi="http://pretextbook.org/2020/pretext/internal">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Write once, read everywhere</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+<script src="https://sagecell.sagemath.org/static/embedded_sagecell.js"></script><script>// Make *any* div with class 'sagecell-sage' an executable Sage cell
+// Their results will be linked, only within language type
+sagecell.makeSagecell({
+  "inputLocation": "div.sagecell-sage",
+  "linked": true,
+  "linkKey": "linked-sage",
+  "autoeval": false,
+  "languages": [
+    "sage"
+  ],
+  "evalButtonText": "Evaluate (Sage)"
+});
+</script><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/line-numbers/prism-line-numbers.min.js" integrity="sha512-dubtf8xMHSQlExGRQ5R7toxHLgSDZ0K7AunqPWHXmJQ8XyVIG19S1T95gBxlAeGOK02P4Da2RTnQz0Za0H0ebQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/line-highlight/prism-line-highlight.min.js" integrity="sha512-93uCmm0q+qO5Lb1huDqr7tywS8A2TFA+1/WHvyiWaK6/pvsFl6USnILagntBx8JnVbQH5s3n0vQZY6xNthNfKA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/themes/prism.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/line-numbers/prism-line-numbers.min.css" integrity="sha512-cbQXwDFK7lj2Fqfkuxbo5iD1dSbLlJGXGpfTDqbggqjHJeyzx88I3rfwjS38WJag/ihH7lzuGlGHpDBymLirZQ==" crossorigin="anonymous" referrerpolicy="no-referrer">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/line-highlight/prism-line-highlight.min.css" integrity="sha512-nXlJLUeqPMp1Q3+Bd8Qds8tXeRVQscMscwysJm821C++9w6WtsFbJjPenZ8cQVMXyqSAismveQJc0C1splFDCA==" crossorigin="anonymous" referrerpolicy="no-referrer">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.1.2/reset.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.1.2/reveal.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.1.2/theme/simple.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.1.2/reveal.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.1.2/plugin/math/math.js"></script><link href="_static/pretext/css/pretext-reveal.css" rel="stylesheet">
+<style></style>
+<script src="_static/pretext/js/dist/diagcess/diagcess.js"></script><link rel="stylesheet" type="text/css" href="external/talk.css">
+</head>
+<body>
+<div class="reveal ptx-content">
+<div id="latex-macros" class="hidden-content process-math" style="display:none"><span class="process-math">\(\newcommand{\R}{\mathbb{R}}
+\newcommand{\lt}{&lt;}
+\newcommand{\gt}{&gt;}
+\newcommand{\amp}{&amp;}
+\definecolor{fillinmathshade}{gray}{0.9}
+\newcommand{\fillinmath}[1]{\mathchoice{\colorbox{fillinmathshade}{$\displaystyle     \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\textstyle        \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptstyle      \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptscriptstyle\phantom{\,#1\,}$}}}
+\)</span></div>
+<div class="slides">
+<section><section><h1>Write once, read everywhere</h1>
+<h2>Interactive, accessible course notes with PreTeXt</h2>
+<table>
+<tr><th align="center" style="border-bottom: 0px;">Mehdi Ahmadi</th></tr>
+<tr><td align="center" style="border-bottom: 0px;">Mathematics and Computer Science, Santa Clara University</td></tr>
+<tr><td align="center"></td></tr>
+</table>
+<h3>Math &amp; CS Colloquium · Fall 2026</h3></section></section><section><h2>Why PreTeXt</h2></section><section><h3>Where course notes usually live</h3>
+<div align="left">
+<p><em class="alert">The PDF.</em> A fixed page. Zooming in means scrolling sideways, and a screen reader often meets the mathematics as a picture.</p>
+<p><em class="alert">The slides.</em> Made for the lecture, thin afterwards: no search, no cross-references, nothing to practice on.</p>
+<p><em class="alert">The platform.</em> Polished but closed. Students pay, and the instructor cannot fix a typo or add an example.</p>
+<p>PreTeXt starts from one structured source that becomes all of these, and does things none of them can.</p>
+</div></section><section><h3>Describe the mathematics; PreTeXt lays it out</h3>
+<div align="left">
+<p>A free, open-source authoring system. You mark up what each piece of text <em class="emphasis">is</em> (a definition, a theorem, an example, an exercise, a figure) and PreTeXt decides how it looks in each output.</p>
+<p><em class="alert">Authors write meaning. The software handles layout.</em></p>
+<div style="display:table;margin-left:1%;margin-right:1%;" class="sidebyside">
+<div style="display:table-cell;width:48.9795918367347%;vertical-align:top;">
+<p><dfn class="terminology">Web book.</dfn> HTML with MathJax: searchable, reflowing, interactive.</p>
+<p><dfn class="terminology">PDF.</dfn> Typeset through LaTeX for print and download.</p>
+<p><dfn class="terminology">Slides.</dfn> reveal.js decks in the same markup, like this one.</p>
+</div>
+<div style="display:table-cell;width:48.9795918367347%;vertical-align:top;">
+<p><dfn class="terminology">Braille and tactile.</dfn> Embosser-ready braille; tactile figures through PreFigure.</p>
+<p><dfn class="terminology">EPUB and notebooks.</dfn> E-readers and Jupyter, from the same files.</p>
+<p><dfn class="terminology">Editions.</dfn> Student and instructor versions by a switch.</p>
+</div>
+</div>
+<p>Started by Rob Beezer (University of Puget Sound); now a community project behind many open textbooks, such as <span class="booktitle">Active Calculus</span> and Judson’s <span class="booktitle">Abstract Algebra</span>.</p>
+</div></section><section><h3>Create a project</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · Setting up a project · step 1 of 4.</em> Install the command-line tool once; <code class="code-inline tex2jax_ignore">pretext new book</code> creates the folders and a starter book. <code class="code-inline tex2jax_ignore">build</code> turns the source into an output and <code class="code-inline tex2jax_ignore">view</code> serves the web version on your machine. In a GitHub Codespace all of this is already installed.</p>
+<p>From <em class="emphasis">Terminal</em></p>
+<div class="code-box"><pre class="program" data-line="6,9-10"><code class="language-none"># once: the command-line tool (or open a GitHub Codespace,
+# where .devcontainer already provides it)
+pip install pretext
+
+# a new book in its own folder
+pretext new book -d my-notes
+cd my-notes
+
+pretext build web       # the HTML book, in output/web
+pretext view            # preview it in a browser
+pretext build print     # the PDF, typeset through LaTeX
+</code></pre></div>
+</div></section><section><h3>Name the outputs</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · Setting up a project · step 2 of 4.</em> <code class="code-inline tex2jax_ignore">project.ptx</code> lists the targets. Each has a name and a format, and can carry its own publication file, XSL, or extra CSS and JavaScript. MATH 13 builds a web book, a Runestone version that withholds solutions, and a PDF.</p>
+<p>From <code class="code-inline tex2jax_ignore">M13-Mehdi/project.ptx</code></p>
+<div class="code-box"><pre class="program" data-line="3,9,11"><code class="language-xml">&lt;project ptx-version="2"&gt;
+  &lt;targets&gt;
+    &lt;target name="web" format="html"&gt;
+            &lt;stringparams html.css.extra="external/custom.css"
+        html.js.extra="external/custom.js" /&gt;
+    &lt;/target&gt;
+    &lt;!-- publication-runestone.ptx withholds hints/answers/solutions, since
+         these exercises are auto-graded on Runestone. --&gt;
+    &lt;target name="runestone" format="html" platform="runestone"
+            publication="publication-runestone.ptx" /&gt;
+    &lt;target name="print" format="pdf" /&gt;
+  &lt;/targets&gt;
+&lt;/project&gt;
+</code></pre></div>
+</div></section><section><h3>Choose what a build keeps</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · Setting up a project · step 3 of 4.</em> The publication file holds a build’s settings: where external files live, which <code class="code-inline tex2jax_ignore">component</code>s survive, how the book splits into pages, and how deep the table of contents goes.</p>
+<p>From <code class="code-inline tex2jax_ignore">M13-Mehdi/publication/publication.ptx</code></p>
+<div class="code-box"><pre class="program" data-line="4,11,19"><code class="language-xml">…
+    &lt;!-- directories are relative to the main source PreTeXt file --&gt;
+    &lt;source&gt;
+        &lt;directories external="../assets" generated="../generated-assets"/&gt;
+        &lt;!-- Selects which @component-marked elements survive assembly. The
+             Assignments and Review Problems chapter (copied from the skeletal
+             book) marks its interactive figures component="web" and their
+             one-paragraph paper stand-ins component="print"; without this
+             switch PreTeXt keeps both, so each page would show the figure and
+             the note saying the figure is only online. --&gt;
+        &lt;version include="web"/&gt;
+    &lt;/source&gt;
+
+    &lt;common&gt;
+
+
+
+
+  &lt;exercise-divisional solution="yes"/&gt; 
+…
+</code></pre></div>
+</div></section><section><h3>Slides from the same markup</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · Setting up a project · step 4 of 4.</em> A <code class="code-inline tex2jax_ignore">&lt;slideshow&gt;</code> of <code class="code-inline tex2jax_ignore">&lt;slide&gt;</code>s, built with <code class="code-inline tex2jax_ignore">format="revealjs"</code>. MATH-14-Slides builds a deck per topic and a combined deck from the same section files.</p>
+<p>From <em class="emphasis">MATH-14-Slides</em></p>
+<div class="code-box"><pre class="program" data-line="4,9,14"><code class="language-xml">…
+&lt;targets&gt;
+  &lt;target name="slides"
+          format="revealjs"
+          source="path-independence.ptx"
+          publication="publication.ptx"
+          output-dir="slides"/&gt;
+  &lt;target name="line-integrals"
+          format="revealjs"
+          source="line-integrals.ptx"
+          publication="publication.ptx"
+          output-dir="line-integrals"/&gt;
+  &lt;target name="main"
+          format="revealjs"
+          source="main.ptx"
+          publication="publication.ptx"
+          output-dir="main"/&gt;
+&lt;/targets&gt;
+&lt;!-- MATH-14-Slides/source/main.ptx --&gt;
+…
+</code></pre></div>
+</div></section><section><h3>One exercise: what the author writes</h3>
+<div align="left">
+<div class="code-box"><pre class="program" data-line="8,11-18"><code class="language-xml">&lt;exercise xml:id="ex-hw1o-motion-i"&gt;
+  &lt;title&gt;Describing a Motion, I&lt;/title&gt;
+  &lt;statement&gt;
+    &lt;p&gt;An object moves … it has coordinates
+      &lt;me&gt;x(t) = \frac{3t}{\sqrt{t^2+1}}, \qquad
+          y(t) = \frac{3}{\sqrt{t^2+1}}.&lt;/me&gt;
+      Describe the motion.&lt;/p&gt;
+    &lt;p&gt;… it is a &lt;var width="10"/&gt; …&lt;/p&gt;
+  &lt;/statement&gt;
+  &lt;setup&gt;
+    &lt;var case="insensitive"&gt;
+      &lt;condition string="circle"&gt;
+        &lt;feedback&gt;&lt;p&gt;Correct.&lt;/p&gt;&lt;/feedback&gt;
+      &lt;/condition&gt;
+      &lt;condition string="ellipse"&gt; … &lt;/condition&gt;
+    &lt;/var&gt;
+  &lt;/setup&gt;
+&lt;/exercise&gt;
+</code></pre></div>
+<p>From <code class="code-inline tex2jax_ignore">MATH-14/source/hw1-online.ptx</code>, trimmed.</p>
+</div></section><section><h3>One exercise: what readers get</h3>
+<div align="left">
+<div style="display:table;margin-left:0.5%;margin-right:0.5%;" class="sidebyside">
+<div style="display:table-cell;width:49.4949494949495%;vertical-align:top;">
+<div class="image-box"><img src="external/images/exercise-web.png" class="contained" alt="The exercise in the web book, with circle typed in the answer box, the Check me button, and the feedback Correct."></div>
+<p><em class="alert">Web book:</em> an answer box that checks.</p>
+</div>
+<div style="display:table-cell;width:49.4949494949495%;vertical-align:top;">
+<div class="image-box"><img src="external/images/exercise-print.png" class="contained" alt="The same exercise in the printed PDF, numbered 1.3, with a blank line for the answer."></div>
+<p><em class="alert">PDF:</em> a numbered problem with a blank.</p>
+</div>
+</div>
+<p><a class="external" href="https://mahmadi-ops.github.io/MATH14-Skeletal/sec-exercises-hw1-online.html" target="_blank">Assignment 1 in the book</a></p>
+</div></section><section><h3>The outline</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · Writing the content · step 1 of 5.</em> The outline lives in <code class="code-inline tex2jax_ignore">main.ptx</code>. Each section is its own file, pulled in with <code class="code-inline tex2jax_ignore">&lt;xi:include&gt;</code>, so reordering or hiding a section is a one-line change.</p>
+<p>From <code class="code-inline tex2jax_ignore">MATH-14/source/main.ptx</code></p>
+<div class="code-box"><pre class="program" data-line="3,7-11"><code class="language-xml">&lt;book xml:id="math14"&gt;
+  &lt;title&gt;MATH 14: Calculus and Analytic Geometry IV&lt;/title&gt;
+  &lt;xi:include href="frontmatter.ptx" /&gt;
+
+  &lt;chapter xml:id="ch-curves-and-fields"&gt;
+    &lt;title&gt;Line Integrals&lt;/title&gt;
+    &lt;xi:include href="section-parametrization.ptx" /&gt;
+    &lt;xi:include href="section-arc-length.ptx" /&gt;
+    &lt;xi:include href="section-line-integrals.ptx" /&gt;
+    &lt;xi:include href="section-vector-fields.ptx" /&gt;
+    &lt;xi:include href="conservative-fields.ptx" /&gt;
+  &lt;/chapter&gt;
+  …
+&lt;/book&gt;
+</code></pre></div>
+</div></section><section><h3>A section file</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · Writing the content · step 2 of 5.</em> Structure is markup: <code class="code-inline tex2jax_ignore">&lt;subsection&gt;</code>, <code class="code-inline tex2jax_ignore">&lt;definition&gt;</code>, <code class="code-inline tex2jax_ignore">&lt;example&gt;</code>, <code class="code-inline tex2jax_ignore">&lt;exercise&gt;</code>. Every <code class="code-inline tex2jax_ignore">xml:id</code> becomes a stable web address and something you can cite.</p>
+<p>From <code class="code-inline tex2jax_ignore">MATH-14/source/section-parametrization.ptx</code></p>
+<div class="code-box"><pre class="program" data-line="1,5,8"><code class="language-xml">&lt;section xml:id="sec-parametrization"&gt;
+  &lt;title&gt;Parametrization of Curves&lt;/title&gt;
+&lt;objectives&gt; … &lt;/objectives&gt;
+…
+  &lt;subsection xml:id="subsec-parametric-equations"&gt;
+    &lt;title&gt;Parametric Equations&lt;/title&gt;
+…
+    &lt;definition xml:id="def-parametric-equations"&gt;
+      &lt;title&gt;Parametric Equations&lt;/title&gt;
+      &lt;statement&gt; … &lt;/statement&gt;
+    &lt;/definition&gt;
+    …
+  &lt;/subsection&gt;
+  …
+&lt;/section&gt;
+</code></pre></div>
+</div></section><section><h3>Mathematics</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · Writing the content · step 3 of 5.</em> Mathematics is LaTeX: <code class="code-inline tex2jax_ignore">&lt;m&gt;</code> inline, <code class="code-inline tex2jax_ignore">&lt;md&gt;</code> displayed, with an <code class="code-inline tex2jax_ignore">&lt;mrow&gt;</code> per line for aligned rows. <code class="code-inline tex2jax_ignore">number="yes"</code> numbers a row; its <code class="code-inline tex2jax_ignore">xml:id</code> lets you cite it. (Older sources, these books included, write <code class="code-inline tex2jax_ignore">&lt;me&gt;</code> for one displayed line; PreTeXt deprecated it in May 2026.)</p>
+<p>From <code class="code-inline tex2jax_ignore">MATH-14/source/section-parametrization.ptx</code></p>
+<div class="code-box"><pre class="program" data-line="4,6-7"><code class="language-xml">&lt;p&gt;
+  Assume that we are interested in describing the path of an object in
+  space. To this aim, we can specify its location at each instant of
+  time; that is, we can write its coordinates in &lt;m&gt;\R^3&lt;/m&gt; as
+
+&lt;md&gt;
+  &lt;mrow xml:id="eq-space-parametric" number="yes"&gt;
+    x = f(t), \qquad y = g(t), \qquad z = h(t).
+  &lt;/mrow&gt;
+&lt;/md&gt;
+</code></pre></div>
+</div></section><section><h3>An exercise with an answer box</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · Writing the content · step 4 of 5.</em> An exercise has a <code class="code-inline tex2jax_ignore">&lt;statement&gt;</code> and optional <code class="code-inline tex2jax_ignore">&lt;hint&gt;</code>, <code class="code-inline tex2jax_ignore">&lt;answer&gt;</code>, <code class="code-inline tex2jax_ignore">&lt;solution&gt;</code>. A <code class="code-inline tex2jax_ignore">&lt;var/&gt;</code> is an answer box; <code class="code-inline tex2jax_ignore">&lt;setup&gt;</code> says what counts as right and what to say about a likely wrong answer.</p>
+<p>From <code class="code-inline tex2jax_ignore">MATH14-Skeletal/source/hw1-online.ptx</code></p>
+<div class="code-box"><pre class="program" data-line="4,14-15"><code class="language-xml">…
+    &lt;p&gt;
+      Identify the curve the object travels on: it
+      is a &lt;var width="10"/&gt; (type &lt;c&gt;line&lt;/c&gt;, &lt;c&gt;parabola&lt;/c&gt;, &lt;c&gt;circle&lt;/c&gt;,
+      &lt;c&gt;ellipse&lt;/c&gt;, or &lt;c&gt;hyperbola&lt;/c&gt;).
+    &lt;/p&gt;
+    &lt;p&gt;
+      Then graph the path and indicate the direction of motion. There is
+      no box for this part: include the graph in the solution you submit
+      to the grader.
+    &lt;/p&gt;
+  &lt;/statement&gt;
+  &lt;setup&gt;
+    &lt;var case="insensitive"&gt;
+      &lt;condition string="circle"&gt;
+        &lt;feedback&gt;
+          &lt;p&gt;Correct.&lt;/p&gt;
+        &lt;/feedback&gt;
+      &lt;/condition&gt;
+…
+</code></pre></div>
+</div></section><section><h3>Macros and TikZ, once</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · Writing the content · step 5 of 5.</em> Declare LaTeX macros and the TikZ preamble once in <code class="code-inline tex2jax_ignore">&lt;docinfo&gt;</code>. <code class="code-inline tex2jax_ignore">\R</code> then works on the web, in the PDF, and in every <code class="code-inline tex2jax_ignore">&lt;latex-image&gt;</code>; named colours keep the figures consistent.</p>
+<p>From <code class="code-inline tex2jax_ignore">M13-Mehdi/source/main.ptx</code></p>
+<div class="code-box"><pre class="program" data-line="4,8,17"><code class="language-xml">…
+     \newcommand{\deriv}[2]{\displaystyle \frac{d#1}{d#2}}
+     \newcommand{\real}{\Bbb R}
+     \newcommand{\R}{\mathbb{R}}
+   &lt;/macros&gt;
+
+ &lt;latex-image-preamble&gt;
+   \usepackage{tikz}
+   \usepackage{amsmath}
+   \usetikzlibrary{decorations.pathmorphing, arrows.meta, calc}
+   \usepackage{tikz-3dplot}
+   \usepackage{pgfplots}
+ \pgfplotsset{compat=1.17}
+   &lt;!-- Palette used by the figures in ch-12-5.ptx, matching the colors of
+        the animations they were drawn from.  msky is the light fill for
+        planes; the others are used for lines, vectors and points. --&gt;
+   \definecolor{mblue}{HTML}{2B6CB0}
+   \definecolor{msky}{HTML}{58C4DD}
+   \definecolor{mred}{HTML}{E04B4B}
+…
+</code></pre></div>
+</div></section><section><h2>MATH 13: Calculus and Analytic Geometry III</h2></section><section><h3>A web book first, a printed text second</h3>
+<div align="left">
+<p>Hyperbolic functions · series and Taylor approximation · vectors, lines, planes, and quadric surfaces · partial derivatives, gradients, extreme values, and Lagrange multipliers.</p>
+<div class="tabular-box natural-width"><table class="tabular">
+<tr>
+<td class="c m b1 r0 l0 t0 lines">169</td>
+<td class="c m b1 r0 l0 t0 lines">37</td>
+<td class="c m b1 r0 l0 t0 lines">58</td>
+<td class="c m b1 r0 l0 t0 lines">205</td>
+</tr>
+<tr>
+<td class="c m b0 r0 l0 t0 lines">accessible diagrams</td>
+<td class="c m b0 r0 l0 t0 lines">live figures</td>
+<td class="c m b0 r0 l0 t0 lines">short animations</td>
+<td class="c m b0 r0 l0 t0 lines">exercises</td>
+</tr>
+<tr>
+<td class="c m b0 r0 l0 t0 lines">PreFigure, every part described</td>
+<td class="c m b0 r0 l0 t0 lines">Plotly, Three.js, GeoGebra, Desmos</td>
+<td class="c m b0 r0 l0 t0 lines">Manim videos of constructions</td>
+<td class="c m b0 r0 l0 t0 lines">solutions after the due date</td>
+</tr>
+</table></div>
+<p>Counted from the book’s source repository, October 2026.</p>
+</div></section><section><h3>The mathematics is worked out where it lives</h3>
+<div align="left">
+<div style="display:table;margin-left:1%;margin-right:1%;" class="sidebyside">
+<div style="display:table-cell;width:23.469387755102%;vertical-align:top;">
+<figure class="figure figure-like" id="sec-math13-3-2-1"><div class="image-box"><img src="external/images/photo-arch.jpg" class="contained" alt="The Gateway Arch in St. Louis against a clear sky."></div>
+<figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">1<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Catenary: the Gateway Arch</figcaption>
+</figure>
+</div>
+<div style="display:table-cell;width:23.469387755102%;vertical-align:top;">
+<figure class="figure figure-like" id="sec-math13-3-2-2"><div class="image-box"><img src="external/images/photo-tower.jpg" class="contained" alt="Two cooling towers with hyperboloid profiles."></div>
+<figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Hyperboloid of one sheet: cooling towers</figcaption>
+</figure>
+</div>
+<div style="display:table-cell;width:23.469387755102%;vertical-align:top;">
+<figure class="figure figure-like" id="sec-math13-3-2-3"><div class="image-box"><img src="external/images/photo-vla.jpg" class="contained" alt="Radio dishes of the Very Large Array."></div>
+<figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Paraboloid: the Very Large Array</figcaption>
+</figure>
+</div>
+<div style="display:table-cell;width:23.469387755102%;vertical-align:top;">
+<figure class="figure figure-like" id="sec-math13-3-2-4"><div class="image-box"><img src="external/images/photo-saddledome.jpg" class="contained" alt="The saddle-shaped roof of the Saddledome in Calgary."></div>
+<figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Hyperbolic paraboloid: the Saddledome</figcaption>
+</figure>
+</div>
+</div>
+<p>Also in the book: whispering galleries, LORAN navigation, an interstellar comet’s orbit, the torque on a wrench, a dipole’s field, isobars around a low, and the small-angle pendulum.</p>
+</div></section><section><h3>A figure around the image</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · Photos and alt text · step 1 of 3.</em> A <code class="code-inline tex2jax_ignore">&lt;figure&gt;</code> gives the photo a number and a caption. <code class="code-inline tex2jax_ignore">&lt;image source&gt;</code> points at the file and sets its width; <code class="code-inline tex2jax_ignore">&lt;shortdescription&gt;</code> is the alt text a screen reader speaks.</p>
+<p>From <code class="code-inline tex2jax_ignore">M13-Mehdi/source/ch-7-3.ptx</code></p>
+<div class="code-box"><pre class="program" data-line="9-10"><code class="language-xml">&lt;figure xml:id="fig-hyp-gateway-arch"&gt;
+&lt;caption&gt;
+The Gateway Arch in St. Louis, Missouri. Its centerline follows the
+curve &lt;m&gt;y = A\left(\cosh(Cx/L) - 1\right)&lt;/m&gt;, an upside-down catenary.
+(Photograph by John Margolies, 1988; John Margolies Roadside America
+photograph archive, Library of Congress, Prints and Photographs
+Division.)
+&lt;/caption&gt;
+&lt;image source="app-catenary-gateway-arch.jpg" width="48%"&gt;
+&lt;shortdescription&gt;
+The stainless steel Gateway Arch rising from a line of trees against a
+clear blue sky, curving up to a rounded peak and back down.
+&lt;/shortdescription&gt;
+&lt;/image&gt;
+&lt;/figure&gt;
+</code></pre></div>
+</div></section><section><h3>Where the file lives</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · Photos and alt text · step 2 of 3.</em> Files named in <code class="code-inline tex2jax_ignore">source</code> live in assets/. The web build copies them to external/; the PDF build reads them where they are.</p>
+<p>From <code class="code-inline tex2jax_ignore">M13-Mehdi/publication/publication.ptx</code></p>
+<div class="code-box"><pre class="program" data-line="2"><code class="language-xml">&lt;!-- publication/publication.ptx --&gt;
+&lt;directories external="../assets" generated="../generated-assets"/&gt;
+
+&lt;!-- so source="app-catenary-gateway-arch.jpg" is the file
+     assets/app-catenary-gateway-arch.jpg, which the web build
+     copies to external/ next to the pages --&gt;
+</code></pre></div>
+</div></section><section><h3>Point to it</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · Photos and alt text · step 3 of 3.</em> Any paragraph can cite the figure with <code class="code-inline tex2jax_ignore">&lt;xref&gt;</code>. PreTeXt writes its current number and keeps it right when figures are added or moved.</p>
+<p>From <code class="code-inline tex2jax_ignore">M13-Mehdi/source/ch-7-3.ptx</code></p>
+<div class="code-box"><pre class="program" data-line="6"><code class="language-xml">thicker at the base than at the top. It stands 630 feet tall and 630
+feet wide at the base; the National Park Service describes its
+construction and its geometry at
+&lt;url href="https://www.nps.gov/jeff/index.htm" visual="nps.gov"&gt;Gateway Arch National
+  Park&lt;/url&gt;.
+See &lt;xref ref="fig-hyp-gateway-arch"/&gt;.
+</code></pre></div>
+</div></section><section><h3>Cross-references open in place</h3>
+<div align="left"><div style="display:table;margin-left:1%;margin-right:1%;" class="sidebyside">
+<div style="display:table-cell;width:61.2244897959184%;vertical-align:top;"><div class="image-box"><img src="external/images/knowl.png" class="contained" alt="A page of MATH 14 Section 1.1 with the reference (1.1.1) clicked open: the equation appears in a box right under the sentence, with an in-context link."></div></div>
+<div style="display:table-cell;width:36.734693877551%;vertical-align:top;">
+<p><em class="alert">Click (1.1.1).</em> The equation drops down right under the sentence. Nobody loses their place.</p>
+<p><em class="alert">Click in-context.</em> The page jumps to where the equation lives, inside its definition.</p>
+<p><em class="alert">Every reference works this way:</em> definitions, theorems, equations, figures, and exercises, with no extra markup.</p>
+<p><a class="external" href="https://mahmadi-ops.github.io/MATH-14/sec-parametrization.html" target="_blank">Try it in Section 1.1</a></p>
+</div>
+</div></div></section><section><h3>Name the target</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · Cross-references · step 1 of 3.</em> Put an <code class="code-inline tex2jax_ignore">xml:id</code> on whatever you want to cite: here the definition and the numbered equation row inside it.</p>
+<p>From <code class="code-inline tex2jax_ignore">MATH-14/source/section-parametrization.ptx</code></p>
+<div class="code-box"><pre class="program" data-line="1,9"><code class="language-xml">&lt;definition xml:id="def-parametric-equations"&gt;
+  &lt;title&gt;Parametric Equations&lt;/title&gt;
+  &lt;statement&gt;
+    &lt;p&gt;
+      If &lt;m&gt;x&lt;/m&gt; and &lt;m&gt;y&lt;/m&gt; are given as functions of a third
+      variable &lt;m&gt;t&lt;/m&gt;, called a &lt;term&gt;parameter&lt;/term&gt;, by
+
+    &lt;md&gt;
+      &lt;mrow xml:id="eq-parametric-equations" number="yes"&gt;
+        x = f(t), \qquad y = g(t),
+      &lt;/mrow&gt;
+    &lt;/md&gt;
+</code></pre></div>
+</div></section><section><h3>Cite it</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · Cross-references · step 2 of 3.</em> <code class="code-inline tex2jax_ignore">&lt;xref ref="eq-parametric-equations"/&gt;</code> prints the number, (1.1.1). On the web it opens the equation in place; in the PDF it is a link.</p>
+<p>From <code class="code-inline tex2jax_ignore">MATH-14/source/section-parametrization.ptx</code></p>
+<div class="code-box"><pre class="program" data-line="6"><code class="language-xml">&lt;p&gt;
+  Here &lt;m&gt;t&lt;/m&gt; is the time parameter, which varies from some initial
+  time &lt;m&gt;t_i&lt;/m&gt; to some final time &lt;m&gt;t_f&lt;/m&gt;, that is,
+  &lt;m&gt;t \in [t_i, t_f]&lt;/m&gt;. Nothing has changed, except that where a
+  plane curve needed the two equations
+  &lt;xref ref="eq-parametric-equations"/&gt;, a space curve needs three.
+&lt;/p&gt;
+</code></pre></div>
+</div></section><section><h3>Cite by title</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · Cross-references · step 3 of 3.</em> <code class="code-inline tex2jax_ignore">text="title"</code> prints the target’s title instead of its number: the assignment names the sections it draws on, and each name is a link.</p>
+<p>From <code class="code-inline tex2jax_ignore">MATH-14/source/hw1-online.ptx</code></p>
+<div class="code-box"><pre class="program" data-line="2-3"><code class="language-xml">&lt;p&gt;
+  Sections: &lt;xref ref="sec-parametrization" text="title"/&gt; and
+    &lt;xref ref="sec-arc-length" text="title"/&gt;. Work each problem, then type your answers
+    into the boxes and have them checked here.
+&lt;/p&gt;
+</code></pre></div>
+</div></section><section><h3>Interactive figures: the quadric slicer</h3>
+<div align="left"><div style="display:table;margin-left:1%;margin-right:1%;" class="sidebyside">
+<div style="display:table-cell;width:53.0612244897959%;vertical-align:top;">
+<div class="interactive-iframe-container">
+<iframe src="external/hyperbolic-paraboloid-slices.html" id="int-slide-quadric" style="max-width: 52%; width: 100%; aspect-ratio:1.142857142857143" title="described in detail following the image" aria-describedby="int-slide-quadric-description"></iframe><details class="image-description" aria-live="polite"><summary title="details"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe88e;</span></summary><div id="int-slide-quadric-description"><p>Slicing the hyperbolic paraboloid z = x squared over 4 minus y squared over 9 with planes x = c, y = c, and z = c.</p></div></details>
+</div>
+<div class="interactive-iframe-container__opener"><a href="int-slide-quadric.html" title="Open in new tab" aria-label="Open in new tab" target="_blank"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe89e;</span></a></div>
+</div>
+<div style="display:table-cell;width:44.8979591836735%;vertical-align:top;">
+<p>Pick <span class="process-math">\(x = c\text{,}\)</span> <span class="process-math">\(y = c\text{,}\)</span> or <span class="process-math">\(z = c\)</span> and drag <span class="process-math">\(c\text{.}\)</span> The traces switch between parabolas and hyperbolas; <span class="process-math">\(z = 0\)</span> gives two crossing lines.</p>
+<p>Plotly, in an ordinary web page placed with <code class="code-inline tex2jax_ignore">&lt;interactive iframe&gt;</code>.</p>
+<p><a class="external" href="https://mahmadi-ops.github.io/MATH13-Instructor/section-quadric-surfaces.html" target="_blank">Open in the book</a></p>
+</div>
+</div></div></section><section><h3>Interactive figures: cone and conics</h3>
+<div align="left"><div style="display:table;margin-left:1%;margin-right:1%;" class="sidebyside">
+<div style="display:table-cell;width:59.1836734693878%;vertical-align:top;">
+<div class="interactive-iframe-container">
+<iframe src="external/conic-slicer-manim.html" id="int-slide-conic" style="max-width: 58%; width: 100%; aspect-ratio:1.333333333333333" title="described in detail following the image" aria-describedby="int-slide-conic-description"></iframe><details class="image-description" aria-live="polite"><summary title="details"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe88e;</span></summary><div id="int-slide-conic-description"><p>A double cone cut by a tilting plane; the cut changes from ellipse to parabola to hyperbola.</p></div></details>
+</div>
+<div class="interactive-iframe-container__opener"><a href="int-slide-conic.html" title="Open in new tab" aria-label="Open in new tab" target="_blank"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe89e;</span></a></div>
+</div>
+<div style="display:table-cell;width:38.7755102040816%;vertical-align:top;">
+<p>Press Play: the plane <span class="process-math">\(z = my + 1\)</span> swings from horizontal to steep. The circle stretches to an ellipse, opens into a parabola at <span class="process-math">\(m = 1\text{,}\)</span> then breaks into a hyperbola.</p>
+<p>Three.js, drawn in the Manim style.</p>
+<p><a class="external" href="https://mahmadi-ops.github.io/MATH13-Instructor/section-conics.html" target="_blank">Open in the book</a></p>
+</div>
+</div></div></section><section><h3>Interactive figures: the slice behind a directional derivative</h3>
+<div align="left"><div style="display:table;margin-left:1%;margin-right:1%;" class="sidebyside">
+<div style="display:table-cell;width:59.1836734693878%;vertical-align:top;">
+<div class="interactive-iframe-container">
+<iframe src="external/dirderiv-surface-slice-manim.html" id="int-slide-dirderiv" style="max-width: 58%; width: 100%; aspect-ratio:1.333333333333333" title="described in detail following the image" aria-describedby="int-slide-dirderiv-description"></iframe><details class="image-description" aria-live="polite"><summary title="details"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe88e;</span></summary><div id="int-slide-dirderiv-description"><p>The surface z = 1 + x squared + y squared cut by a vertical plane through P zero that turns around; the tangent to the cut is colored by direction.</p></div></details>
+</div>
+<div class="interactive-iframe-container__opener"><a href="int-slide-dirderiv.html" title="Open in new tab" aria-label="Open in new tab" target="_blank"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe89e;</span></a></div>
+</div>
+<div style="display:table-cell;width:38.7755102040816%;vertical-align:top;">
+<p>Press Play: the vertical plane through <span class="process-math">\(P_0(1, 1)\)</span> turns once around. The tangent to the cut is steepest along <span class="process-math">\(\nabla f\text{,}\)</span> steepest down along <span class="process-math">\(-\nabla f\text{,}\)</span> and level along the level curve.</p>
+<p><a class="external" href="https://mahmadi-ops.github.io/MATH13-Instructor/section-directional-derivatives.html" target="_blank">Open in the book</a></p>
+</div>
+</div></div></section><section><h3>Interactive figures: sailing the isobars of a low</h3>
+<div align="left"><div style="display:table;margin-left:1%;margin-right:1%;" class="sidebyside">
+<div style="display:table-cell;width:63.265306122449%;vertical-align:top;">
+<div class="interactive-iframe-container">
+<iframe src="external/isobars-low-3d.html" id="int-slide-isobars" style="max-width: 62%; width: 100%; aspect-ratio:1.6" title="described in detail following the image" aria-describedby="int-slide-isobars-description"></iframe><details class="image-description" aria-live="polite"><summary title="details"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe88e;</span></summary><div id="int-slide-isobars-description"><p>The pressure field around a low, with a ship that either circles the eye along an isobar or runs outward along the gradient, and a barometer reading.</p></div></details>
+</div>
+<div class="interactive-iframe-container__opener"><a href="int-slide-isobars.html" title="Open in new tab" aria-label="Open in new tab" target="_blank"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe89e;</span></a></div>
+</div>
+<div style="display:table-cell;width:34.6938775510204%;vertical-align:top;">
+<p>Press “Circle the low”, then “Run for open water”, and watch the barometer: along an isobar the pressure stays put; across them it changes fastest.</p>
+<p>Web only: the PDF prints a sentence in its place.</p>
+</div>
+</div></div></section><section><h3>Interactive figures: a script and a slate (MATH 14)</h3>
+<div align="left"><div style="display:table;margin-left:1%;margin-right:1%;" class="sidebyside">
+<div style="display:table-cell;width:44.8979591836735%;vertical-align:top;">
+<div class="interactive-iframe-container"><iframe id="int-slide-polar-rose" style="max-width: 44%; width: 100%; aspect-ratio:0.909090909090909" src="int-slide-polar-rose-if.html"></iframe></div>
+<div class="interactive-iframe-container__opener"><a href="int-slide-polar-rose.html" title="Open in new tab" aria-label="Open in new tab" target="_blank"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe89e;</span></a></div>
+</div>
+<div style="display:table-cell;width:53.0612244897959%;vertical-align:top;">
+<p>The rose <span class="process-math">\(r = \cos 3\theta\)</span> and the circle <span class="process-math">\(r = \tfrac12\text{.}\)</span> Drag <span class="process-math">\(\theta\text{:}\)</span> the dots mark where the ray meets each curve, which is what fixes the limits of <span class="process-math">\(r\)</span> in the double integral.</p>
+<p><code class="code-inline tex2jax_ignore">platform="javascript"</code> loads a script; <code class="code-inline tex2jax_ignore">&lt;slate surface="html"&gt;</code> holds the canvas and slider it draws into.</p>
+<p><a class="external" href="https://mahmadi-ops.github.io/MATH-14-Instructor/section-double-integrals-polar-form.html" target="_blank">Open in the book</a></p>
+</div>
+</div></div></section><section><h3>An ordinary web page</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · The quadric slicer · step 1 of 5.</em> MathJax and Plotly come from a CDN; three buttons choose the slicing plane, a slider sets c, and an empty <code class="code-inline tex2jax_ignore">div</code> is where Plotly draws.</p>
+<p>From <code class="code-inline tex2jax_ignore">M13-Mehdi/assets/hyperbolic-paraboloid-slices.html</code></p>
+<div class="code-box"><pre class="program" data-line="2,6-8,11,16"><code class="language-html">&lt;script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"&gt;&lt;/script&gt;
+&lt;script src="https://cdn.plot.ly/plotly-2.35.2.min.js"&gt;&lt;/script&gt;
+…
+&lt;div class="controls"&gt;
+  &lt;span class="btn-group"&gt;
+    &lt;button class="axis-btn" data-axis="x"&gt;\(x = c\)&lt;/button&gt;
+    &lt;button class="axis-btn" data-axis="y"&gt;\(y = c\)&lt;/button&gt;
+    &lt;button class="axis-btn" data-axis="z"&gt;\(z = c\)&lt;/button&gt;
+  &lt;/span&gt;
+  &lt;span class="slider-box"&gt;
+    &lt;input type="range" id="cslider"&gt;
+    &lt;span class="cval"&gt;&lt;span class="cname"&gt;c&lt;/span&gt; = &lt;span id="cval"&gt;&lt;/span&gt;&lt;/span&gt;
+  &lt;/span&gt;
+  &lt;button id="rotateBtn"&gt;Rotate&lt;/button&gt;
+&lt;/div&gt;
+&lt;div id="plot"&gt;&lt;/div&gt;
+</code></pre></div>
+</div></section><section><h3>Sample the surface</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · The quadric slicer · step 2 of 5.</em> A <span class="process-math">\(41 \times 41\)</span> grid of <span class="process-math">\((x, y)\)</span> values with <span class="process-math">\(z = x^2/4 - y^2/9\)</span> at each. Plotly shades the grid as a surface.</p>
+<p>From <code class="code-inline tex2jax_ignore">M13-Mehdi/assets/hyperbolic-paraboloid-slices.html</code></p>
+<div class="code-box"><pre class="program" data-line="11"><code class="language-javascript">var CONFIG = {
+  ranges: { x: [-4.6, 4.6], y: [-6.9, 6.9], z: [-4.6, 4.6] },
+  sliders: { x: [-4, 4], y: [-6, 6], z: [-4, 4] },
+  defaults: { axis: 'x', c: 2 },
+  surface: function () {
+    var n = 41, X = [], Y = [], Z = [];
+    for (var i = 0; i &lt; n; i++) {
+      var y = -6 + 12 * i / (n - 1), xr = [], yr = [], zr = [];
+      for (var j = 0; j &lt; n; j++) {
+        var x = -4 + 8 * j / (n - 1);
+        xr.push(x); yr.push(y); zr.push(x * x / 4 - y * y / 9);
+      }
+      X.push(xr); Y.push(yr); Z.push(zr);
+    }
+    return { x: X, y: Y, z: Z };
+},
+…
+</code></pre></div>
+</div></section><section><h3>Code each trace</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · The quadric slicer · step 3 of 5.</em> Each trace is worked out by hand and coded: <span class="process-math">\(x = c\)</span> gives the parabola <span class="process-math">\(z = c^2/4 - y^2/9\text{;}\)</span> <span class="process-math">\(z = c\)</span> gives a hyperbola, parametrized with <span class="process-math">\(\cosh\)</span> and <span class="process-math">\(\sinh\text{,}\)</span> one branch for each sign.</p>
+<p>From <code class="code-inline tex2jax_ignore">M13-Mehdi/assets/hyperbolic-paraboloid-slices.html</code></p>
+<div class="code-box"><pre class="program" data-line="4,13,19"><code class="language-javascript">…
+    var latex = 'z = ' + (v ? fmt(v) + ' - ' : '-') + '\\frac{y^2}{9}';
+    return {
+      curves: [curve(function (y) { return [c, y, v - y * y / 9]; }, -6, 6, 121)],
+      latex: latex, kind: 'parabola'
+  };
+}
+…
+    var branches = [];
+    if (c &gt; 0) {
+      [1, -1].forEach(function (sg) {
+        branches.push(curve(function (t) {
+          return [sg * 2 * s * Math.cosh(t), 3 * s * Math.sinh(t), c];
+        }, -T, T, 121));
+      });
+    } else {
+      [1, -1].forEach(function (sg) {
+        branches.push(curve(function (t) {
+          return [2 * s * Math.sinh(t), sg * 3 * s * Math.cosh(t), c];
+…
+</code></pre></div>
+</div></section><section><h3>Redraw on every change</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · The quadric slicer · step 4 of 5.</em> Each slider move rebuilds the traces and calls <code class="code-inline tex2jax_ignore">Plotly.react</code>, which redraws in place. The equation above the plot is typeset again only when its text changes.</p>
+<p>From <code class="code-inline tex2jax_ignore">M13-Mehdi/assets/hyperbolic-paraboloid-slices.html</code></p>
+<div class="code-box"><pre class="program" data-line="6,17"><code class="language-javascript">…
+      type: 'scatter3d', mode: 'markers', x: [p[0]], y: [p[1]], z: [p[2]],
+      marker: { color: col, size: 5 }, hoverinfo: 'skip'
+    });
+  });
+  Plotly.react(gd, data, layout, { displayModeBar: false, responsive: true });
+  cval.textContent = fmt(c);
+  var html = '\\(' + axis + ' = ' + fmt(c) + ':\\;\\;\\; ' + s.latex + '\\)' +
+    ' &lt;span class="kind"&gt;(' + s.kind + ')&lt;/span&gt;';
+  if (html !== lastTypeset) {
+    lastTypeset = html;
+    readout.innerHTML = html;
+    if (window.MathJax &amp;&amp; MathJax.typesetPromise) MathJax.typesetPromise([readout]);
+  }
+}
+…
+slider.addEventListener('input', function () {
+  c = parseFloat(slider.value);
+  update();
+…
+</code></pre></div>
+</div></section><section><h3>Put it in the book</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · The quadric slicer · step 5 of 5.</em> Save the page in assets/ and embed it with one <code class="code-inline tex2jax_ignore">&lt;interactive iframe&gt;</code>. For the PDF, <code class="code-inline tex2jax_ignore">pretext generate interactive -t print</code> takes a screenshot, and a QR code links to the live figure.</p>
+<p>From <code class="code-inline tex2jax_ignore">M13-Mehdi/source/QuadricSurface.ptx</code></p>
+<div class="code-box"><pre class="program"><code class="language-xml">&lt;figure xml:id="fig-hyperbolic-paraboloid-slices"&gt;
+  &lt;caption&gt;
+    Slicing the hyperbolic paraboloid
+    &lt;m&gt;z = \frac{x^2}{4} - \frac{y^2}{9}&lt;/m&gt;
+    with planes &lt;m&gt;x = c&lt;/m&gt;, &lt;m&gt;y = c&lt;/m&gt;, and &lt;m&gt;z = c&lt;/m&gt;.
+  &lt;/caption&gt;
+  &lt;interactive xml:id="interactive-hyperbolic-paraboloid-slices"
+               iframe="hyperbolic-paraboloid-slices.html"
+               width="100%" aspect="8:7"&gt;
+    &lt;instructions&gt;
+      &lt;p&gt;
+      Use the buttons to slice the surface with planes &lt;m&gt;x=c&lt;/m&gt;,
+      &lt;m&gt;y=c&lt;/m&gt;, or &lt;m&gt;z=c&lt;/m&gt;, and drag the slider to vary &lt;m&gt;c&lt;/m&gt;.
+      The equation of each cross-section is displayed above the
+      figure. Drag the figure to view it from a different angle, or
+      press the &lt;q&gt;Rotate&lt;/q&gt; button to spin it automatically.&lt;/p&gt;
+    &lt;/instructions&gt;
+  &lt;/interactive&gt;
+…
+</code></pre></div>
+</div></section><section><h3>The field, its gradient, the isobars</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · The isobars figure · step 1 of 3.</em> The pressure field, its gradient, and the isobars sit in one configuration object; the rest of the file draws whatever it describes, so a new field means editing this block.</p>
+<p>From <code class="code-inline tex2jax_ignore">M13-Mehdi/assets/isobars-low-3d.html</code></p>
+<div class="code-box"><pre class="program" data-line="4-5,8"><code class="language-javascript">const CFG = {
+  xmin:-72, xmax:72, ymin:-44.2, ymax:44.2,
+  vmin:988, vmax:1017,
+  f:function(x,y){return 988+0.004*(x*x+y*y);},
+  grad:function(x,y){return [0.008*x,0.008*y];},
+  palette:[[0,[46,8,40]],[.22,[122,26,74]],[.44,[196,66,58]],
+           [.64,[214,142,54]],[.82,[70,140,110]],[1,[26,62,104]]],
+  contours:[992,996,1000,1004,1008],
+  level:990, levelColor:'#FFD166',
+  levelLabel:'isobar   990 mb   \u00B7   r = 22.4 mi',
+  axisLabel:'P(x,y) = 988 + 0.004(x\u00B2 + y\u00B2)',
+  curve:function(v,t){var r=Math.sqrt((v-988)/0.004);
+    return [r*Math.cos(t), r*Math.sin(t)];},
+</code></pre></div>
+</div></section><section><h3>Two headings</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · The isobars figure · step 2 of 3.</em> Each heading is a path and a rate of change: zero around the isobar, <span class="process-math">\(\nabla P \cdot \mathbf{u}\)</span> running outward.</p>
+<p>From <code class="code-inline tex2jax_ignore">M13-Mehdi/assets/isobars-low-3d.html</code></p>
+<div class="code-box"><pre class="program" data-line="6,11"><code class="language-javascript">modes:[
+  {id:'iso', label:'Circle the low', tint:'#FFD166', loop:true,
+   rate:0.30, smax:Math.PI*2,
+   pos:function(s){var r=Math.sqrt(500), t=Math.atan2(10,20)+s;
+     return [r*Math.cos(t), r*Math.sin(t)];},
+   du:function(){return 0;},
+   status:function(){return 'Holding 990 mb';}},
+  {id:'out', label:'Run for open water', tint:'#7FE3C0', loop:false,
+   rate:11, smax:54,
+   pos:function(s){return [20+2/Math.sqrt(5)*s, 10+1/Math.sqrt(5)*s];},
+   du:function(x,y){return 0.008*x*(2/Math.sqrt(5))+0.008*y*(1/Math.sqrt(5));},
+</code></pre></div>
+</div></section><section><h3>Web and print versions</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · The isobars figure · step 3 of 3.</em> <code class="code-inline tex2jax_ignore">component="web"</code> and <code class="code-inline tex2jax_ignore">component="print"</code> mark two versions; each build’s <code class="code-inline tex2jax_ignore">&lt;version include&gt;</code> keeps one.</p>
+<p>From <code class="code-inline tex2jax_ignore">M13-Mehdi/source/assignment-8-chain-rule.ptx</code></p>
+<div class="code-box"><pre class="program"><code class="language-xml">&lt;!-- Assignment 8, in the answer to the sailing problem --&gt;
+&lt;p component="print"&gt;
+  An interactive figure of the pressure field &lt;mdash/&gt; the two
+  headings switchable, with the barometer responding as the ship
+  moves &lt;mdash/&gt; accompanies the online version of these notes.
+&lt;/p&gt;
+&lt;sidebyside component="web" width="100%"&gt;
+  &lt;figure xml:id="figure-isobars-low"&gt;
+    &lt;caption&gt;The pressure field &lt;m&gt;P(x,y) = 988 + 0.004(x^2+y^2)&lt;/m&gt;
+      around a low. One heading circles the eye at constant
+      &lt;m&gt;990&lt;/m&gt; mb; the other runs outward along &lt;m&gt;\nabla P&lt;/m&gt;. …
+    &lt;/caption&gt;
+    &lt;interactive xml:id="interactive-isobars-low"
+                 iframe="isobars-low-3d.html"
+                 width="100%" aspect="16:10"/&gt;
+  &lt;/figure&gt;
+&lt;/sidebyside&gt;
+</code></pre></div>
+</div></section><section><h3>Describe each widget</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · The polar rose · step 1 of 4.</em> Each widget is a configuration: its window, two polar curves and their colours, where the labels go, and the text of the readout.</p>
+<p>From <code class="code-inline tex2jax_ignore">MATH-14/assets/polar-widget.js</code></p>
+<div class="code-box"><pre class="program" data-line="4-5"><code class="language-javascript">var WIDGETS = {
+  rose: {
+    xmin: -1.25, xmax: 1.25, ymin: -1.25, ymax: 1.25, rings: 2, raylen: 1.2,
+    f1: function (t) { return Math.cos(3 * t); }, c1: "#CC0000",
+    f2: function () { return 0.5; }, c2: "#0072B2",
+    l1: "r = cos(3θ)", l1p: [0.42, -1.05],
+    l2: "r = 1/2", l2p: [-1.15, 0.62],
+    readout: function (t, k) {
+      var rose = Math.cos(3 * t);
+      var top = Math.min(Math.max(rose, 0), 0.5);
+      return "&lt;b&gt;θ = " + piFraction(k) + "&lt;/b&gt;&lt;br/&gt;" +
+        "cos(3θ) = " + rose.toFixed(3) + ", so inside both curves " +
+        "&lt;i&gt;r&lt;/i&gt; runs from 0 to " + top.toFixed(3) +
+        (rose &gt; 0.5 ? " (the circle)" : (rose &gt; 0 ? " (the rose)" : " (nothing)"));
+    }
+  },
+  cardioids: { … }
+};
+</code></pre></div>
+</div></section><section><h3>Draw in polar coordinates</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · The polar rose · step 2 of 4.</em> Points (r cos t, r sin t) for 1,441 values of t; <code class="code-inline tex2jax_ignore">X</code> and <code class="code-inline tex2jax_ignore">Y</code> turn math coordinates into canvas pixels.</p>
+<p>From <code class="code-inline tex2jax_ignore">MATH-14/assets/polar-widget.js</code></p>
+<div class="code-box"><pre class="program" data-line="8"><code class="language-javascript">function X(x) { return (x - (cfg.xmin + cfg.xmax) / 2) * s + W / 2; }
+function Y(y) { return H / 2 - (y - (cfg.ymin + cfg.ymax) / 2) * s; }
+
+function polarCurve(f, stroke) {
+  ctx.beginPath();
+  for (var i = 0; i &lt;= 1440; i++) {
+    var t = i * Math.PI / 720, r = f(t);
+    var px = X(r * Math.cos(t)), py = Y(r * Math.sin(t));
+    if (i === 0) { ctx.moveTo(px, py); } else { ctx.lineTo(px, py); }
+  }
+  ctx.strokeStyle = stroke;
+  ctx.lineWidth = 2.5;
+  ctx.stroke();
+}
+</code></pre></div>
+</div></section><section><h3>Find the slates</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · The polar rose · step 3 of 4.</em> The script finds every element marked <code class="code-inline tex2jax_ignore">data-widget</code> and builds a widget in each.</p>
+<p>From <code class="code-inline tex2jax_ignore">MATH-14/assets/polar-widget.js</code></p>
+<div class="code-box"><pre class="program" data-line="2,7"><code class="language-javascript">function init() {
+  var boxes = document.querySelectorAll("[data-widget]"), i;
+  for (i = 0; i &lt; boxes.length; i++) { build(boxes[i]); }
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", init);
+} else {
+  init();
+}
+</code></pre></div>
+</div></section><section><h3>The slate in the book</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · The polar rose · step 4 of 4.</em> <code class="code-inline tex2jax_ignore">platform="javascript"</code> loads the script; <code class="code-inline tex2jax_ignore">&lt;slate surface="html"&gt;</code> holds the canvas, slider, and readout it fills in.</p>
+<p>From <code class="code-inline tex2jax_ignore">MATH-14/source/double-integrals-polar-form.ptx</code></p>
+<div class="code-box"><pre class="program"><code class="language-xml">&lt;figure xml:id="fig-polar-rose-circle"&gt;
+  &lt;caption&gt;
+    Figure (2): the rose &lt;m&gt;r=\cos(3\theta)&lt;/m&gt; and the circle
+    &lt;m&gt;r=\frac12&lt;/m&gt;. Drag the slider to turn the ray of angle
+    &lt;m&gt;\theta&lt;/m&gt;; …
+  &lt;/caption&gt;
+  &lt;interactive xml:id="int-polar-rose" platform="javascript"
+               source="polar-widget.js" width="100%" aspect="10:11"&gt;
+    &lt;slate surface="html"&gt;
+      &lt;!-- inline styles trimmed --&gt;
+      &lt;div data-widget="rose"&gt;
+        &lt;canvas width="460" height="460"&gt;&lt;/canvas&gt;
+        &lt;label for="rose-theta"&gt;&amp;#952;&lt;/label&gt;
+        &lt;input id="rose-theta" type="range" min="0" max="48"
+               value="0" step="1"/&gt;
+        &lt;div class="pw-readout"&gt;&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/slate&gt;
+…
+</code></pre></div>
+</div></section><section><h3>GeoGebra: bring in the tools students already know</h3>
+<div align="left">
+<div class="interactive-iframe-container">
+<iframe id="int-slide-ggb-exp" style="width:600px; height:412px; display: block; " src="int-slide-ggb-exp-if.html" title="described in detail following the image" aria-describedby="int-slide-ggb-exp-description"></iframe><details class="image-description" aria-live="polite"><summary title="details"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe88e;</span></summary><div id="int-slide-ggb-exp-description"><p>The red curve is the graph of <span class="process-math">\(f(x) = e^x\)</span> and the blue curve is the graph of the Taylor polynomial <span class="process-math">\(p_2(x)\text{.}\)</span> The vertical distance between the red and blue points at <span class="process-math">\(x = 0.5\)</span> is the error of the approximation, which stays below the bound <span class="process-math">\(0.03435\text{.}\)</span></p></div></details>
+</div>
+<div class="interactive-iframe-container__opener"><a href="int-slide-ggb-exp.html" title="Open in new tab" aria-label="Open in new tab" target="_blank"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe89e;</span></a></div>
+<p>Taylor’s formula: <span class="process-math">\(e^x\)</span> against <span class="process-math">\(p_2\text{,}\)</span> with the error at <span class="process-math">\(x = 0.5\text{.}\)</span> The whole embed is one element, <code class="code-inline tex2jax_ignore">&lt;interactive geogebra="xzdc5jpq"&gt;</code>. <a class="external" href="https://mahmadi-ops.github.io/M13-Mehdi/section-taylor.html" target="_blank">Section 2.3 in the book</a></p>
+</div></section><section><h3>Build the applet</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · GeoGebra · step 1 of 4.</em> Build the applet in GeoGebra. MATH 14 keeps each construction as commands pasted one per row into the input bar, so it can be rebuilt or changed later.</p>
+<p>From <code class="code-inline tex2jax_ignore">MATH-14/assets/geogebra/paraglider_arclength.commands.txt</code></p>
+<div class="code-box"><pre class="program" data-line="5,7,10"><code class="language-none"># GeoGebra Classic (3D view) — Paraglider distance travelled (3D)
+# Open a 3D Graphics view, paste these into the input bar one per row,
+# then File &gt; Share to publish and obtain a material ID.
+
+t = Slider(0, 9, 0.01)
+SetValue(t, 4.5)
+path = Curve(u cos(u), u sin(u), 9 sqrt(8) - sqrt(8)/3 u^(3/2), u, 0, 9)
+SetColor(path, 0, 102, 204)
+SetLineThickness(path, 5)
+P = (t cos(t), t sin(t), 9 sqrt(8) - sqrt(8)/3 t^(3/2))
+SetColor(P, 255, 102, 0)
+SetPointSize(P, 6)
+A = (0, 0, 9 sqrt(8))
+SetColor(A, 204, 0, 0)
+B = (9 cos(9), 9 sin(9), 0)
+SetColor(B, 204, 0, 0)
+s = t^2 / 2 + t
+speed = Text("|v(t)| = t + 1", (-9, 9, 27))
+…
+</code></pre></div>
+</div></section><section><h3>Keep the file</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · GeoGebra · step 2 of 4.</em> Save the .ggb in assets/geogebra and load it with a <code class="code-inline tex2jax_ignore">&lt;slate&gt;</code>, as MATH 14 does, or share it and use its material id.</p>
+<p>From <code class="code-inline tex2jax_ignore">MATH-14/source/conservative-fields.ptx</code></p>
+<div class="code-box"><pre class="program" data-line="2"><code class="language-xml">&lt;interactive platform="geogebra" width="100%" aspect="600:500"&gt;
+&lt;slate surface="geogebra" source="geogebra/vf-fig3-segment.ggb"
+       aspect="600:500" material-width="600" material-height="500"/&gt;
+&lt;instructions&gt;
+&lt;p&gt;
+Drag the slider to move the point along the segment from &lt;m&gt;A&lt;/m&gt; to
+&lt;m&gt;B&lt;/m&gt;. The applet draws the field vector &lt;m&gt;\mathbf{F}&lt;/m&gt; and the unit
+tangent &lt;m&gt;\hat{\mathbf{T}}&lt;/m&gt; at that point, so what the integral
+accumulates is the length of the projection of &lt;m&gt;\mathbf{F}&lt;/m&gt; onto
+&lt;m&gt;\hat{\mathbf{T}}&lt;/m&gt;. Rotate the view to see how the segment sits
+relative to the field.
+&lt;/p&gt;
+&lt;/instructions&gt;
+&lt;/interactive&gt;
+</code></pre></div>
+</div></section><section><h3>Embed by material id</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · GeoGebra · step 3 of 4.</em> With a material id the embed is one element. <code class="code-inline tex2jax_ignore">&lt;description&gt;</code> tells a screen-reader user what the applet shows.</p>
+<p>From <code class="code-inline tex2jax_ignore">M13-Mehdi/source/Taylor.ptx</code></p>
+<div class="code-box"><pre class="program"><code class="language-xml">&lt;!-- Example: the error in approximating e^0.5 by p_2(0.5) --&gt;
+&lt;interactive geogebra="xzdc5jpq" width="95%" aspect="16:11"&gt;
+  &lt;description&gt;
+    &lt;p&gt;
+    The red curve is the graph of &lt;m&gt;f(x) = e^x&lt;/m&gt; and the blue
+    curve is the graph of the Taylor polynomial &lt;m&gt;p_2(x)&lt;/m&gt;.
+    The exact value of &lt;m&gt;e^{0.5}&lt;/m&gt; is represented by the red point
+    and the approximation given by &lt;m&gt;p_2(0.5)&lt;/m&gt; is represented by
+    the blue point. The vertical distance between the two points
+    represents the error in the approximation. Note that the error
+    is less than the upper bound we calculated, i.e., &lt;m&gt;0.03435&lt;/m&gt;.
+    &lt;/p&gt;
+  &lt;/description&gt;
+&lt;/interactive&gt;
+</code></pre></div>
+</div></section><section><h3>Add a fullscreen button</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · GeoGebra · step 4 of 4.</em> A small template gives every applet GeoGebra’s fullscreen button, then hands off to PreTeXt’s own template with <code class="code-inline tex2jax_ignore">apply-imports</code>.</p>
+<p>From <code class="code-inline tex2jax_ignore">MATH14-Skeletal/xsl/custom-html.xsl</code></p>
+<div class="code-box"><pre class="program" data-line="5,7,10"><code class="language-xml">  &lt;!-- Every GeoGebra applet gets GeoGebra's own fullscreen button.        --&gt;
+  &lt;!-- The core slate template writes the applet-parameter object inline   --&gt;
+  &lt;!-- and offers no hook for extra parameters, so instead of copying the  --&gt;
+  &lt;!-- whole template we emit a small shim first and then defer to it via  --&gt;
+  &lt;!-- apply-imports.  The shim wraps window.GGBApplet so that any         --&gt;
+  &lt;!-- parameter object passing through it picks up                        --&gt;
+  &lt;!-- showFullscreenButton: true (unless the author set it).  deployggb   --&gt;
+  &lt;!-- loads synchronously in the head, so GGBApplet exists by the time    --&gt;
+  &lt;!-- this body script runs; the setter branch covers it loading later.   --&gt;
+  &lt;xsl:template match="slate[@surface='geogebra']"&gt;
+    &lt;script&gt;
+&lt;![CDATA[(function () {
+  if (window.ggbFullscreenShim) { return; }
+…
+</code></pre></div>
+</div></section><section><h3>Desmos: a graph is one empty element</h3>
+<div align="left"><div style="display:table;margin-left:1%;margin-right:1%;" class="sidebyside">
+<div style="display:table-cell;width:59.1836734693878%;vertical-align:top;">
+<div class="interactive-iframe-container"><iframe src="https://www.desmos.com/calculator/7b85e78f17" id="int-slide-desmos" style="max-width: 58%; width: 100%; aspect-ratio:1.333333333333333"></iframe></div>
+<div class="interactive-iframe-container__opener"><a href="int-slide-desmos.html" title="Open in new tab" aria-label="Open in new tab" target="_blank"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe89e;</span></a></div>
+</div>
+<div style="display:table-cell;width:38.7755102040816%;vertical-align:top;">
+<p>Switch on <span class="process-math">\(p_1, p_3, p_5\)</span> for <span class="process-math">\(\sin x\)</span> and see where each one peels away.</p>
+<pre class="program"><code class="language-xml">&lt;interactive desmos="7b85e78f17"
+             width="70%" aspect="1:2"/&gt;
+</code></pre>
+<p><a class="external" href="https://www.desmos.com/calculator/7b85e78f17" target="_blank">Open in Desmos</a></p>
+</div>
+</div></div></section><section><h3>Build the graph in Desmos</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · Desmos · step 1 of 4.</em> Braces restrict each curve to <span class="process-math">\([-\pi/2, \pi/2]\text{.}\)</span> The Taylor polynomials are left switched off so students turn them on.</p>
+<p>From <em class="emphasis">Desmos expression list</em></p>
+<div class="code-box"><pre class="program" data-line="1,3-5"><code class="language-none">f(x) = sin(x) {-π/2 ≤ x ≤ π/2}
+"Plot the Taylor polynomials by clicking on the circles on the left."
+p_1(x) = x {-π/2 ≤ x ≤ π/2}
+p_3(x) = x - x^3/3! {-π/2 ≤ x ≤ π/2}
+p_5(x) = x - x^3/3! + x^5/5! {-π/2 ≤ x ≤ π/2}
+…   the exact error and the error bound follow
+</code></pre></div>
+</div></section><section><h3>Share it</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · Desmos · step 2 of 4.</em> The id PreTeXt needs is the last part of the share link.</p>
+<p>From <em class="emphasis">Desmos</em></p>
+<div class="code-box"><pre class="program" data-line="2"><code class="language-none">Share › copy link:
+https://www.desmos.com/calculator/7b85e78f17
+                                  ^^^^^^^^^^ the id PreTeXt needs
+</code></pre></div>
+</div></section><section><h3>Embed it</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · Desmos · step 3 of 4.</em> One empty element, here inside the solution of the example on choosing n.</p>
+<p>From <code class="code-inline tex2jax_ignore">M13-Mehdi/source/Taylor.ptx</code></p>
+<div class="code-box"><pre class="program"><code class="language-xml">&lt;example xml:id="ex-error-bound-sin-degree"&gt;
+  &lt;title&gt; Finding the value of &lt;m&gt;n&lt;/m&gt; such that the error is less
+    than a given tolerance&lt;/title&gt;
+  …
+  &lt;solution&gt;
+    …
+    &lt;p&gt;
+      We can check the values of &lt;m&gt;n&lt;/m&gt; starting from &lt;m&gt;n=0&lt;/m&gt;
+      until we find the smallest value of &lt;m&gt;n&lt;/m&gt; that satisfies the
+      inequality. After checking, we find that the smallest value of
+      &lt;m&gt;n&lt;/m&gt; that satisfies the inequality is &lt;m&gt;n=8&lt;/m&gt;.
+    &lt;/p&gt;
+    &lt;interactive desmos="7b85e78f17" width="70%" aspect="1:2" /&gt;
+  &lt;/solution&gt;
+&lt;/example&gt;
+</code></pre></div>
+</div></section><section><h3>The print version</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · Desmos · step 4 of 4.</em> The CLI screenshots each interactive into generated-assets/preview, named after the enclosing example; a QR code links to the live graph.</p>
+<p>From <em class="emphasis">Terminal</em></p>
+<div class="code-box"><pre class="program" data-line="2,5"><code class="language-none"># screenshot every interactive for the PDF
+pretext generate interactive -t print
+
+# M13-Mehdi/generated-assets/preview/
+ex-error-bound-sin-degree-3-8-preview.png   # this Desmos graph
+ex-error-bound-exp-3-6-preview.png          # a GeoGebra applet
+interactive-conic-slicer-preview.png        # an HTML figure
+</code></pre></div>
+</div></section><section><h3>Manim, two ways: a video to watch</h3>
+<div align="left">
+<div class="video-box" style="width: 72%;padding-top: 40.5%; margin-left: 14%; margin-right: 14%;"><video id="vid-slide-secant" class="video" controls="" poster="external/videos/secant-tangent.jpg"><source src="external/videos/secant-tangent.mp4" type="video/mp4"></source>Your browser does not support the &lt;video&gt; tag.</video></div>
+<p>The secant rotating onto the tangent, on <span class="process-math">\(z = 1 + x^2 + y^2\)</span> at <span class="process-math">\((1, 1)\text{.}\)</span> <a class="external" href="https://mahmadi-ops.github.io/MATH13-Instructor/section-directional-derivatives.html" target="_blank">Section 4.5</a></p>
+</div></section><section><h3>Manim, two ways: a scene to drive</h3>
+<div align="left"><div style="display:table;margin-left:1%;margin-right:1%;" class="sidebyside">
+<div style="display:table-cell;width:55.1020408163265%;vertical-align:top;">
+<div class="interactive-iframe-container">
+<iframe src="external/dirderiv-secant-3d-manim.html" id="int-slide-secant" style="max-width: 54%; width: 100%; aspect-ratio:1" title="described in detail following the image" aria-describedby="int-slide-secant-description"></iframe><details class="image-description" aria-live="polite"><summary title="details"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe88e;</span></summary><div id="int-slide-secant-description"><p>The secant through two points of the surface z = 1 + x squared + y squared rotating onto the tangent line as s goes to zero.</p></div></details>
+</div>
+<div class="interactive-iframe-container__opener"><a href="int-slide-secant.html" title="Open in new tab" aria-label="Open in new tab" target="_blank"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe89e;</span></a></div>
+</div>
+<div style="display:table-cell;width:42.8571428571429%;vertical-align:top;">
+<p>The secant slope is <span class="process-math">\(2\sqrt2 + s\text{;}\)</span> as <span class="process-math">\(s \to 0\)</span> it becomes the directional derivative <span class="process-math">\(2\sqrt2 \approx 2.828\text{.}\)</span></p>
+<p>Videos for constructions; interactives where the student should drive.</p>
+</div>
+</div></div></section><section><h3>The scene file</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · The Manim video · step 1 of 5.</em> A Manim scene is a Python file. The construction’s numbers sit at the top: <span class="process-math">\(P_0\text{,}\)</span> the unit vector <span class="process-math">\(\mathbf{u}\text{,}\)</span> the function, and how far the step <span class="process-math">\(s\)</span> runs.</p>
+<p>From <code class="code-inline tex2jax_ignore">M13-Mehdi/assets/manim/dirderiv_secant_tangent.py</code></p>
+<div class="code-box"><pre class="program" data-line="7,10,14"><code class="language-py">from manim import *
+import numpy as np
+
+# ---- the construction -------------------------------------------------------
+X0, Y0 = 0.25, 0.25                     # P0
+C = 1.0 / np.sqrt(2.0)                  # u = (C, C), a unit vector
+S_START, S_END = 1.5, 0.05              # the step s runs from here to here
+
+
+def f(x, y):
+    return 1.0 + x * x + y * y
+
+
+def ray(t):
+    """The point P0 + t*u in the xy-plane."""
+    return X0 + t * C, Y0 + t * C
+
+
+…
+</code></pre></div>
+</div></section><section><h3>Build the objects</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · The Manim video · step 2 of 5.</em> Axes turn math coordinates into scene points; the surface is a parametric patch with a checkerboard fill; the trace is f along the ray.</p>
+<p>From <code class="code-inline tex2jax_ignore">M13-Mehdi/assets/manim/dirderiv_secant_tangent.py</code></p>
+<div class="code-box"><pre class="program" data-line="3,8,15"><code class="language-py">class SecantToTangent(ThreeDScene):
+    def construct(self):
+        ax = ThreeDAxes(
+            x_range=[XY_MIN, XY_MAX, 1],
+            y_range=[XY_MIN, XY_MAX, 1],
+            z_range=[0, Z_MAX, 1],
+…
+        surf = Surface(
+            lambda r, th: p3(r * np.cos(th), r * np.sin(th), 1.0 + r * r),
+            u_range=[0.001, R_SURF], v_range=[0, TAU],
+            resolution=(16, 48), stroke_width=0.6, stroke_opacity=0.25,
+        )
+        surf.set_fill_by_checkerboard(BLUE_D, BLUE_E, opacity=0.45)
+…
+        trace = ParametricFunction(
+            lambda t: p3(*ray(t), g(t)),
+            t_range=[T_MIN, T_MAX], color=TRACE, stroke_width=7,
+)
+</code></pre></div>
+</div></section><section><h3>Tie the picture to s</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · The Manim video · step 3 of 5.</em> One <code class="code-inline tex2jax_ignore">ValueTracker</code> holds s. <code class="code-inline tex2jax_ignore">always_redraw</code> rebuilds the point and the secant from s on every frame.</p>
+<p>From <code class="code-inline tex2jax_ignore">M13-Mehdi/assets/manim/dirderiv_secant_tangent.py</code></p>
+<div class="code-box"><pre class="program" data-line="1,4,13"><code class="language-py">s = ValueTracker(S_START)
+…
+def secant_line():
+    sv = s.get_value()
+    x1, y1 = ray(sv)
+    start, end = np.array(p3(X0, Y0, g(0.0))), np.array(p3(x1, y1, g(sv)))
+    d = end - start
+    n = np.linalg.norm(d)
+    d = d / n if n &gt; 1e-9 else d
+    return Line(start - 1.15 * d, end + 0.45 * d,
+                color=SECANT, stroke_width=9)
+…
+sec = always_redraw(secant_line)
+</code></pre></div>
+</div></section><section><h3>Animate and render</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · The Manim video · step 4 of 5.</em> Moving the tracker from 1.5 to 0.05 swings the secant onto the tangent. The command in the file’s header renders the .mp4 into assets/videos.</p>
+<p>From <code class="code-inline tex2jax_ignore">M13-Mehdi/assets/manim/dirderiv_secant_tangent.py</code></p>
+<div class="code-box"><pre class="program" data-line="6,10"><code class="language-py">"""Figure 18.4: the secant through (P0, f(P0)) and (P, f(P)) rotating onto the
+tangent line at P0 as s -&gt; 0.
+
+Renders to assets/videos/dirderiv_secant_tangent_manim.mp4:
+
+    manim -qh --disable_caching -o dirderiv_secant_tangent_manim \
+        assets/manim/dirderiv_secant_tangent.py SecantToTangent
+"""
+…
+self.play(s.animate.set_value(S_END), run_time=6.5,
+          rate_func=rate_functions.ease_in_out_sine)
+</code></pre></div>
+</div></section><section><h3>Put it in the book</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · The Manim video · step 5 of 5.</em> A <code class="code-inline tex2jax_ignore">&lt;video&gt;</code> in a captioned figure; <code class="code-inline tex2jax_ignore">width</code> and <code class="code-inline tex2jax_ignore">aspect</code> size the player.</p>
+<p>From <code class="code-inline tex2jax_ignore">M13-Mehdi/source/directional-derivatives.ptx</code></p>
+<div class="code-box"><pre class="program"><code class="language-xml">&lt;figure&gt;
+  &lt;caption&gt;
+    … The secant line through &lt;m&gt;(P_0, f(P_0))&lt;/m&gt; and
+    &lt;m&gt;(P, f(P))&lt;/m&gt; has slope &lt;m&gt;\big(f(P) - f(P_0)\big)/s&lt;/m&gt;, and
+    as &lt;m&gt;s \to 0&lt;/m&gt; it rotates onto the tangent line, whose slope is
+    the directional derivative &lt;m&gt;\left(D_{\hat{u}} f\right)_{P_0}&lt;/m&gt;.
+  &lt;/caption&gt;
+  &lt;video xml:id="video-dirderiv-setup"
+         source="videos/dirderiv_secant_tangent_manim.mp4"
+         width="100%" aspect="16:9"/&gt;
+&lt;/figure&gt;
+</code></pre></div>
+</div></section><section><h3>The construction in JavaScript</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · The Manim-style interactive · step 1 of 4.</em> The same construction at the book’s point <span class="process-math">\(P_0(1, 1)\text{,}\)</span> where <span class="process-math">\(D_{\mathbf{u}} f = 2\sqrt{2}\text{.}\)</span></p>
+<p>From <code class="code-inline tex2jax_ignore">M13-Mehdi/assets/dirderiv-secant-3d-manim.html</code></p>
+<div class="code-box"><pre class="program" data-line="2"><code class="language-javascript">var C = 1 / Math.sqrt(2);          // u = (C, C), a unit vector
+var R2 = 2 * Math.sqrt(2);         // the directional derivative itself
+function f(x, y) { return 1 + x * x + y * y; }
+
+// The surface is drawn over the disc of radius RMAX. Along the ray from
+// P0(1,1) in the direction u the point (1 + tC, 1 + tC) has radius
+// sqrt(2)|1 + tC|, so the ray stays over that disc for t in [T0, T1]:
+var RMAX = 2.2;
+var T1 = RMAX - Math.SQRT2;        // = 0.786, and the slider stops short of it
+var T0 = -RMAX - Math.SQRT2;
+var ZTOP = f(RMAX, 0);             // the rim of the drawn patch
+</code></pre></div>
+</div></section><section><h3>Redraw for each s</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · The Manim-style interactive · step 2 of 4.</em> Each change of <span class="process-math">\(s\)</span> rebuilds the moving point, its two dashed heights, and the secant through <span class="process-math">\(P_0\)</span> and <span class="process-math">\(P\text{.}\)</span></p>
+<p>From <code class="code-inline tex2jax_ignore">M13-Mehdi/assets/dirderiv-secant-3d-manim.html</code></p>
+<div class="code-box"><pre class="program" data-line="17"><code class="language-javascript">…
+  var Q = new THREE.Vector3(p.x, p.y, g(sVal));
+  var P0 = new THREE.Vector3(1, 1, 3);
+
+  // the moving point, on the surface and on the ground
+  var qs = new THREE.Mesh(new THREE.SphereGeometry(0.075, 18, 18), redMat);
+  qs.position.copy(Q); movGroup.add(qs);
+  var qb = new THREE.Mesh(new THREE.SphereGeometry(0.055, 16, 16), redMat);
+  qb.position.set(p.x, p.y, 0); movGroup.add(qb);
+  pLabel.position.set(Q.x + 0.42, Q.y + 0.42, Q.z + 0.30);
+
+  // the two heights, dropped to the ground
+  dashed(new THREE.Vector3(1, 1, 0), P0, 0x8a8f9c);
+  dashed(new THREE.Vector3(p.x, p.y, 0), Q, 0xfc6255);
+
+  // the secant through the two points on the surface, extended a little
+  var dirv = Q.clone().sub(P0).normalize();
+  tube([P0.clone().addScaledVector(dirv, -1.3), Q.clone().addScaledVector(dirv, 0.9)],
+       RED_C, 0.030, movGroup);
+…
+</code></pre></div>
+</div></section><section><h3>Show the limit</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · The Manim-style interactive · step 3 of 4.</em> The secant slope is exactly <span class="process-math">\(2\sqrt{2} + s\text{,}\)</span> so the readout shows the limit happening; its colour moves to the tangent’s green as <span class="process-math">\(s \to 0\text{.}\)</span></p>
+<p>From <code class="code-inline tex2jax_ignore">M13-Mehdi/assets/dirderiv-secant-3d-manim.html</code></p>
+<div class="code-box"><pre class="program" data-line="2,5"><code class="language-javascript">function paintReadouts() {
+  var slope = R2 + sVal;                     // ( f(P) - f(P0) ) / s
+  elName.textContent = "secant slope = " + slope.toFixed(3);
+  // the closer s gets to 0, the more the secant reading takes the tangent's colour
+  elName.style.color = mix(GREEN_C, RED_C, Math.min(1, sVal / S_MAX));
+  elSec.textContent = slope.toFixed(3);
+  …
+}
+</code></pre></div>
+</div></section><section><h3>Put it in the book</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · The Manim-style interactive · step 4 of 4.</em> It enters the book like any interactive, in the same section as the video.</p>
+<p>From <code class="code-inline tex2jax_ignore">M13-Mehdi/source/directional-derivatives.ptx</code></p>
+<div class="code-box"><pre class="program"><code class="language-xml">&lt;figure xml:id="fig-int-dirderiv-secant-3d-manim"&gt;
+  &lt;caption&gt;
+    The secant through &lt;m&gt;(P_0, f(P_0))&lt;/m&gt; and &lt;m&gt;(P, f(P))&lt;/m&gt; on
+    the surface &lt;m&gt;z = 1 + x^2 + y^2&lt;/m&gt;, rotating onto the tangent
+    line at &lt;m&gt;P_0&lt;/m&gt; as &lt;m&gt;s \to 0&lt;/m&gt;, with slope
+    &lt;m&gt;2\sqrt2 + s \to 2\sqrt2&lt;/m&gt;.
+  &lt;/caption&gt;
+  &lt;interactive xml:id="interactive-dirderiv-secant-3d-manim"
+               iframe="dirderiv-secant-3d-manim.html"
+               width="100%" aspect="1:1"&gt;
+    &lt;instructions&gt;
+      &lt;p&gt;
+      Press &lt;q&gt;Play&lt;/q&gt; to watch the whole construction in one
+      continuous motion … The reading at the lower left compares the
+      secant slope &lt;m&gt;2\sqrt 2 + s&lt;/m&gt; with the tangent slope
+      &lt;m&gt;2\sqrt 2&lt;/m&gt;, which is the directional derivative
+      &lt;m&gt;\left(D_{\hat{u}} f\right)_{P_0}&lt;/m&gt;. …
+      &lt;/p&gt;
+…
+</code></pre></div>
+</div></section><section><h3>101 short animations, a sample of four</h3>
+<div align="left"><div style="display:table;margin-left:1%;margin-right:1%;" class="sidebyside">
+<div style="display:table-cell;width:23.469387755102%;vertical-align:top;">
+<div class="video-box" style="width: 100%;padding-top: 56.25%; margin-left: 0%; margin-right: 0%;"><video id="sec-math13-49-2-1-1" class="video" controls="" poster="external/videos/whispering-gallery.jpg"><source src="external/videos/whispering-gallery.mp4" type="video/mp4"></source>Your browser does not support the &lt;video&gt; tag.</video></div>
+<p>Whispering gallery · MATH 13</p>
+</div>
+<div style="display:table-cell;width:23.469387755102%;vertical-align:top;">
+<div class="video-box" style="width: 100%;padding-top: 56.25%; margin-left: 0%; margin-right: 0%;"><video id="sec-math13-49-2-2-1" class="video" controls="" poster="external/videos/small-angle.jpg"><source src="external/videos/small-angle.mp4" type="video/mp4"></source>Your browser does not support the &lt;video&gt; tag.</video></div>
+<p>How good is <span class="process-math">\(\sin\theta \approx \theta\text{?}\)</span> · MATH 13</p>
+</div>
+<div style="display:table-cell;width:23.469387755102%;vertical-align:top;">
+<div class="video-box" style="width: 100%;padding-top: 56.25%; margin-left: 0%; margin-right: 0%;"><video id="sec-math13-49-2-3-1" class="video" controls="" poster="external/videos/curl-circulation.jpg"><source src="external/videos/curl-circulation.mp4" type="video/mp4"></source>Your browser does not support the &lt;video&gt; tag.</video></div>
+<p>Curl as circulation · MATH 14</p>
+</div>
+<div style="display:table-cell;width:23.469387755102%;vertical-align:top;">
+<div class="video-box" style="width: 100%;padding-top: 56.25%; margin-left: 0%; margin-right: 0%;"><video id="sec-math13-49-2-4-1" class="video" controls="" poster="external/videos/green-proof.jpg"><source src="external/videos/green-proof.mp4" type="video/mp4"></source>Your browser does not support the &lt;video&gt; tag.</video></div>
+<p>Green’s theorem, the proof idea · MATH 14</p>
+</div>
+</div></div></section><section><h3>One script per video</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · Videos · step 1 of 3.</em> MATH 14 keeps a Python script for each video. Its docstring records what the video argues, what it leaves out, and how to run it.</p>
+<p>From <code class="code-inline tex2jax_ignore">MATH-14/scripts/make_green_proof_idea_video.py</code></p>
+<div class="code-box"><pre class="program" data-line="17"><code class="language-py">…
+integrals, and every line of the algebra in the written proof.  What is
+present is the chain of ideas that algebra exists to support:
+
+  1.  the statement: circulation around C, against the integral of the
+      k-component of the curl over the inside;
+  2.  that curl is circulation per unit area -- what one tiny rectangle says;
+  3.  chop R into such rectangles;
+  4.  add the circulation around every rectangle;
+  5.  every interior edge is travelled twice, once in each direction, so the
+      interior cancels in pairs;
+  6.  only the outer edges survive: the sum of the little circulations IS
+      the boundary integral, and the sum of (curl F . k) dA is the double
+      integral;
+  7.  the same bookkeeping the divergence theorem keeps, one dimension up.
+…
+Run with:  python3 scripts/make_green_proof_idea_video.py
+</code></pre></div>
+</div></section><section><h3>Where clips live</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · Videos · step 2 of 3.</em> Rendered clips sit in assets/videos with the other external files.</p>
+<p>From <code class="code-inline tex2jax_ignore">assets/videos</code></p>
+<div class="code-box"><pre class="program" data-line="2"><code class="language-none">MATH-14/assets/videos/
+  green_proof_idea_1080p.mp4      # placed in greens-theorem.ptx
+  curl_circulation_1080p.mp4
+  stokes_proof_idea_1080p.mp4
+  divergence_proof_idea_1080p.mp4
+  …                               # 43 clips in all
+M13-Mehdi/assets/videos/          # 58 clips
+</code></pre></div>
+</div></section><section><h3>Put one in the book</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · Videos · step 3 of 3.</em> <code class="code-inline tex2jax_ignore">&lt;video source&gt;</code> in a captioned figure; <code class="code-inline tex2jax_ignore">width</code> and <code class="code-inline tex2jax_ignore">aspect</code> size the player.</p>
+<p>From <code class="code-inline tex2jax_ignore">M13-Mehdi/source/Conics.ptx</code></p>
+<div class="code-box"><pre class="program"><code class="language-xml">&lt;figure xml:id="vid-whispering-gallery"&gt;
+  &lt;caption&gt;Animation: sound leaves one focus in many directions,
+  reflects off the wall, and reconverges at the other
+  focus&lt;mdash/&gt;every path the same length &lt;m&gt;2a&lt;/m&gt;.&lt;/caption&gt;
+  &lt;video xml:id="video-whispering-gallery"
+         source="videos/whispering_gallery_1080p.mp4"
+         width="90%" aspect="16:9"/&gt;
+&lt;/figure&gt;
+</code></pre></div>
+</div></section><section><h3>PreFigure: one figure for every reader</h3>
+<div align="left">
+<div style="display:table;margin-left:1%;margin-right:1%;" class="sidebyside">
+<div style="display:table-cell;width:55.1020408163265%;vertical-align:top;"><div class="image-box"><div class="ChemAccess-element" data-src="generated/prefigure/hyperbola-loran-diagcess.svg" data-cml="generated/prefigure/hyperbola-loran-annotations.xml"></div></div></div>
+<div style="display:table-cell;width:42.8571428571429%;vertical-align:top;">
+<p>LORAN navigation, from the conics section. Click the figure, then press <kbd class="kbdkey">↓</kbd> to step into its parts and <kbd class="kbdkey">←</kbd> <kbd class="kbdkey">→</kbd> to move between them: each part has a spoken description, and the curve can be heard.</p>
+<p>One source builds the web picture, the PDF, and a tactile graphic (next slide).</p>
+</div>
+</div>
+<details class="instructions diagcess__instructions"><summary>Diagram Exploration Keyboard Controls</summary><div class="diagcess-navigation-controls"><table>
+<thead><tr>
+<th>Key</th>
+<th>Action</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Enter, A</td>
+<td>Activate keyboard driven exploration</td>
+</tr>
+<tr>
+<td>B</td>
+<td>Activate menu driven exploration</td>
+</tr>
+<tr>
+<td>Escape</td>
+<td>Leave exploration mode</td>
+</tr>
+<tr>
+<td>Cursor down</td>
+<td>Explore next lower level</td>
+</tr>
+<tr>
+<td>Cursor up</td>
+<td>Explore next upper level</td>
+</tr>
+<tr>
+<td>Cursor right</td>
+<td>Explore next element on level</td>
+</tr>
+<tr>
+<td>Cursor left</td>
+<td>Explore previous element on level</td>
+</tr>
+<tr>
+<td>X</td>
+<td>Toggle expert mode</td>
+</tr>
+<tr>
+<td>W</td>
+<td>Extra details if available</td>
+</tr>
+<tr>
+<td>Space</td>
+<td>Repeat speech</td>
+</tr>
+<tr>
+<td>M</td>
+<td>Activate step magnification</td>
+</tr>
+<tr>
+<td>Comma</td>
+<td>Activate direct magnification</td>
+</tr>
+<tr>
+<td>N</td>
+<td>Deactivate magnification</td>
+</tr>
+<tr>
+<td>Z</td>
+<td>Toggle subtitles</td>
+</tr>
+<tr>
+<td>C</td>
+<td>Cycle contrast settings</td>
+</tr>
+<tr>
+<td>T</td>
+<td>Monochrome colours</td>
+</tr>
+<tr>
+<td>L</td>
+<td>Toggle language (if available)</td>
+</tr>
+<tr>
+<td>K</td>
+<td>Kill current sound</td>
+</tr>
+<tr>
+<td>Y</td>
+<td>Stop sound output</td>
+</tr>
+<tr>
+<td>O</td>
+<td>Start and stop sonification</td>
+</tr>
+<tr>
+<td>P</td>
+<td>Repeat sonification output</td>
+</tr>
+</tbody>
+</table></div></details>
+</div></section><section><h3>PreFigure: the same source, embossed</h3>
+<div align="left"><div style="display:table;margin-left:1%;margin-right:1%;" class="sidebyside">
+<div style="display:table-cell;width:57.1428571428571%;vertical-align:top;"><div class="image-box"><img src="external/images/loran-tactile.png" class="contained" alt="The LORAN figure as a tactile graphic: thick black curves and braille labels on a white page."></div></div>
+<div style="display:table-cell;width:40.8163265306122%;vertical-align:top;"><p><code class="code-inline tex2jax_ignore">prefig build -f tactile</code> turns the same diagram into an embossable page, with braille labels and the annotations kept.</p></div>
+</div></div></section><section><h3>Definitions first</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · PreFigure · step 1 of 5.</em> Inside <code class="code-inline tex2jax_ignore">&lt;image&gt;</code>, a <code class="code-inline tex2jax_ignore">&lt;prefigure&gt;</code> diagram starts with definitions: constants and functions in ordinary notation.</p>
+<p>From <code class="code-inline tex2jax_ignore">M13-Mehdi/source/Conics.ptx</code></p>
+<div class="code-box"><pre class="program" data-line="9,13,17"><code class="language-xml">&lt;figure xml:id="fig-hyperbola-loran"&gt;
+            &lt;caption&gt;Hyperbolic navigation. The measured delay places the unknown position
+        &lt;m&gt;A&lt;/m&gt; on the
+            solid hyperbola with foci at the receivers &lt;m&gt;P_1&lt;/m&gt; and &lt;m&gt;P_2&lt;/m&gt;; a
+        different delay
+      would place it on the dashed one instead.&lt;/caption&gt;
+      &lt;image width="65%"&gt;
+        &lt;prefigure xmlns="https://prefigure.org" label="hyperbola-loran"&gt;
+          &lt;diagram dimensions="(400,320)" margins="8"&gt;
+            &lt;definition&gt;cc = 3&lt;/definition&gt;
+            &lt;definition&gt;aa = 1.5&lt;/definition&gt;
+            &lt;definition&gt;bb = sqrt(cc^2 - aa^2)&lt;/definition&gt;
+            &lt;definition&gt;H(x,y) = x^2/aa^2 - y^2/bb^2&lt;/definition&gt;
+            &lt;definition&gt;aa2 = 0.7&lt;/definition&gt;
+            &lt;definition&gt;bb2 = sqrt(cc^2 - aa2^2)&lt;/definition&gt;
+            &lt;definition&gt;H2(x,y) = x^2/aa2^2 - y^2/bb2^2&lt;/definition&gt;
+            &lt;definition&gt;sP = 0.9&lt;/definition&gt;
+            &lt;coordinates bbox="(-5.0, -4.0, 5.0, 4.0)"&gt;
+</code></pre></div>
+</div></section><section><h3>Draw with mathematical objects</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · PreFigure · step 2 of 5.</em> Inside a coordinate box: an implicit curve H = 1, segments, points, and labels typeset as math. Each part gets an <code class="code-inline tex2jax_ignore">at</code> name.</p>
+<p>From <code class="code-inline tex2jax_ignore">M13-Mehdi/source/Conics.ptx</code></p>
+<div class="code-box"><pre class="program" data-line="3,8-9"><code class="language-xml">&lt;coordinates bbox="(-5.0, -4.0, 5.0, 4.0)"&gt;
+  &lt;implicit-curve at="locus2" function="H2" k="1" stroke="gray" thickness="1.5" dash="4 4"/&gt;
+  &lt;implicit-curve at="locus" function="H" k="1" stroke="blue" thickness="3"/&gt;
+  &lt;group at="signals"&gt;
+    &lt;line p1="(-cc,0)" p2="(aa*cosh(sP), bb*sinh(sP))" stroke="orange" thickness="2"/&gt;
+    &lt;line p1="(cc,0)" p2="(aa*cosh(sP), bb*sinh(sP))" stroke="green" thickness="2"/&gt;
+  &lt;/group&gt;
+  &lt;point at="ship" p="(aa*cosh(sP), bb*sinh(sP))" fill="red" size="4"/&gt;
+    &lt;label at="ship-label" anchor="(aa*cosh(sP), bb*sinh(sP))" alignment="ne"
+    offset="(6,2)"&gt;&lt;m&gt;A&lt;/m&gt;&lt;/label&gt;
+  &lt;point at="s2" p="(-cc,0)" fill="black" size="4"/&gt;
+  &lt;label at="sB-label" anchor="(-cc,0)" alignment="s" offset="(-6,-8)"&gt;&lt;m&gt;P_2&lt;/m&gt;&lt;/label&gt;
+  &lt;point at="s1" p="(cc,0)" fill="black" size="4"/&gt;
+  &lt;label at="sA-label" anchor="(cc,0)" alignment="s" offset="(4,-8)"&gt;&lt;m&gt;P_1&lt;/m&gt;&lt;/label&gt;
+    &lt;label at="locus-label" anchor="(3.75,-2.6)"
+    alignment="center"&gt;&lt;m&gt;|r_2-r_1|=2a&lt;/m&gt;&lt;/label&gt;
+  &lt;label at="r2-label" anchor="(-1.2,0.93)" alignment="n" offset="(0,6)"&gt;&lt;m&gt;r_2&lt;/m&gt;&lt;/label&gt;
+  &lt;label at="r1-label" anchor="(2.586,1.3)" alignment="e" offset="(6,0)"&gt;&lt;m&gt;r_1&lt;/m&gt;&lt;/label&gt;
+…
+</code></pre></div>
+</div></section><section><h3>Describe every part</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · PreFigure · step 3 of 5.</em> The annotations form a tree over those names, from the whole figure to each part. A screen-reader user walks it with the arrow keys; <code class="code-inline tex2jax_ignore">sonify="yes"</code> makes a curve audible.</p>
+<p>From <code class="code-inline tex2jax_ignore">M13-Mehdi/source/Conics.ptx</code></p>
+<div class="code-box"><pre class="program" data-line="8"><code class="language-xml">&lt;annotations&gt;
+  &lt;annotation ref="locus"
+            text="Hyperbolic navigation: a fixed difference in signal arrival times from two
+        receivers places the unknown position A on a hyperbola whose foci are the
+        receivers"&gt;
+    &lt;annotation ref="locus"
+                text="The hyperbola of all positions having the measured time difference
+          from receivers P one and P two" sonify="yes"/&gt;
+    &lt;annotation ref="locus2"
+                text="A second dashed hyperbola, the locus for a different time difference,
+          showing that each delay picks out its own curve"/&gt;
+    &lt;annotation ref="signals"
+                text="Two signal paths, of length r one from receiver P one and length r two
+          from receiver P two, meeting at the point A"/&gt;
+        &lt;annotation ref="ship" text="The unknown position A, somewhere on the locus, closer
+      to P one"/&gt;
+    &lt;annotation ref="s1" text="Receiver P one, the nearer focus"/&gt;
+    &lt;annotation ref="s2" text="Receiver P two, the farther focus"/&gt;
+…
+</code></pre></div>
+</div></section><section><h3>Build every version</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · PreFigure · step 4 of 5.</em> The PreTeXt build makes the diagrams; <code class="code-inline tex2jax_ignore">prefig</code> builds a single diagram, including the tactile version.</p>
+<p>From <em class="emphasis">Terminal</em></p>
+<div class="code-box"><pre class="program" data-line="3,7"><code class="language-none"># inside the project, the build makes every diagram
+pretext build web
+pretext generate prefigure     # rebuild the diagrams on demand
+
+# one diagram on its own, as for this talk's tactile image
+prefig build loran.xml               # the SVG for the web
+prefig build -f tactile loran.xml    # the version for an embosser
+
+# requirements.txt pins prefig == 0.6.7: without it CI emits plain
+# SVGs and no -diagcess variants, which the web pages reference
+</code></pre></div>
+</div></section><section><h3>Four things that tripped us up</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · PreFigure · step 5 of 5.</em> Small rules that save an afternoon each.</p>
+<p>From <em class="emphasis">Notes from this project</em></p>
+<div class="code-box"><pre class="program" data-line="2,6,8-9,12"><code class="language-xml">&lt;!-- less-than inside a math label --&gt;
+&lt;label anchor="(0,1)"&gt;&lt;m&gt;a \mathrel{\unicode{x3C}} b&lt;/m&gt;&lt;/label&gt;
+
+&lt;!-- no single-letter names n, s, e, w: they collide with the
+     compass words used for label alignment (hence sP, not s) --&gt;
+&lt;definition&gt;sP = 0.9&lt;/definition&gt;
+
+&lt;!-- TikZ inside a latex-image goes in CDATA --&gt;
+&lt;latex-image&gt;&lt;![CDATA[ \begin{tikzpicture} … \end{tikzpicture} ]]&gt;&lt;/latex-image&gt;
+
+&lt;!-- tactile mode wants whole-number line thickness --&gt;
+&lt;implicit-curve function="H2" k="1" thickness="2"/&gt;
+</code></pre></div>
+</div></section><section><h2>MATH 14: Calculus and Analytic Geometry IV</h2></section><section><h3>Vector calculus with practice built in</h3>
+<div align="left">
+<p>Curves and arc length, line integrals and vector fields, multiple integrals, and the theorems of Green, Stokes, and Gauss.</p>
+<div class="tabular-box natural-width"><table class="tabular">
+<tr>
+<td class="c m b1 r0 l0 t0 lines">144</td>
+<td class="c m b1 r0 l0 t0 lines">34</td>
+<td class="c m b1 r0 l0 t0 lines">43</td>
+<td class="c m b1 r0 l0 t0 lines">231</td>
+</tr>
+<tr>
+<td class="c m b0 r0 l0 t0 lines">diagrams</td>
+<td class="c m b0 r0 l0 t0 lines">live figures</td>
+<td class="c m b0 r0 l0 t0 lines">animations</td>
+<td class="c m b0 r0 l0 t0 lines">exercises</td>
+</tr>
+<tr>
+<td class="c m b0 r0 l0 t0 lines">PreFigure</td>
+<td class="c m b0 r0 l0 t0 lines">Three.js, GeoGebra</td>
+<td class="c m b0 r0 l0 t0 lines">Manim</td>
+<td class="c m b0 r0 l0 t0 lines">many self-checking</td>
+</tr>
+</table></div>
+</div></section><section><h3>The line integral as the area of a wall</h3>
+<div align="left"><div style="display:table;margin-left:1%;margin-right:1%;" class="sidebyside">
+<div style="display:table-cell;width:51.0204081632653%;vertical-align:top;">
+<div class="interactive-iframe-container">
+<iframe src="external/wall-area-manim.html" id="int-slide-wall" style="max-width: 50%; width: 100%; aspect-ratio:1" title="described in detail following the image" aria-describedby="int-slide-wall-description"></iframe><details class="image-description" aria-live="polite"><summary title="details"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe88e;</span></summary><div id="int-slide-wall-description"><p>A wall of height f(x, y) = 2 + x squared y standing on the upper unit semicircle, built step by step, then approximated by slabs.</p></div></details>
+</div>
+<div class="interactive-iframe-container__opener"><a href="int-slide-wall.html" title="Open in new tab" aria-label="Open in new tab" target="_blank"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe89e;</span></a></div>
+</div>
+<div style="display:table-cell;width:46.9387755102041%;vertical-align:top;"><p>Press Play, or step through Surface, Base, Top, and Slabs. The slabs are a Riemann sum; it approaches the exact area <span class="process-math">\(2\pi + \tfrac23 \approx 6.9499\text{.}\)</span></p></div>
+</div></div></section><section><h3>The example in code</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · The wall figure · step 1 of 3.</em> The figure codes the book’s example: <span class="process-math">\(f(x, y) = 2 + x^2 y\)</span> over the upper unit semicircle, exact area <span class="process-math">\(2\pi + 2/3\text{.}\)</span> The comment lists what to change for another wall.</p>
+<p>From <code class="code-inline tex2jax_ignore">MATH-14/assets/wall-area-manim.html</code></p>
+<div class="code-box"><pre class="program" data-line="9,14"><code class="language-javascript">// ---------- the example ----------
+// The wall stands on C: r(t) = (cos t, sin t), 0 &lt;= t &lt;= pi, and reaches up to
+// the graph of f. Since |r'(t)| = 1, ds = dt, and its area is
+//   int_C f ds = int_0^pi (2 + cos^2 t sin t) dt = 2 pi + 2/3.
+// To show another wall: change f, the curve (onBase, TMAX), EXACT, the
+// surface's domain (RS, in step 1 below), and the text of the card, the
+// meter and the tour captions to match. The slabs use the lengths of the
+// chords themselves, so their sum needs no change for another curve.
+function f(x, y) { return 2 + x * x * y; }
+var TMAX = Math.PI;
+function height(t) { return f(Math.cos(t), Math.sin(t)); }
+function onBase(t, z) { return new THREE.Vector3(Math.cos(t), Math.sin(t), z || 0); }
+function onTop(t) { return onBase(t, height(t)); }
+var EXACT = 2 * Math.PI + 2 / 3;
+var NMAX = 64;
+</code></pre></div>
+</div></section><section><h3>Slabs are a Riemann sum</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · The wall figure · step 2 of 3.</em> <span class="process-math">\(n\)</span> chords, each carrying a slab as tall as the wall at its left end. Their areas add up to <span class="process-math">\(\sum f\bigl(x(t_k), y(t_k)\bigr)\,\Delta s\text{,}\)</span> computed for <span class="process-math">\(n = 1\)</span> to <span class="process-math">\(64\text{.}\)</span></p>
+<p>From <code class="code-inline tex2jax_ignore">MATH-14/assets/wall-area-manim.html</code></p>
+<div class="code-box"><pre class="program" data-line="14"><code class="language-javascript">// Mark n + 1 points on C, at t = k pi / n, and join neighbours by chords.
+// Each chord, of length ds, stands in for the arc of C between its ends,
+// and its slab is a flat panel standing on it, as tall as the wall at the
+// chord's left end, as in the book: f(x(t_k), y(t_k)).
+function slabsFor(n) {
+  var pts = [], h = [];
+  for (var k = 0; k &lt;= n; k++) pts.push(onBase(k * TMAX / n));
+  for (k = 0; k &lt; n; k++) h.push(height(k * TMAX / n));
+  return { pts: pts, h: h };
+}
+// the total area of the slabs: the sum of f(x(t_k), y(t_k)) ds
+function total(sl) {
+  var s = 0;
+  for (var k = 0; k &lt; sl.h.length; k++) s += sl.h[k] * sl.pts[k].distanceTo(sl.pts[k + 1]);
+  return s;
+}
+var SUMS = [NaN];
+for (var i0 = 1; i0 &lt;= NMAX; i0++) SUMS.push(total(slabsFor(i0)));
+</code></pre></div>
+</div></section><section><h3>Put it in the book</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · The wall figure · step 3 of 3.</em> A captioned figure whose caption cites the example it animates.</p>
+<p>From <code class="code-inline tex2jax_ignore">MATH-14/source/section-line-integrals.ptx</code></p>
+<div class="code-box"><pre class="program"><code class="language-xml">&lt;figure xml:id="fig-wall-area-manim"&gt;
+  &lt;caption&gt;
+    The wall of &lt;xref ref="ex-wall-half-circle"/&gt;, animated: the
+    graph of &lt;m&gt;z = f(x,y) = 2 + x^2 y&lt;/m&gt; (blue), the base of the
+    wall … and has the height &lt;m&gt;f\left(x(t_k),y(t_k)\right)&lt;/m&gt;
+    of the wall at the chord's left end.
+  &lt;/caption&gt;
+  &lt;interactive xml:id="interactive-wall-area-manim"
+               iframe="wall-area-manim.html"
+               width="100%" aspect="1:1"&gt;
+    …
+  &lt;/interactive&gt;
+&lt;/figure&gt;
+</code></pre></div>
+</div></section><section><h3>A clickable map of the whole course</h3>
+<div align="left">
+<div class="interactive-iframe-container">
+<iframe src="external/brain-map.html" id="int-slide-brain-map" style="max-width: 84%; width: 100%; aspect-ratio:1.777777777777778" title="described in detail following the image" aria-describedby="int-slide-brain-map-description"></iframe><details class="image-description" aria-live="polite"><summary title="details"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe88e;</span></summary><div id="int-slide-brain-map-description"><p>A map of the integrals of the course: each topic is a node, and arrows connect each topic to the ones that build on it.</p></div></details>
+</div>
+<div class="interactive-iframe-container__opener"><a href="int-slide-brain-map.html" title="Open in new tab" aria-label="Open in new tab" target="_blank"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe89e;</span></a></div>
+</div></section><section><h3>Topics as data</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · The course map · step 1 of 4.</em> Each topic is a record: position, title, formula in TeX (rendered with KaTeX), and the page of the book it links to.</p>
+<p>From <code class="code-inline tex2jax_ignore">MATH-14/assets/brain-map.html</code></p>
+<div class="code-box"><pre class="program" data-line="6,10"><code class="language-javascript">// Every node links to the page of the book where the topic lives.  The hrefs
+// are relative to external/ (where this file is deployed), so ../foo.html is
+// foo.html at the root of the built site; target '_parent' escapes the iframe.
+const NODES = [
+    { id:'hub-line', x:56, y:470, w:230, hub:'Line integrals', hubSize:36, gold:true,
+    rule:true, href:'../ch-curves-and-fields.html' },
+  { id:'param-curve', x:56, y:660, w:250, t:'Parametrizing the curve', tSize:21,
+        m:[["\\mathbf r(t)=x(t)\\,\\mathbf i+y(t)\\,\\mathbf j+z(t)\\,\\mathbf k,\\ \\ a\\le
+      t\\le b",13.5],["\\mathbf v(t)=\\tfrac{d\\mathbf r}{dt}",13.5]],
+      href:'../sec-parametrization.html' },
+  …
+];
+</code></pre></div>
+</div></section><section><h3>Arrows as data</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · The course map · step 2 of 4.</em> Each arrow names two topics; <code class="code-inline tex2jax_ignore">'gold'</code> marks a theorem or substitution that bridges two kinds of integral.</p>
+<p>From <code class="code-inline tex2jax_ignore">MATH-14/assets/brain-map.html</code></p>
+<div class="code-box"><pre class="program" data-line="8,10-13"><code class="language-javascript">// Third entry marks the gold bridges: a theorem (or a coordinate substitution)
+// trading an integral over a boundary for an integral over what it bounds.
+// The four theorems that start from a line integral all leave from the
+// Line integrals hub, so hovering it lights every bridge out of it.
+const EDGES = [
+    ['param-curve','hub-line'], ['hub-line','arclength'], ['hub-line','scalar'],
+    ['hub-line','work'],
+  ['hub-line','ftc','gold'],
+  ['scalar','wall'], ['scalar','wire'],
+    ['hub-line','green-circ','gold'], ['hub-line','stokes','gold'],
+    ['hub-line','green-flux','gold'],
+  ['green-circ','dbl','gold'], ['green-flux','dbl','gold'],
+  ['stokes','surf','gold'], ['surf','divergence','gold'], ['divergence','tri','gold'],
+  ['param','surf'],
+  ['dbl','dbl-cart'], ['dbl','dbl-polar'], ['dbl','dbl-sub'],
+  ['tri','tri-cart'], ['tri','tri-cyl'], ['tri','tri-sph'], ['tri','tri-sub']
+</code></pre></div>
+</div></section><section><h3>Light up the neighbours</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · The course map · step 3 of 4.</em> Hovering a topic adds a class to its arrows and neighbours; the stylesheet does the rest.</p>
+<p>From <code class="code-inline tex2jax_ignore">MATH-14/assets/brain-map.html</code></p>
+<div class="code-box"><pre class="program" data-line="8,10"><code class="language-javascript">// hovering a topic lights up its connections and neighbours
+for (const n of NODES) {
+  const el = stage.querySelector('[data-node="' + n.id + '"]');
+  const inc = touching[n.id];
+  if (!inc) continue;
+  el.addEventListener('mouseenter', () =&gt; {
+    svg.classList.add('focus'); stage.classList.add('focus');
+    for (const p of inc.paths) p.classList.add('hi');
+        for (const id of inc.nodes) stage.querySelector('[data-node="' + id +
+      '"]').classList.add('hi');
+  });
+  el.addEventListener('mouseleave', () =&gt; {
+    …
+  });
+}
+</code></pre></div>
+</div></section><section><h3>Put it in the front matter</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · The course map · step 4 of 4.</em> The map has its own file in the front matter; <code class="code-inline tex2jax_ignore">&lt;static&gt;</code> gives the PDF a sentence in its place.</p>
+<p>From <code class="code-inline tex2jax_ignore">MATH-14/source</code></p>
+<div class="code-box"><pre class="program"><code class="language-xml">&lt;!-- source/frontmatter.ptx --&gt;
+&lt;xi:include href="subsec-brain-map.ptx" /&gt;
+
+&lt;!-- source/subsec-brain-map.ptx --&gt;
+&lt;preface xml:id="subsec-brain-map"&gt;
+  &lt;title&gt;The big picture&lt;/title&gt;
+  &lt;p&gt;
+    The map below gathers every integral of this book on one page. …
+    For comfortable reading, &lt;url href="external/brain-map.html"
+    visual=""&gt;open the map full size in a new tab&lt;/url&gt;.
+  &lt;/p&gt;
+  &lt;interactive xml:id="brain-map" iframe="brain-map.html"
+               width="100%" aspect="16:9"&gt;
+    &lt;instructions&gt;
+      &lt;p&gt;
+        Each node of the map is a topic of the course, and each arrow
+        connects a topic to the ones that build on it; … click it to
+        jump to the part of the book where it is covered.
+…
+</code></pre></div>
+</div></section><section><h3>Skeletal notes: fill it in during class, read it complete after</h3>
+<div align="left">
+<ol class="decimal" id="sec-math14-12-2">
+<li><p><em class="alert">Before class.</em> Students open or print the skeletal notes: definitions and set-ups are there, the work is left blank.</p></li>
+<li><p><em class="alert">In class.</em> We do the derivations together and students write in the workspace boxes.</p></li>
+<li><p><em class="alert">After class.</em> One click posts the completed notes: the same section with the work done and the checkpoints interactive.</p></li>
+</ol>
+</div></section><section><h3>In class: the skeletal notes</h3>
+<div align="left">
+<p>The <dfn class="terminology">hyperbolic cosine</dfn> and <dfn class="terminology">hyperbolic sine</dfn> are defined as<div class="displaymath process-math" id="sec-math14-13-2-3">
+\begin{equation*}
+\cosh x = \frac{e^x + e^{-x}}{2}, \qquad \sinh x = \frac{e^x - e^{-x}}{2}.
+\end{equation*}
+</div></p>
+<p>Find the derivatives <span class="process-math">\(\dfrac{d}{dx}(\cosh x)\)</span> and <span class="process-math">\(\dfrac{d}{dx}(\sinh x)\)</span> by differentiating the two definitions.</p>
+<div class="image-box" style="width: 92%; margin-left: 4%; margin-right: 4%;"><img src="external/images/workspace.svg" class="contained" alt="Blank workspace for a handwritten derivation."></div>
+<p><em class="alert">Checkpoint.</em> True or False: the parametrization <span class="process-math">\(x = -\cosh t\text{,}\)</span> <span class="process-math">\(y = -\sinh t\text{,}\)</span> <span class="process-math">\(t \in \R\text{,}\)</span> also traces the left branch of <span class="process-math">\(x^2 - y^2 = 1\text{.}\)</span> Your answer and reasoning.</p>
+</div></section><section><h3>After class: the completed notes</h3>
+<div align="left">
+<p>The <dfn class="terminology">hyperbolic cosine</dfn> and <dfn class="terminology">hyperbolic sine</dfn> are defined as<div class="displaymath process-math" id="sec-math14-14-2-3">
+\begin{equation*}
+\cosh x = \frac{e^x + e^{-x}}{2}, \qquad \sinh x = \frac{e^x - e^{-x}}{2}.
+\end{equation*}
+</div></p>
+<p>The derivatives are<div class="displaymath process-math" id="sec-math14-14-3-1">
+\begin{align*}
+\frac{d}{dx}(\cosh x) \amp = \sinh x\\
+\frac{d}{dx}(\sinh x) \amp = \cosh x
+\end{align*}
+</div>Both follow directly from the definitions, since <span class="process-math">\(\frac{d}{dx}e^x = e^x\)</span> and <span class="process-math">\(\frac{d}{dx}e^{-x} = -e^{-x}\text{.}\)</span></p>
+<p><em class="alert">Checkpoint.</em> In the web book the same checkpoint is an interactive True/False question with the book’s explanation.</p>
+</div></section><section><h3>Two books, the same sections</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · Skeletal notes · step 1 of 4.</em> The skeletal notes are a second PreTeXt book whose sections mirror the completed notes, with the work taken out.</p>
+<p>From <em class="emphasis">Repositories</em></p>
+<div class="code-box"><pre class="program" data-line="1,4"><code class="language-none">M13-Mehdi/source/                  the completed notes
+  ch-7-3.ptx                       Hyperbolic Functions
+  Conics.ptx, QuadricSurface.ptx, …
+M13-Skeletal-Notes/source/         the fill-in notes, same sections
+  ch-hyperbolic-skeletal.ptx       Hyperbolic Functions (Skeletal Notes)
+  sec-skel-geom-conics.ptx, …
+  assignment-1-hyperbolic.ptx …    the assignments live here too
+</code></pre></div>
+</div></section><section><h3>Leave room to write</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · Skeletal notes · step 2 of 4.</em> Where students will write: a blank rounded box drawn in TikZ with <code class="code-inline tex2jax_ignore">&lt;latex-image&gt;</code>, so the printed handout has the room.</p>
+<p>From <code class="code-inline tex2jax_ignore">M13-Mehdi/source/ch-hyperbolic-skeletal.ptx</code></p>
+<div class="code-box"><pre class="program" data-line="8,10"><code class="language-xml">&lt;p&gt;
+Find the derivatives &lt;m&gt;\dfrac{d}{dx}(\cosh x)&lt;/m&gt; and
+&lt;m&gt;\dfrac{d}{dx}(\sinh x)&lt;/m&gt; by differentiating the two definitions.
+&lt;/p&gt;
+
+&lt;sidebyside width="97%"&gt;
+&lt;image&gt;
+&lt;latex-image&gt;
+\begin{tikzpicture}
+\draw[rounded corners=8pt, draw=gray!55, thick] (0,0) rectangle (15,4.5);
+\node[anchor=north west, text=gray!60, font=\footnotesize\itshape]
+  at (0.25,4.25) {workspace};
+\end{tikzpicture}
+&lt;/latex-image&gt;
+&lt;shortdescription&gt;Blank workspace for a handwritten derivation.&lt;/shortdescription&gt;
+&lt;/image&gt;
+&lt;/sidebyside&gt;
+</code></pre></div>
+</div></section><section><h3>Post a chapter</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · Skeletal notes · step 3 of 4.</em> A chapter waits in <code class="code-inline tex2jax_ignore">main.ptx</code> inside an UNPOSTED comment; posting deletes the wrapper, and the site rebuilds on push.</p>
+<p>From <code class="code-inline tex2jax_ignore">M13-Skeletal-Notes/source/main.ptx</code></p>
+<div class="code-box"><pre class="program" data-line="11,17"><code class="language-xml"> &lt;xi:include href="frontmatter.ptx" /&gt;
+&lt;!-- &lt;xi:include href="introduction.ptx" /&gt; --&gt;
+
+ &lt;!-- Chapter 1: skeletal (fill-in) notes, 7.3 Hyperbolic Functions --&gt;
+ &lt;xi:include href="ch-hyperbolic-skeletal.ptx" /&gt;
+ &lt;!-- Chapter 2: skeletal (fill-in) notes, Series and Sequences --&gt;
+ &lt;xi:include href="ch-series-skeletal.ptx" /&gt;
+ &lt;!-- Chapter 3: skeletal (fill-in) notes, 3D Space and Vector Algebra --&gt;
+ &lt;xi:include href="ch-geometry-skeletal.ptx" /&gt;
+ &lt;!-- Chapter 4: skeletal (fill-in) notes, Functions of Multiple Variables --&gt;
+  &lt;!-- UNPOSTED &lt;xi:include href="ch-functions-multiple-variables-skeletal.ptx" /&gt; UNPOSTED
+   --&gt;
+ &lt;!-- Chapter 5: the problem sets --&gt;
+ &lt;xi:include href="exercises.ptx" /&gt;
+ &lt;!-- Placeholder, in the book only while everything else is unposted;
+      scripts/desk_action.py toggles it automatically. --&gt;
+ &lt;!-- UNPOSTED &lt;xi:include href="ch-coming-soon.ptx" /&gt; UNPOSTED --&gt;
+</code></pre></div>
+</div></section><section><h3>Let a script do it</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · Skeletal notes · step 4 of 4.</em> The Posting Desk makes that edit with a script: find the wrapped include, put the bare include back, then validate and commit.</p>
+<p>From <code class="code-inline tex2jax_ignore">M13-Mehdi/scripts/desk_action.py</code></p>
+<div class="code-box"><pre class="program" data-line="3-4,13"><code class="language-py">def wrapped_re(href):
+    return re.compile(
+        r'&lt;!--\s*UNPOSTED(?:-WITH topic="([^"]*)")?\s+'
+        r'(&lt;xi:include\s+href="\.?/?%s"\s*/&gt;)\s+UNPOSTED\s*--&gt;' % re.escape(href)
+    )
+…
+def post_include(path, href):
+    """Unwrap one include.  Returns 'done', 'already', or 'absent'."""
+    text = read(path)
+    m = wrapped_re(href).search(text)
+    if m is None:
+        return "already" if inc_re(href).search(text) else "absent"
+    write(path, text[: m.start()] + m.group(2) + text[m.end():])
+    return "done"
+</code></pre></div>
+</div></section><section><h3>The derivation, filled in</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · The completed notes · step 1 of 3.</em> After class the completed section has the work done, with each formula numbered so later pages can cite it.</p>
+<p>From <code class="code-inline tex2jax_ignore">M13-Mehdi/source/ch-7-3.ptx</code></p>
+<div class="code-box"><pre class="program" data-line="5-6"><code class="language-xml">&lt;p&gt;
+The derivatives are given as follows.
+
+&lt;md&gt;
+&lt;mrow xml:id="eq-hyp-dcosh"&gt;\frac{d}{dx}(\cosh x) \amp = \sinh x&lt;/mrow&gt;
+&lt;mrow xml:id="eq-hyp-dsinh"&gt;\frac{d}{dx}(\sinh x) \amp = \cosh x&lt;/mrow&gt;
+&lt;/md&gt;
+&lt;/p&gt;
+
+&lt;p&gt;
+Both formulas follow directly from the definitions, since
+&lt;m&gt;\frac{d}{dx}e^x = e^x&lt;/m&gt; and &lt;m&gt;\frac{d}{dx}e^{-x} = -e^{-x}&lt;/m&gt;.
+&lt;/p&gt;
+</code></pre></div>
+</div></section><section><h3>An interactive checkpoint</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · The completed notes · step 2 of 3.</em> <code class="code-inline tex2jax_ignore">&lt;statement correct="yes"&gt;</code> makes the checkpoint a True/False question; <code class="code-inline tex2jax_ignore">&lt;feedback&gt;</code> explains it after students answer.</p>
+<p>From <code class="code-inline tex2jax_ignore">M13-Mehdi/source/ch-7-3.ptx</code></p>
+<div class="code-box"><pre class="program"><code class="language-xml">&lt;exercise xml:id="checkpoint-hyp-left-branch-downward"&gt;
+&lt;title&gt;True or False&lt;/title&gt;
+&lt;statement correct="yes"&gt;
+&lt;p&gt;
+The parametrization &lt;m&gt;x = -\cosh t&lt;/m&gt;, &lt;m&gt;y = -\sinh t&lt;/m&gt;,
+&lt;m&gt;t \in \R&lt;/m&gt;, also traces the left branch of &lt;m&gt;x^2 - y^2 = 1&lt;/m&gt;.
+&lt;/p&gt;
+&lt;p&gt;
+Justify your answer fully: give a proof if the statement is true, or a
+counterexample if it is false.
+&lt;/p&gt;
+&lt;/statement&gt;
+&lt;feedback&gt;
+&lt;p&gt;
+Every such point lies on the hyperbola, since
+&lt;md&gt;(-\cosh t)^2 - (-\sinh t)^2 = \cosh^2 t - \sinh^2 t = 1,&lt;/md&gt;
+and on its left branch, since &lt;m&gt;-\cosh t \leq -1&lt;/m&gt;. …
+&lt;/p&gt;
+…
+</code></pre></div>
+</div></section><section><h3>The same checkpoint, skeletal</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · The completed notes · step 3 of 3.</em> In the skeletal notes the checkpoint asks for an answer and reasons, with a workspace box instead of buttons.</p>
+<p>From <code class="code-inline tex2jax_ignore">M13-Mehdi/source/ch-hyperbolic-skeletal.ptx</code></p>
+<div class="code-box"><pre class="program" data-line="3"><code class="language-xml">&lt;exercise xml:id="skel-checkpoint-hyp-left-branch-downward"&gt;
+&lt;title&gt;True or False&lt;/title&gt;
+&lt;statement&gt;
+&lt;p&gt;
+The parametrization &lt;m&gt;x = -\cosh t&lt;/m&gt;, &lt;m&gt;y = -\sinh t&lt;/m&gt;,
+&lt;m&gt;t \in \R&lt;/m&gt;, also traces the left branch of &lt;m&gt;x^2 - y^2 = 1&lt;/m&gt;.
+&lt;/p&gt;
+
+&lt;p&gt;
+&lt;em&gt;True or false? Your answer and reasoning.&lt;/em&gt;
+&lt;/p&gt;
+
+&lt;sidebyside width="97%"&gt;
+&lt;image&gt;
+&lt;latex-image&gt;
+\begin{tikzpicture}
+\draw[rounded corners=8pt, draw=gray!55, thick] (0,0) rectangle (15,4);
+\node[anchor=north west, text=gray!60, font=\footnotesize\itshape]
+…
+</code></pre></div>
+</div></section><section><h3>Exercises that check themselves</h3>
+<div align="left"><div style="display:table;margin-left:1%;margin-right:1%;" class="sidebyside">
+<div style="display:table-cell;width:59.1836734693878%;vertical-align:top;"><div class="image-box"><img src="external/images/checkme.png" class="contained" alt="Assignment 1, Problem 1 in the web book after a typical attempt: x(t) and y(t) marked correct, z(t) and the upper limit of t marked incorrect, 2 of 4 boxes correct."></div></div>
+<div style="display:table-cell;width:38.7755102040816%;vertical-align:top;">
+<p>Numbers within a tolerance, expressions like <code class="code-inline tex2jax_ignore">4cos(t)^2</code>, or words.</p>
+<p>Each box earns its own credit; check as often as you like.</p>
+<p>After the due date the worked solution appears under the problem.</p>
+<p><a class="external" href="https://mahmadi-ops.github.io/MATH14-Skeletal/sec-exercises-hw1-online.html" target="_blank">Assignment 1 in the book</a></p>
+</div>
+</div></div></section><section><h3>Boxes in the statement</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · Check me · step 1 of 5.</em> Each <code class="code-inline tex2jax_ignore">&lt;var/&gt;</code> in the statement becomes an answer box, in order; <code class="code-inline tex2jax_ignore">width</code> sets its size.</p>
+<p>From <code class="code-inline tex2jax_ignore">MATH14-Skeletal/source/hw1-online.ptx</code></p>
+<div class="code-box"><pre class="program" data-line="11-13,15"><code class="language-xml">&lt;exercise xml:id="ex-hw1o-parametrize-intersection"&gt;
+  &lt;title&gt;Parametrizing a Curve of Intersection&lt;/title&gt;
+  &lt;statement&gt;
+    &lt;p&gt;
+      The curve &lt;m&gt;C&lt;/m&gt; is the intersection of the cylinder
+      &lt;m&gt;x^2 + y^2 = 1&lt;/m&gt; and the surface &lt;m&gt;z = 4x^2&lt;/m&gt;. Parametrize
+      &lt;m&gt;C&lt;/m&gt; by filling in the three components below, using the
+      standard parametrization of the unit circle for the shadow of
+      &lt;m&gt;C&lt;/m&gt; in the &lt;m&gt;xy&lt;/m&gt;-plane.
+    &lt;/p&gt;
+    &lt;p&gt;&lt;m&gt;x(t) =&lt;/m&gt; &lt;var width="14"/&gt;&lt;/p&gt;
+    &lt;p&gt;&lt;m&gt;y(t) =&lt;/m&gt; &lt;var width="14"/&gt;&lt;/p&gt;
+    &lt;p&gt;&lt;m&gt;z(t) =&lt;/m&gt; &lt;var width="14"/&gt;&lt;/p&gt;
+    &lt;p&gt;
+      The parameter &lt;m&gt;t&lt;/m&gt; runs from &lt;m&gt;0&lt;/m&gt; to &lt;var width="8"/&gt;,
+      which traces &lt;m&gt;C&lt;/m&gt; exactly once.
+    &lt;/p&gt;
+  &lt;/statement&gt;
+</code></pre></div>
+</div></section><section><h3>What counts as right</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · Check me · step 2 of 5.</em> In <code class="code-inline tex2jax_ignore">&lt;setup&gt;</code>, the matching <code class="code-inline tex2jax_ignore">&lt;var&gt;</code> lists conditions, checked in order. A <code class="code-inline tex2jax_ignore">string</code> is a regular expression: <code class="code-inline tex2jax_ignore">\s*</code> allows spaces, and <code class="code-inline tex2jax_ignore">case="insensitive"</code> accepts COS(t).</p>
+<p>From <code class="code-inline tex2jax_ignore">MATH14-Skeletal/source/hw1-online.ptx</code></p>
+<div class="code-box"><pre class="program" data-line="2-3,8,14-15"><code class="language-xml">   &lt;setup&gt;
+     &lt;var case="insensitive"&gt;
+       &lt;condition string="cos\s*\(\s*t\s*\)"&gt;
+         &lt;feedback&gt;
+  &lt;p&gt;Correct.&lt;/p&gt;
+&lt;/feedback&gt;
+       &lt;/condition&gt;
+       &lt;condition string="sin\s*\(\s*t\s*\)"&gt;
+         &lt;feedback&gt;
+         &lt;p&gt;Incorrect.&lt;/p&gt;
+       &lt;/feedback&gt;
+       &lt;/condition&gt;
+     &lt;/var&gt;
+     &lt;var case="insensitive"&gt;
+       &lt;condition string="sin\s*\(\s*t\s*\)"&gt;
+         &lt;feedback&gt;
+         &lt;p&gt;Correct.&lt;/p&gt;
+       &lt;/feedback&gt;
+…
+</code></pre></div>
+</div></section><section><h3>Catch the likely mistakes</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · Check me · step 3 of 5.</em> Later conditions recognize particular wrong answers, such as <span class="process-math">\(4\sin^2(t)\)</span> for <span class="process-math">\(z(t)\)</span> or <span class="process-math">\(\pi\)</span> instead of <span class="process-math">\(2\pi\text{.}\)</span> Numbers match within a <code class="code-inline tex2jax_ignore">tolerance</code>.</p>
+<p>From <code class="code-inline tex2jax_ignore">MATH14-Skeletal/source/hw1-online.ptx</code></p>
+<div class="code-box"><pre class="program" data-line="4,16"><code class="language-xml">…
+    &lt;/feedback&gt;
+    &lt;/condition&gt;
+    &lt;condition string="4\s*\*?\s*(sin\s*\(\s*t\s*\)\s*\^\s*2|sin\s*\^\s*2\s*\(\s*t\s*\))"&gt;
+      &lt;feedback&gt;
+      &lt;p&gt;Incorrect.&lt;/p&gt;
+    &lt;/feedback&gt;
+    &lt;/condition&gt;
+    &lt;condition string="cos\s*\(\s*t\s*\)\s*\^\s*2"&gt;
+      &lt;feedback&gt;
+      &lt;p&gt;Incorrect.&lt;/p&gt;
+    &lt;/feedback&gt;
+    &lt;/condition&gt;
+  &lt;/var&gt;
+  &lt;var&gt;
+    &lt;condition number="6.283" tolerance="0.005"&gt;
+      &lt;feedback&gt;
+      &lt;p&gt;Correct.&lt;/p&gt;
+    &lt;/feedback&gt;
+…
+</code></pre></div>
+</div></section><section><h3>Release the solutions</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · Check me · step 4 of 5.</em> Each solution carries a component name; adding the name to <code class="code-inline tex2jax_ignore">&lt;version include&gt;</code> releases it at the next build. The commented lines are the release history.</p>
+<p>From <code class="code-inline tex2jax_ignore">MATH14-Skeletal/publication/publication.ptx</code></p>
+<div class="code-box"><pre class="program" data-line="1,10"><code class="language-xml">&lt;solution component="hw1-solutions"&gt; … &lt;/solution&gt;
+
+&lt;!-- publication/publication.ptx --&gt;
+&lt;!-- &lt;version include="hw1-solutions hw2-solutions hw3-solutions
+                  hw4-solutions hw5-solutions hw6-solutions
+                  hw7-solutions hw8-solutions hw9-solutions
+                  hw10-solutions review1-solutions review2-solutions
+                  review3-solutions review4-solutions"/&gt; --&gt;
+&lt;!-- &lt;version include="hw1-solutions review1-solutions"/&gt; --&gt;
+&lt;version include="hw1-solutions hw2-solutions review1-solutions"/&gt;
+</code></pre></div>
+</div></section><section><h3>Solutions under the problem</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · Check me · step 5 of 5.</em> A small XSL override prints released solutions directly under each assignment problem instead of behind a click.</p>
+<p>From <code class="code-inline tex2jax_ignore">MATH14-Skeletal/xsl/custom-html.xsl</code></p>
+<div class="code-box"><pre class="program" data-line="16-17"><code class="language-xml">&lt;!-- In "Assignments and Review Problems" a posted solution is printed     --&gt;
+&lt;!-- straight below its problem instead of being hidden behind a knowl.    --&gt;
+&lt;!-- PreTeXt has a publisher switch for this (knowl/@example-solution),    --&gt;
+&lt;!-- but that is global: it would also unfold the solutions of every       --&gt;
+&lt;!-- worked example in the text.  These templates are the core's own       --&gt;
+&lt;!-- "born visible" branch, restricted to that one chapter.  Which         --&gt;
+&lt;!-- solutions exist at all is decided by &lt;version include="..."/&gt; in      --&gt;
+&lt;!-- publication/publication.ptx.  The review sets and the sample past    --&gt;
+&lt;!-- exam (a worksheet) are left out: like the MATH 13 pages, their        --&gt;
+&lt;!-- solutions stay behind the default knowls, one click under each        --&gt;
+&lt;!-- problem, once released.                                               --&gt;
+&lt;xsl:template match="exercise[ancestor::chapter[@xml:id = 'ch-problems']]
+                              [not(ancestor::section[starts-with(@xml:id,
+                                'sec-exercises-review')])]
+                              [not(ancestor::worksheet)]/solution"
+              mode="is-hidden"&gt;
+  &lt;xsl:text&gt;false&lt;/xsl:text&gt;
+&lt;/xsl:template&gt;
+</code></pre></div>
+</div></section><section><h3>More exercise types, written and ready</h3>
+<div align="left">
+<div class="sbsgroup">
+<div style="display:table;margin-left:1%;margin-right:1%;" class="sidebyside">
+<div style="display:table-cell;width:48.9795918367347%;vertical-align:top;"><div class="image-box"><img src="external/images/ex-cardsort.png" class="contained" alt="A card sort: four critical points sorted into local minimum, local maximum, and saddle point, all correct."></div></div>
+<div style="display:table-cell;width:48.9795918367347%;vertical-align:top;"><div class="image-box"><img src="external/images/ex-clickable.png" class="contained" alt="A clickable area: the line that forgot to normalize the vector is marked as the error."></div></div>
+</div>
+<div style="display:table;margin-left:1%;margin-right:1%;" class="sidebyside">
+<div style="display:table-cell;width:48.9795918367347%;vertical-align:top;"><div class="image-box"><img src="external/images/ex-parsons.png" class="contained" alt="A Parsons problem: the steps of a proof dragged into the right order."></div></div>
+<div style="display:table-cell;width:48.9795918367347%;vertical-align:top;"><div class="image-box"><img src="external/images/ex-fillin.png" class="contained" alt="A fill-in problem with feedback written for two specific mistakes."></div></div>
+</div>
+</div>
+<p>Card sort, Parsons, clickable area, multiple choice and select, true/false, fill in, short answer: each is a few elements of markup.</p>
+</div></section><section><h3>Card sort</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · Exercise types · step 1 of 8.</em> Triggered by <code class="code-inline tex2jax_ignore">&lt;statement&gt;</code> + <code class="code-inline tex2jax_ignore">&lt;cardsort&gt;</code>.</p>
+<ul class="disc" id="sec-math14-29-3">
+<li><p>One <code class="code-inline tex2jax_ignore">&lt;match&gt;</code> per category: its <code class="code-inline tex2jax_ignore">&lt;response&gt;</code> labels the category and each <code class="code-inline tex2jax_ignore">&lt;premise&gt;</code> is a card that belongs there.</p></li>
+<li><p>A <code class="code-inline tex2jax_ignore">&lt;match&gt;</code> can hold several premises; both saddle points share one here.</p></li>
+<li><p>Cards and labels are ordinary PreTeXt, so <code class="code-inline tex2jax_ignore">&lt;m&gt;</code> works in both; a <code class="code-inline tex2jax_ignore">&lt;solution&gt;</code> explains the sort.</p></li>
+</ul>
+<p>From <code class="code-inline tex2jax_ignore">M13-Mehdi/source/review-problems-4.ptx</code></p>
+<div class="code-box"><pre class="program"><code class="language-xml">&lt;exercise xml:id="rs-cardsort-critical"&gt;
+&lt;title&gt;Classify the Critical Points&lt;/title&gt;
+&lt;statement&gt;
+&lt;p&gt;
+The function &lt;m&gt;f(x,y) = x^3 - 3x + y^3 - 3y&lt;/m&gt; has four
+critical points. Drag each one into the correct category.
+&lt;/p&gt;
+&lt;/statement&gt;
+&lt;cardsort&gt;
+&lt;match&gt;
+&lt;premise&gt;&lt;m&gt;(1,1)&lt;/m&gt;&lt;/premise&gt;
+&lt;response&gt;Local minimum&lt;/response&gt;
+&lt;/match&gt;
+…
+</code></pre></div>
+</div></section><section><h3>Parsons</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · Exercise types · step 2 of 8.</em> Triggered by <code class="code-inline tex2jax_ignore">&lt;statement&gt;</code> + <code class="code-inline tex2jax_ignore">&lt;blocks&gt;</code>.</p>
+<ul class="disc" id="sec-math14-30-3">
+<li><p>Write the <code class="code-inline tex2jax_ignore">&lt;block&gt;</code>s in the correct order: the source order is the answer key.</p></li>
+<li><p>Students see the blocks shuffled. The <code class="code-inline tex2jax_ignore">order</code> numbers have no effect while <code class="code-inline tex2jax_ignore">randomize="yes"</code>; with <code class="code-inline tex2jax_ignore">randomize="no"</code> they fix the starting order.</p></li>
+<li><p>A block marked <code class="code-inline tex2jax_ignore">correct="no"</code> is a distractor that belongs nowhere in the proof.</p></li>
+</ul>
+<p>From <code class="code-inline tex2jax_ignore">M13-Mehdi/source/review-problems-2.ptx</code></p>
+<div class="code-box"><pre class="program"><code class="language-xml">&lt;exercise xml:id="rs-parsons-no-work"&gt;
+&lt;title&gt;Why a Magnetic Field Cannot Change a Particle's Speed&lt;/title&gt;
+&lt;statement&gt;
+&lt;p&gt;Arrange the steps below into a correct proof that the
+magnetic force does no work, …&lt;/p&gt;
+&lt;/statement&gt;
+&lt;!-- Keep each &lt;m&gt; on ONE source line inside a &lt;block&gt;. --&gt;
+&lt;blocks randomize="yes"&gt;
+&lt;block order="1"&gt;
+&lt;p&gt;
+Let a particle of mass &lt;m&gt;m&lt;/m&gt; and charge &lt;m&gt;q&lt;/m&gt; move with
+velocity &lt;m&gt;\mathbf v&lt;/m&gt; through a magnetic field &lt;m&gt;\mathbf B&lt;/m&gt;.
+&lt;/p&gt;
+…
+</code></pre></div>
+</div></section><section><h3>Clickable area</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · Exercise types · step 3 of 8.</em> Triggered by <code class="code-inline tex2jax_ignore">&lt;statement&gt;</code> + <code class="code-inline tex2jax_ignore">&lt;areas&gt;</code>.</p>
+<ul class="disc" id="sec-math14-31-3">
+<li><p>Write the text students will see, with each clickable piece wrapped in <code class="code-inline tex2jax_ignore">&lt;area&gt;</code>.</p></li>
+<li><p>Mark each area <code class="code-inline tex2jax_ignore">correct="yes"</code> or <code class="code-inline tex2jax_ignore">correct="no"</code>; an unmarked area counts as correct.</p></li>
+<li><p><code class="code-inline tex2jax_ignore">&lt;feedback&gt;</code> holds the explanation students read after they check.</p></li>
+</ul>
+<p>From <code class="code-inline tex2jax_ignore">M13-Mehdi/source/review-problems-3.ptx</code></p>
+<div class="code-box"><pre class="program"><code class="language-xml">&lt;exercise xml:id="rs-clickable-error"&gt;
+&lt;title&gt;Find the Error&lt;/title&gt;
+&lt;statement&gt;
+&lt;p&gt;
+Below is a student's computation … Exactly one line contains
+the error. Click on that line.
+&lt;/p&gt;
+&lt;/statement&gt;
+&lt;feedback&gt; … &lt;/feedback&gt;
+&lt;areas&gt;
+&lt;p&gt;&lt;area correct="no"&gt;
+  &lt;m&gt;\nabla f = \left\langle 2xy,\; x^2\right\rangle&lt;/m&gt;&lt;/area&gt;&lt;/p&gt;
+&lt;p&gt;&lt;area correct="no"&gt;
+…
+</code></pre></div>
+</div></section><section><h3>Multiple choice</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · Exercise types · step 4 of 8.</em> Triggered by <code class="code-inline tex2jax_ignore">&lt;statement&gt;</code> + <code class="code-inline tex2jax_ignore">&lt;choices&gt;</code>.</p>
+<ul class="disc" id="sec-math14-32-3">
+<li><p>Each <code class="code-inline tex2jax_ignore">&lt;choice&gt;</code> has its own <code class="code-inline tex2jax_ignore">&lt;statement&gt;</code> and <code class="code-inline tex2jax_ignore">&lt;feedback&gt;</code>.</p></li>
+<li><p>Mark the right one <code class="code-inline tex2jax_ignore">correct="yes"</code>; <code class="code-inline tex2jax_ignore">randomize="yes"</code> shuffles the choices.</p></li>
+<li><p>A choice’s feedback appears when it is picked, so each wrong answer gets its own explanation.</p></li>
+</ul>
+<p>From <code class="code-inline tex2jax_ignore">M13-Mehdi/source/review-problems-2.ptx</code></p>
+<div class="code-box"><pre class="program"><code class="language-xml">&lt;exercise xml:id="rs-mc-vector-identity"&gt;
+&lt;title&gt;Which Identity Fails?&lt;/title&gt;
+&lt;statement&gt;
+&lt;p&gt;
+Exactly one of the following is &lt;em&gt;not&lt;/em&gt; valid for all
+vectors &lt;m&gt;\mathbf a, \mathbf b, \mathbf c&lt;/m&gt; in &lt;m&gt;\R^3&lt;/m&gt;.
+Which one?
+&lt;/p&gt;
+&lt;/statement&gt;
+&lt;choices randomize="yes"&gt;
+&lt;choice&gt;
+&lt;statement&gt;&lt;p&gt;&lt;m&gt;\mathbf a\cdot(\mathbf b\times\mathbf c)
+  = (\mathbf a\times\mathbf b)\cdot\mathbf c&lt;/m&gt;&lt;/p&gt;&lt;/statement&gt;
+…
+</code></pre></div>
+</div></section><section><h3>Multiple select</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · Exercise types · step 5 of 8.</em> The same element as multiple choice.</p>
+<ul class="disc" id="sec-math14-33-3">
+<li><p>Two or more <code class="code-inline tex2jax_ignore">correct="yes"</code> choices switch the buttons to checkboxes.</p></li>
+<li><p><code class="code-inline tex2jax_ignore">multiple-correct="yes"</code> on <code class="code-inline tex2jax_ignore">&lt;choices&gt;</code> forces checkboxes even with one.</p></li>
+<li><p>Feedback on every choice, right or wrong, says why.</p></li>
+</ul>
+<p>From <code class="code-inline tex2jax_ignore">M13-Mehdi/source/review-problems-2.ptx</code></p>
+<div class="code-box"><pre class="program"><code class="language-xml">&lt;exercise xml:id="rs-multiselect-quadrics"&gt;
+&lt;title&gt;Which of These Are Hyperboloids?&lt;/title&gt;
+&lt;statement&gt;
+&lt;p&gt;
+None of the equations below is in standard position. … select
+&lt;em&gt;every&lt;/em&gt; equation whose surface is a hyperboloid, of one
+sheet or of two.
+&lt;/p&gt;
+&lt;/statement&gt;
+&lt;choices randomize="yes"&gt;
+&lt;choice correct="yes"&gt;
+&lt;statement&gt;&lt;p&gt;&lt;m&gt;x^2 + y^2 - z^2 - 2x = 0&lt;/m&gt;&lt;/p&gt;&lt;/statement&gt;
+&lt;feedback&gt;&lt;p&gt;Correct. Completing the square gives …&lt;/p&gt;&lt;/feedback&gt;
+…
+</code></pre></div>
+</div></section><section><h3>True / False</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · Exercise types · step 6 of 8.</em> Triggered by one attribute: <code class="code-inline tex2jax_ignore">&lt;statement correct="no"&gt;</code>.</p>
+<ul class="disc" id="sec-math14-34-3">
+<li><p><code class="code-inline tex2jax_ignore">correct="yes"</code> or <code class="code-inline tex2jax_ignore">correct="no"</code> on the statement is all it takes.</p></li>
+<li><p><code class="code-inline tex2jax_ignore">&lt;feedback&gt;</code> explains the answer after students choose.</p></li>
+</ul>
+<p>From <code class="code-inline tex2jax_ignore">M13-Mehdi/source/review-problems-3.ptx</code></p>
+<div class="code-box"><pre class="program"><code class="language-xml">&lt;exercise xml:id="rs-tf-directional"&gt;
+&lt;title&gt;True or False&lt;/title&gt;
+&lt;statement correct="no"&gt;
+&lt;p&gt;
+If every directional derivative &lt;m&gt;D_{\mathbf u}f(P_0)&lt;/m&gt; exists
+at a point &lt;m&gt;P_0&lt;/m&gt;, then &lt;m&gt;f&lt;/m&gt; must be continuous at
+&lt;m&gt;P_0&lt;/m&gt;.
+&lt;/p&gt;
+&lt;p&gt;
+Justify your answer fully: …
+&lt;/p&gt;
+&lt;/statement&gt;
+&lt;feedback&gt;
+…
+</code></pre></div>
+</div></section><section><h3>Fill in</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · Exercise types · step 7 of 8.</em> Triggered by <code class="code-inline tex2jax_ignore">&lt;var/&gt;</code> in the statement.</p>
+<ul class="disc" id="sec-math14-35-3">
+<li><p>In <code class="code-inline tex2jax_ignore">&lt;setup&gt;</code>, the first <code class="code-inline tex2jax_ignore">&lt;var&gt;</code> grades the first blank, with <code class="code-inline tex2jax_ignore">&lt;condition&gt;</code>s checked from the top.</p></li>
+<li><p><code class="code-inline tex2jax_ignore">number</code> with <code class="code-inline tex2jax_ignore">tolerance</code> compares numerically; <code class="code-inline tex2jax_ignore">string</code> matches a regular expression.</p></li>
+<li><p>Later conditions catch particular mistakes, each with its own <code class="code-inline tex2jax_ignore">&lt;feedback&gt;</code>.</p></li>
+</ul>
+<p>From <code class="code-inline tex2jax_ignore">M13-Mehdi/source/review-problems-2.ptx</code></p>
+<div class="code-box"><pre class="program"><code class="language-xml">&lt;exercise xml:id="rs-fillin-skew-lines"&gt;
+&lt;title&gt;Distance Between Skew Lines&lt;/title&gt;
+&lt;statement&gt;
+&lt;p&gt; … The absolute value of the scalar triple product
+&lt;m&gt;\left|\mathbf w\cdot(\mathbf u\times\mathbf v)\right|&lt;/m&gt;
+equals &lt;var width="6"/&gt;. &lt;/p&gt;
+&lt;p&gt; The distance between the two lines, to three decimal
+places, is &lt;var width="8"/&gt;. &lt;/p&gt;
+&lt;/statement&gt;
+&lt;setup&gt;
+&lt;var&gt;
+&lt;condition number="5"&gt;
+&lt;feedback&gt;&lt;p&gt;Correct.&lt;/p&gt;&lt;/feedback&gt;
+…
+</code></pre></div>
+</div></section><section><h3>Short answer</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · Exercise types · step 8 of 8.</em> Triggered by <code class="code-inline tex2jax_ignore">&lt;statement&gt;</code> + <code class="code-inline tex2jax_ignore">&lt;response/&gt;</code>.</p>
+<ul class="disc" id="sec-math14-36-3">
+<li><p>Runestone stores each response for the instructor to grade.</p></li>
+<li><p>A plain web build shows the prompt only.</p></li>
+</ul>
+<p>From <em class="emphasis">M13-Skeletal-Notes, July sampler</em></p>
+<div class="code-box"><pre class="program"><code class="language-xml">&lt;exercise xml:id="rs-shortanswer-products"&gt;
+&lt;title&gt;The Roles of the Two Products&lt;/title&gt;
+&lt;statement&gt;
+&lt;p&gt;
+In two or three sentences, explain why a magnetic field can
+bend a charged particle's path into a circle but can never
+make it move faster. …
+&lt;/p&gt;
+&lt;/statement&gt;
+&lt;response/&gt;
+&lt;/exercise&gt;
+</code></pre></div>
+</div></section><section><h3>A Socratic tutor that won’t give the answer</h3>
+<div align="left"><div style="display:table;margin-left:1.5%;margin-right:1.5%;" class="sidebyside">
+<div style="display:table-cell;width:55.6701030927835%;vertical-align:top;">
+<p><em class="alert">How it coaches.</em> Knows the problems on the page. Asks questions; says why a wrong answer fails, never how to fix it. Confirms an answer only with the student’s justification.</p>
+<p><em class="alert">Built-in limits.</em> Three hints per problem, for the whole quarter. A five-minute pause after each hint. No tutor on review sets: they rehearse exams.</p>
+<p>Runs in the student’s browser with their own free Google AI Studio key. Nothing passes through the course site.</p>
+</div>
+<div style="display:table-cell;width:41.2371134020619%;vertical-align:top;"><div class="image-box"><img src="external/images/tutor.png" class="contained" alt="The tutor panel: the student says they used the standard parametrization and are stuck; the tutor asks whether the whole curve lies over that circle and what interval of t traces it once. Hints left: 2 of 3, next hint in 4:53."></div></div>
+</div></div></section><section><h3>Add a script to every page</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · The AI tutor · step 1 of 6.</em> One XSL template adds two scripts at the foot of every page the build writes.</p>
+<p>From <code class="code-inline tex2jax_ignore">MATH14-Skeletal/xsl/custom-html.xsl</code></p>
+<div class="code-box"><pre class="program" data-line="3"><code class="language-xml">&lt;xsl:template name="extra-js-footer"&gt;
+  &lt;script src="external/math-input-palette.js"&gt;&lt;/script&gt;
+  &lt;script src="external/custom.js"&gt;&lt;/script&gt;
+&lt;/xsl:template&gt;
+</code></pre></div>
+</div></section><section><h3>Collect the problems</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · The AI tutor · step 2 of 6.</em> The script stops at once unless the page is an assignment. Otherwise it collects each exercise statement, without solutions, hints, or Runestone’s answer data.</p>
+<p>From <code class="code-inline tex2jax_ignore">MATH14-Skeletal/assets/custom.js</code></p>
+<div class="code-box"><pre class="program" data-line="3,15"><code class="language-javascript">(function () {
+    var page = window.location.pathname.split("/").pop() || "";
+    if (page.indexOf("sec-exercises-hw") !== 0) return;
+    var articles = document.querySelectorAll("article.exercise");
+    if (!articles.length) return;
+
+    // Harvest statements now, while the DOM still holds raw LaTeX.
+    // The &lt;script type="application/json"&gt; blobs inside each Runestone
+    // exercise carry the answer patterns and feedback, so scripts are
+    // stripped along with the solutions; the answer &lt;input&gt; boxes have
+    // no text content, so each is replaced by a visible "___" blank.
+    function clean(el) {
+        var c = el.cloneNode(true);
+        c.querySelectorAll(
+                        ".solutions, .solution, .hint, .answer, .autopermalink,
+              .knowl-output, iframe, script, style"
+        ).forEach(function (n) { n.remove(); });
+        c.querySelectorAll("input").forEach(function (n) {
+…
+</code></pre></div>
+</div></section><section><h3>Open the panel, pass the problems</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · The AI tutor · step 3 of 6.</em> The Tutor button loads the widget in an iframe and hands it the problems with <code class="code-inline tex2jax_ignore">postMessage</code>; the widget fills its problem list from that message.</p>
+<p>From <code class="code-inline tex2jax_ignore">MATH14-Skeletal/assets/custom.js · gemini-tutor.html</code></p>
+<div class="code-box"><pre class="program" data-line="3,10"><code class="language-javascript">// assets/custom.js
+function sendContext() {
+    if (frameReady) frame.contentWindow.postMessage(context, "*");
+}
+…
+function openPanel() {
+    if (!frame) {
+        frame = document.createElement("iframe");
+        frame.id = "m14-tutor-frame";
+        frame.src = "external/gemini-tutor.html";
+        frame.addEventListener("load", function () {
+            frameReady = true;
+            sendContext();
+        });
+        panel.appendChild(frame);
+    }
+    …
+
+…
+</code></pre></div>
+</div></section><section><h3>Ask the model</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · The AI tutor · step 4 of 6.</em> Each reply is one request to Gemini with the student’s own key, the rules as the system instruction, and the conversation so far. A list of fallback models keeps it working when one is retired or busy.</p>
+<p>From <code class="code-inline tex2jax_ignore">MATH14-Skeletal/assets/gemini-tutor.html</code></p>
+<div class="code-box"><pre class="program" data-line="3,7,11"><code class="language-javascript">async function askGemini() {
+  const body = {
+    systemInstruction: { parts: [{ text: systemInstruction() }] },
+…
+  generationConfig: { temperature: 0.4, maxOutputTokens: 8192 },
+…
+    const url = "https://generativelanguage.googleapis.com/v1beta/models/"
+      + chain[idx] + ":generateContent";
+    resp = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "x-goog-api-key": apiKey() },
+      body: JSON.stringify(body),
+    });
+    if (resp.ok) { lastModelUsed = chain[idx]; break; }
+  …
+}
+…
+</code></pre></div>
+</div></section><section><h3>Enforce the limits</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · The AI tutor · step 5 of 6.</em> The page enforces the limits, not the model: three replies per problem, counted in the browser. <em class="alert">The five-minute wait is currently switched off for testing (<code class="code-inline tex2jax_ignore">COOLDOWN_MS = 0</code>); set it back to <code class="code-inline tex2jax_ignore">5 * 60 * 1000</code> before students rely on it.</em></p>
+<p>From <code class="code-inline tex2jax_ignore">MATH14-Skeletal/assets/gemini-tutor.html</code></p>
+<div class="code-box"><pre class="program" data-line="8-10,13"><code class="language-javascript">/* ===== hint budget ======================================================= */
+// Hard limits enforced by the interface, not the model: per problem, at
+// most HINT_LIMIT tutor replies in total — EVERY reply counts, there is no
+// free intake reply — with COOLDOWN_MS between replies. Counters live in
+// localStorage, survive restarts and reloads, and never reset — solutions
+// are published after the due date.
+
+const HINT_LIMIT = 3;
+// TEMPORARY — the wait between hints is switched off for testing. Restore it
+// with  5 * 60 * 1000  (five minutes). Everything else follows this constant:
+// at 0 the countdown never appears and the system prompt stops telling the
+// student a wait exists, so the two can never drift apart.
+const COOLDOWN_MS = 0;
+const HINT_STORE = "math14-hints-v1";
+…
+function recordReply(label) {
+  const d = loadHints();
+  const p = d.probs[label] || { replies: 0 };
+…
+</code></pre></div>
+</div></section><section><h3>The rules</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · The AI tutor · step 6 of 6.</em> The instructions open with one rule that nothing overrides, then list the only five things the tutor may do.</p>
+<p>From <code class="code-inline tex2jax_ignore">MATH14-Skeletal/assets/gemini-tutor.html</code></p>
+<div class="code-box"><pre class="program" data-line="4"><code class="language-none">const BASE_INSTRUCTION = `You are a Socratic tutor for MATH 14 (Santa Clara University),
+  embedded on an assignment page of the course's notes, …
+
+THE ONE RULE, above everything else: never reveal any part of a final answer or
+  completed solution to any exercise. …
+
+What you MAY do — these are your only tools:
+1. Very gentle starting nudges: one small question per message about how to begin
+  thinking about the problem at hand. …
+2. Explain why wrong answers are wrong — but never how to fix them. …
+3. Point to the book — and when a student is stuck on how to BEGIN, reach for this
+  FIRST, ahead of tool 1. …
+4. Definitions and course conventions: vectors are written in bold, … 
+5. Confirm answers the student has JUSTIFIED. …
+</code></pre></div>
+</div></section><section><h3>Every hint is a data point</h3>
+<div align="left">
+<div class="image-box" style="width: 92%; margin-left: 4%; margin-right: 4%;"><img src="external/images/feedback.png" class="contained" alt="The feedback form under a tutor reply (rating, comment, optional transcript) and the row it adds to the spreadsheet: time, session, page, problem, hints used, model, rating, comment, device."></div>
+<p>Never sent: name, email, student ID, or API key. A small Google Apps Script appends each note to a sheet I own.</p>
+</div></section><section><h3>What a note carries</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · The feedback form · step 1 of 4.</em> Every note carries the same context: page, problem, hints used, model, screen size, and a random browser id. The thumb or the form fills in the rating, comment, and transcript.</p>
+<p>From <code class="code-inline tex2jax_ignore">MATH14-Skeletal/assets/gemini-tutor.html</code></p>
+<div class="code-box"><pre class="program" data-line="4,13"><code class="language-javascript">function feedbackPayload(extra) {
+  return Object.assign({
+    sentAt: new Date().toISOString(),
+    session: sessionId(),
+    page: (pageContext &amp;&amp; pageContext.page) || "",
+    section: (pageContext &amp;&amp; pageContext.section) || "",
+    problem: currentProb || "",
+    hintsUsed: currentProb ? hintsUsed(currentProb) : 0,
+    model: currentModel().id,     // which model the student had chosen
+    modelUsed: lastModelUsed,     // the model id that actually answered last
+    rating: "",
+    comment: "",
+    transcript: "",
+    device: (window.innerWidth &lt;= 600 ? "small" : "large") + " " +
+      window.innerWidth + "x" + window.innerHeight,
+  }, extra);
+}
+</code></pre></div>
+</div></section><section><h3>Send it once</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · The feedback form · step 2 of 4.</em> Sent as text/plain with no-cors, so Apps Script accepts it without a preflight and a redirect cannot file it twice.</p>
+<p>From <code class="code-inline tex2jax_ignore">MATH14-Skeletal/assets/gemini-tutor.html</code></p>
+<div class="code-box"><pre class="program" data-line="2,13-14"><code class="language-javascript">function postFeedback(payload) {
+  // text/plain keeps this a "simple" cross-origin request, which Apps Script
+  // accepts without a preflight; it reads the JSON from the request body.
+  //
+  // no-cors from the first try, deliberately. Apps Script answers a POST with
+  // a redirect to a different host, which the browser refuses to expose to
+  // us: a plain fetch REJECTS even though the row was already written. Doing
+  // that and then retrying files every note twice, one second apart. We never
+  // read the response anyway, so send once and let an opaque reply stand.
+  // What still rejects is a genuine network failure.
+  return fetch(FEEDBACK_URL, {
+    method: "POST",
+    mode: "no-cors",
+    headers: { "Content-Type": "text/plain;charset=utf-8" },
+    body: JSON.stringify(payload),
+  });
+}
+</code></pre></div>
+</div></section><section><h3>Append a row</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · The feedback form · step 3 of 4.</em> The Apps Script parses the note and appends one row; an error comes back as a reply, never as a failure the student sees.</p>
+<p>From <code class="code-inline tex2jax_ignore">MATH14-Skeletal/ai-tutor/feedback-endpoint.gs</code></p>
+<div class="code-box"><pre class="program" data-line="6"><code class="language-javascript">function doPost(e) {
+  try {
+    var raw = (e &amp;&amp; e.postData &amp;&amp; e.postData.contents) || '';
+    var d = JSON.parse(raw || '{}');
+    var sheet = getSheet_();
+    sheet.appendRow([
+      new Date(),
+      clip_(d.sentAt, LIMITS.field),
+      clip_(d.session, LIMITS.field),
+      clip_(d.page, LIMITS.field),
+      clip_(d.section, LIMITS.field),
+      clip_(d.problem, LIMITS.field),
+      Number(d.hintsUsed) || 0,
+      rating_(d.rating),
+      clip_(d.comment, LIMITS.comment),
+      clip_(d.transcript, LIMITS.transcript),
+      clip_(d.device, LIMITS.field),
+      clip_(d.model, LIMITS.field),
+…
+</code></pre></div>
+</div></section><section><h3>Turn it on</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · The feedback form · step 4 of 4.</em> About two minutes, once per course.</p>
+<p>From <code class="code-inline tex2jax_ignore">MATH14-Skeletal/ai-tutor/README.md</code></p>
+<div class="code-box"><pre class="program" data-line="3,5,7"><code class="language-none">1. Make a spreadsheet (personal Google account).
+2. Extensions › Apps Script: paste feedback-endpoint.gs, save.
+3. Deploy › New deployment › Web app
+     Execute as: Me      Who has access: Anyone
+4. Copy the Web app URL (it ends in /exec).
+5. In assets/gemini-tutor.html set
+     const FEEDBACK_URL = "https://script.google.com/macros/s/…/exec";
+   then rebuild: the feedback button appears.
+6. Send one test note and check that a row appears.
+</code></pre></div>
+</div></section><section><h3>From the sheet to a report in one command</h3>
+<div align="left"><div style="display:table;margin-left:1%;margin-right:1%;" class="sidebyside">
+<div style="display:table-cell;width:38.7755102040816%;vertical-align:top;">
+<pre class="program"><code class="language-none">python3 scripts/tutor_feedback_report.py \
+  feedback.csv --html report.html
+</code></pre>
+<p>How the hints landed overall; careful versus quick model; which assignments and problems draw complaints; every comment, negative ones first.</p>
+</div>
+<div style="display:table-cell;width:59.1836734693878%;vertical-align:top;">
+<div class="interactive-iframe-container">
+<iframe src="external/report.html" id="int-slide-report" style="max-width: 58%; width: 100%; aspect-ratio:1.333333333333333" title="described in detail following the image" aria-describedby="int-slide-report-description"></iframe><details class="image-description" aria-live="polite"><summary title="details"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe88e;</span></summary><div id="int-slide-report-description"><p>The feedback report generated from sample rows: rating counts, a model comparison, complaints by problem, and comments.</p></div></details>
+</div>
+<div class="interactive-iframe-container__opener"><a href="int-slide-report.html" title="Open in new tab" aria-label="Open in new tab" target="_blank"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe89e;</span></a></div>
+</div>
+</div></div></section><section><h3>Run it</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · The feedback report · step 1 of 3.</em> Export the sheet as CSV and run the script; <code class="code-inline tex2jax_ignore">--html</code> writes the page shown here.</p>
+<p>From <code class="code-inline tex2jax_ignore">MATH14-Skeletal/scripts/tutor_feedback_report.py</code></p>
+<div class="code-box"><pre class="program" data-line="9"><code class="language-py">"""Summarize the Socratic tutor's student feedback.
+
+Reads the CSV exported from the feedback spreadsheet (File -&gt; Download -&gt;
+Comma-separated values; see ai-tutor/README.md) and writes a report: what
+students think overall, which assignments and problems the complaints cluster
+on, and every open-ended comment grouped so the negative ones are read first.
+
+    python3 scripts/tutor_feedback_report.py feedback.csv
+    python3 scripts/tutor_feedback_report.py feedback.csv --html report.html
+    python3 scripts/tutor_feedback_report.py feedback.csv --since 2026-09-01
+    python3 scripts/tutor_feedback_report.py feedback.csv --assignment 3
+"""
+</code></pre></div>
+</div></section><section><h3>Read the export</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · The feedback report · step 2 of 3.</em> Columns are matched by name, dates parsed, and duplicate rows from an older widget removed.</p>
+<p>From <code class="code-inline tex2jax_ignore">MATH14-Skeletal/scripts/tutor_feedback_report.py</code></p>
+<div class="code-box"><pre class="program" data-line="3,15"><code class="language-py">def load(path, since=None, assignment=None):
+    with open(path, newline="", encoding="utf-8-sig") as handle:
+        rows = list(csv.DictReader(handle))
+
+    # Tolerate a renamed or reordered header row: match on lowercased names.
+    cleaned = []
+    for row in rows:
+        item = {(k or "").strip().lower(): (v or "").strip() for k, v in row.items()}
+        item["when"] = parse_date(item.get("sentat")) or parse_date(item.get("received"))
+                item["hintsused"] = int(item["hintsused"]) if item.get("hintsused",
+          "").isdigit() else 0
+        item["rating"] = known_rating(item.get("rating", ""))
+        cleaned.append(item)
+
+    cleaned = dedupe(cleaned)
+…
+</code></pre></div>
+</div></section><section><h3>Count and sort</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · The feedback report · step 3 of 3.</em> Ratings are tallied in a fixed order; assignments and problems are sorted with the most complaints first.</p>
+<p>From <code class="code-inline tex2jax_ignore">MATH14-Skeletal/scripts/tutor_feedback_report.py</code></p>
+<div class="code-box"><pre class="program" data-line="4,16,18"><code class="language-py">…
+    unrecognized rather than quietly left out of the table.
+    """
+    counts = Counter(r.get("rating", "") for r in rows)
+    named = [(name, counts.get(name, 0)) for name in RATINGS]
+    unknown = sum(n for value, n in counts.items() if value and value not in RATINGS)
+    return named, counts.get("", 0), unknown
+…
+def group_scores(rows, key):
+    """Per group: total, positives, negatives — sorted worst-first."""
+    groups = defaultdict(lambda: {"n": 0, "pos": 0, "neg": 0, "hints": []})
+    for row in rows:
+        name = row.get(key, "") or "(not recorded)"
+        bucket = groups[name]
+        bucket["n"] += 1
+        if row.get("rating") in POSITIVE:
+            bucket["pos"] += 1
+        elif row.get("rating") in NEGATIVE:
+            bucket["neg"] += 1
+…
+</code></pre></div>
+</div></section><section><h2>How it’s built, and MATH 53</h2></section><section><h3>From a commit to a live page in minutes</h3>
+<div align="left">
+<p><em class="alert">Write</em> in VS Code or a GitHub Codespace → <em class="alert">push</em> to main → GitHub Actions <em class="alert">builds</em> → GitHub Pages <em class="alert">publishes</em>.</p>
+<dl class="description-list">
+<div>
+<dt>Posting Desk</dt>
+<dd><p>A private control panel: one click posts a section, or locks or releases an assignment’s solutions.</p></dd>
+</div>
+<div>
+<dt>Solutions on a timer</dt>
+<dd><p>Locked solutions wait in the source inside comment markers; releasing them deletes two lines.</p></dd>
+</div>
+<div>
+<dt>AI-assisted upkeep</dt>
+<dd><p>Claude Code works in each repository under written rules: validate every build, never invent mathematics.</p></dd>
+</div>
+</dl>
+<p>Each course is five sites from one toolchain: course notes, skeletal notes and assignments, instructor editions, lecture slides, and the syllabus.</p>
+</div></section><section><h3>Build on every push</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · Build and publish · step 1 of 5.</em> A push to main builds the book in PreTeXt’s Docker image, which includes LaTeX, Sage, and PreFigure, and publishes it to GitHub Pages.</p>
+<p>From <code class="code-inline tex2jax_ignore">M13-Mehdi/.github/workflows/pretext-deploy.yml</code></p>
+<div class="code-box"><pre class="program"><code class="language-none"># .github/workflows/pretext-deploy.yml (trimmed)
+on:
+  push:
+    branches: ["main"]
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    container: pretextbook/pretext-full:1.9
+    steps:
+      - uses: actions/checkout@v4
+      - run: pip install -r requirements.txt --break-system-packages
+      - run: prefig init
+      - run: pretext build --deploys
+      - run: pretext deploy --no-push
+      - run: git push origin gh-pages --force
+</code></pre></div>
+</div></section><section><h3>The same tools everywhere</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · Build and publish · step 2 of 5.</em> A Codespace uses the same image and pinned versions, so a local build matches the published one.</p>
+<p>From <code class="code-inline tex2jax_ignore">M13-Mehdi/.devcontainer · requirements.txt</code></p>
+<div class="code-box"><pre class="program" data-line="2-3,5-6"><code class="language-none">// .devcontainer/devcontainer.json
+"image": "pretextbook/pretext-full:1.9", // uses latest image from
+  https://hub.docker.com/r/PreTeXtBook/pretext-full/tags
+# requirements.txt
+pretext == 2.44.0
+prefig == 0.6.7
+</code></pre></div>
+</div></section><section><h3>Post with one click</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · Build and publish · step 3 of 5.</em> A click on the Posting Desk commits a small request file; this workflow applies it with desk_action.py, commits, and rebuilds.</p>
+<p>From <code class="code-inline tex2jax_ignore">M13-Mehdi/.github/workflows/desk-requests.yml</code></p>
+<div class="code-box"><pre class="program" data-line="3-4,10"><code class="language-none">name: Posting Desk requests
+# The Posting Desk panel commits small JSON request files into
+# desk-requests/ (via the instructor's GitHub connector). This workflow
+# reacts to that push, applies each request with scripts/desk_action.py,
+# removes the request files, and kicks the site build when the source
+# actually changed.
+on:
+  push:
+    branches: [main]
+    paths: ["desk-requests/**"]
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: posting-desk
+  cancel-in-progress: false
+…
+</code></pre></div>
+</div></section><section><h3>Lock a solution until its due date</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · Build and publish · step 4 of 5.</em> A locked solution waits in a comment that records its due date; releasing it deletes the two marker lines.</p>
+<p>From <code class="code-inline tex2jax_ignore">M13-Mehdi/CLAUDE.md</code></p>
+<div class="code-box"><pre class="program"><code class="language-xml">&lt;!-- the SOLUTION-LOCKED convention (CLAUDE.md) --&gt;
+&lt;exercise xml:id="a3-p2"&gt;
+  &lt;statement&gt;
+    &lt;p&gt; ... the question, always visible ... &lt;/p&gt;
+  &lt;/statement&gt;
+&lt;!-- SOLUTION-LOCKED assignment="3" due="2026-10-09"
+  &lt;solution&gt;
+    &lt;p&gt; ... &lt;/p&gt;
+  &lt;/solution&gt;
+END SOLUTION-LOCKED --&gt;
+&lt;/exercise&gt;
+</code></pre></div>
+</div></section><section><h3>Rules for the assistant</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · Build and publish · step 5 of 5.</em> Each repository’s CLAUDE.md says how to post, lock, and release, and how to check the work before pushing.</p>
+<p>From <code class="code-inline tex2jax_ignore">M13-Mehdi/CLAUDE.md</code></p>
+<div class="code-box"><pre class="program" data-line="2,11,14"><code class="language-none">&lt;!-- CLAUDE.md, the rules the coding assistant follows --&gt;
+3. Never invent content: a request that needs material not in the repo
+   (e.g. an assignment with no problem set in `source/`) is not posted —
+   set its `status` to `"needs-input"` and a one-line `result` saying what
+   to provide (the page shows it to the instructor).
+…
+## Validating a change
+
+Before any push:
+1. Well-formedness of every touched file:
+   `xmllint --noout source/&lt;file&gt;.ptx` (locked blocks are comments, so a
+   malformed marker shows up here).
+2. If the PreTeXt CLI is available (`pip install -r requirements.txt`),
+   run `pretext build web` and confirm it succeeds; then confirm the target
+   page exists in `output/web/` to get its exact filename. If the CLI
+   can't be installed in the session, say so and derive the filename from
+   the section's `xml:id` instead.
+&lt;!-- .claude/skills/: post-notes, post-assignment, release-solutions --&gt;
+</code></pre></div>
+</div></section><section><h3>Code that runs on the page: an epidemic as a Markov chain</h3>
+<div align="left">
+<p>Each day <span class="process-math">\(5\%\)</span> of the susceptible fall ill; the infected recover, die, or relapse. Press Evaluate.</p>
+<div id="sec-build-math53-8-3" class="ptx-sagecell sagecell-sage"><script type="text/x-sage">T = matrix(QQ, [[0.95, 0.04, 0, 0],
+                [0.05, 0.85, 0, 0],
+                [0,    0.10, 1, 0],
+                [0,    0.01, 0, 1]])
+S0 = vector(QQ, [1, 0, 0, 0])
+T
+</script></div>
+<div id="sec-build-math53-8-4" class="ptx-sagecell sagecell-sage"><script type="text/x-sage">S = S0
+for k in range(1, 6):
+    S = T*S
+    print(k, S.n(digits=4))
+</script></div>
+</div></section><section><h3>Two hundred days, plotted</h3>
+<div align="left"><div id="sec-build-math53-9-2" class="ptx-sagecell sagecell-sage"><script type="text/x-sage">N = 200
+history = [S0]
+for k in range(N):
+    history.append(T * history[-1])
+
+labels = ["susceptible", "infected", "recovered", "deceased"]
+colors = ["blue", "red", "green", "black"]
+p = sum(line([(k, history[k][j]) for k in range(N + 1)],
+             color=colors[j], legend_label=labels[j], thickness=2)
+        for j in range(4))
+p.axes_labels(["day $k$", "fraction of population"])
+p.show(ymin=0, ymax=1, figsize=[7, 3.5])
+</script></div></div></section><section><h3>The long run</h3>
+<div align="left">
+<div id="sec-build-math53-10-2" class="ptx-sagecell sagecell-sage"><script type="text/x-sage">(T^1000 * S0).n(digits=4)
+</script></div>
+<div id="sec-build-math53-10-3" class="ptx-sagecell sagecell-sage"><script type="text/x-sage">T.eigenvectors_right()
+</script></div>
+<p>About <span class="process-math">\(90.9\%\)</span> recovered and <span class="process-math">\(9.1\%\)</span> deceased; the exact limits are <span class="process-math">\(\frac{10}{11}\)</span> and <span class="process-math">\(\frac{1}{11}\text{.}\)</span> <a class="external" href="https://mahmadi-ops.github.io/MATH-53/sec-epidemic-sage.html" target="_blank">Section 9.3 in the book</a></p>
+</div></section><section><h3>A cell</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · Sage cells · step 1 of 4.</em> Wrap Sage code in <code class="code-inline tex2jax_ignore">&lt;sage&gt;&lt;input&gt;</code>. On the web it becomes a cell with an Evaluate button, run on the SageMathCell server.</p>
+<p>From <code class="code-inline tex2jax_ignore">MATH-53/source/applications/sec-epidemic-sage.ptx</code></p>
+<div class="code-box"><pre class="program" data-line="3"><code class="language-xml">&lt;sage&gt;
+  &lt;input&gt;
+    T = matrix(QQ, [[0.95, 0.04, 0, 0],
+                    [0.05, 0.85, 0, 0],
+                    [0,    0.10, 1, 0],
+                    [0,    0.01, 0, 1]])
+    S0 = vector(QQ, [1, 0, 0, 0])
+    T
+  &lt;/input&gt;
+&lt;/sage&gt;
+</code></pre></div>
+</div></section><section><h3>Cells build on each other</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · Sage cells · step 2 of 4.</em> Cells on a page share a session, so this one iterates the T and S0 defined above.</p>
+<p>From <code class="code-inline tex2jax_ignore">MATH-53/source/applications/sec-epidemic-sage.ptx</code></p>
+<div class="code-box"><pre class="program" data-line="5"><code class="language-xml">&lt;sage&gt;
+  &lt;input&gt;
+    S = S0
+    for k in range(1, 6):
+        S = T*S
+        print(k, S.n(digits=4))
+  &lt;/input&gt;
+&lt;/sage&gt;
+</code></pre></div>
+</div></section><section><h3>Plots</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · Sage cells · step 3 of 4.</em> Plots work as in Sage: build the lines and <code class="code-inline tex2jax_ignore">show()</code> them; the picture appears under the cell.</p>
+<p>From <code class="code-inline tex2jax_ignore">MATH-53/source/applications/sec-epidemic-sage.ptx</code></p>
+<div class="code-box"><pre class="program" data-line="10,14"><code class="language-xml">&lt;sage&gt;
+  &lt;input&gt;
+    N = 200
+    history = [S0]
+    for k in range(N):
+        history.append(T * history[-1])
+
+    labels = ["susceptible", "infected", "recovered", "deceased"]
+    colors = ["blue", "red", "green", "black"]
+    p = sum(line([(k, history[k][j]) for k in range(N + 1)],
+                 color=colors[j], legend_label=labels[j], thickness=2)
+            for j in range(4))
+    p.axes_labels(["day $k$", "fraction of population"])
+    p.show(ymin=0, ymax=1)
+  &lt;/input&gt;
+&lt;/sage&gt;
+</code></pre></div>
+</div></section><section><h3>Back to the theory</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · Sage cells · step 4 of 4.</em> Two short cells connect the computation to the chapter: the long-run state and the eigenvectors of T.</p>
+<p>From <code class="code-inline tex2jax_ignore">MATH-53/source/applications/sec-epidemic-sage.ptx</code></p>
+<div class="code-box"><pre class="program" data-line="3,9"><code class="language-xml">&lt;sage&gt;
+  &lt;input&gt;
+    (T^1000 * S0).n(digits=4)
+  &lt;/input&gt;
+&lt;/sage&gt;
+
+&lt;sage&gt;
+  &lt;input&gt;
+    T.eigenvectors_right()
+  &lt;/input&gt;
+&lt;/sage&gt;
+</code></pre></div>
+</div></section><section><h3>MATH 53, Linear Algebra: ten chapters drafted</h3>
+<div align="left"><div style="display:table;margin-left:1%;margin-right:1%;" class="sidebyside">
+<div style="display:table-cell;width:44.8979591836735%;vertical-align:top;">
+<ol class="decimal" id="sec-build-math53-15-2-1">
+<li><p>Systems of linear equations</p></li>
+<li><p>Vectors in <span class="process-math">\(\R^n\)</span></p></li>
+<li><p>Linear transformations</p></li>
+<li><p>Matrix algebra</p></li>
+<li><p>Subspaces, basis, dimension</p></li>
+<li><p>Determinants</p></li>
+<li><p>Vector spaces</p></li>
+<li><p>Eigenvalues and eigenvectors</p></li>
+<li><p>Spectral applications</p></li>
+<li><p>Orthogonality (newest)</p></li>
+</ol>
+</div>
+<div style="display:table-cell;width:53.0612244897959%;vertical-align:top;">
+<p>Goal: ready for the coming winter quarter, bringing over the MATH 13 and 14 framework.</p>
+<p>Applications already in: images as matrices, recognizing a cat, PageRank, normal modes, least squares.</p>
+</div>
+</div></div></section><section><h3>Demos you can drag: <span class="process-math">\(T(\mathbf{x}) = A\mathbf{x}\)</span>
+</h3>
+<div align="left"><div style="display:table;margin-left:1%;margin-right:1%;" class="sidebyside">
+<div style="display:table-cell;width:57.1428571428571%;vertical-align:top;">
+<div class="interactive-iframe-container">
+<iframe src="external/demos-manim/axb.html?mat=2,0:1,1:0,3&amp;x=2,1&amp;show=true&amp;theme=dark" id="int-slide-axb-plane" style="max-width: 56%; width: 100%; aspect-ratio:1.25" title="described in detail following the image" aria-describedby="int-slide-axb-plane-description"></iframe><details class="image-description" aria-live="polite"><summary title="details"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe88e;</span></summary><div id="int-slide-axb-plane-description"><p>A linear map from the plane to space: dragging x on the left moves b = Ax on the right, inside a plane that is the range.</p></div></details>
+</div>
+<div class="interactive-iframe-container__opener"><a href="int-slide-axb-plane.html" title="Open in new tab" aria-label="Open in new tab" target="_blank"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe89e;</span></a></div>
+</div>
+<div style="display:table-cell;width:40.8163265306122%;vertical-align:top;">
+<p><span class="process-math">\(\R^2 \to \R^3\text{:}\)</span> the range is a plane. Drag <span class="process-math">\(\mathbf{x}\)</span> on the left; <span class="process-math">\(\mathbf{b} = A\mathbf{x}\)</span> moves on the right. Drag <span class="process-math">\(\mathbf{b}\)</span> off the range and the equation becomes inconsistent.</p>
+<p>One page serves every figure of this kind; the matrix comes in the URL.</p>
+</div>
+</div></div></section><section><h3>Settings from the URL</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · The MATH 53 demos · step 1 of 4.</em> The page reads its matrix, starting vector, and options from the URL, so one file serves every figure of this kind.</p>
+<p>From <code class="code-inline tex2jax_ignore">MATH-53/assets/demos-manim/axb.html</code></p>
+<div class="code-box"><pre class="program" data-line="3,8"><code class="language-javascript">// ---------------- URL parameters ----------------
+var Q = {};
+location.search.slice(1).split("&amp;").forEach(function (kv) {
+  if (!kv) return; var p = kv.split("=");
+  Q[decodeURIComponent(p[0])] = decodeURIComponent(p[1] || "");
+});
+document.body.className = Q.theme === "light" ? "light" : "dark";
+var A = (Q.mat || "1,0:1,1:0,1").split(":").map(function (r) {
+  return r.split(",").map(Number); });
+var m = A.length, n = A[0].length;
+var RANGE = parseFloat(Q.range || "5");
+var SHOW = Q.show === "true";
+var LOCK = Q.lock === "true";
+var x0 = (Q.x || "").split(",").map(Number).filter(function (v) {
+  return !isNaN(v); });
+while (x0.length &lt; n) x0.push([-1, 2, 1][x0.length]);
+</code></pre></div>
+</div></section><section><h3>Row-reduce in the page</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · The MATH 53 demos · step 2 of 4.</em> Pivots give the rank; free columns give a basis for the null space, pivot columns a basis for the range.</p>
+<p>From <code class="code-inline tex2jax_ignore">MATH-53/assets/demos-manim/axb.html</code></p>
+<div class="code-box"><pre class="program" data-line="5,17"><code class="language-javascript">…
+      val = M[i][lead];
+      for (k = 0; k &lt; cols; k++) M[i][k] -= val * M[r][k];
+    }
+    pivots.push(lead); lead++;
+  }
+  return { M: M, pivots: pivots };
+}
+var RA = rref(A), rank = RA.pivots.length;
+var nullB = [];                                   // null-space basis in R^n
+(function () {
+  var free = [], j, i;
+  for (j = 0; j &lt; n; j++) if (RA.pivots.indexOf(j) &lt; 0) free.push(j);
+  free.forEach(function (f) {
+    var v = [0, 0, 0]; v[f] = 1;
+    RA.pivots.forEach(function (p, pi) { v[p] = -RA.M[pi][f]; });
+    nullB.push(v);
+  });
+})();
+</code></pre></div>
+</div></section><section><h3>Solve, or say it cannot be done</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · The MATH 53 demos · step 3 of 4.</em> Solving Ax = b row-reduces the augmented matrix; a zero row with a nonzero right side means no solution, and the figure says so.</p>
+<p>From <code class="code-inline tex2jax_ignore">MATH-53/assets/demos-manim/axb.html</code></p>
+<div class="code-box"><pre class="program" data-line="7"><code class="language-javascript">function solve(b) {                               // particular solution or null
+  var aug = A.map(function (r, i) { return r.concat([b[i]]); });
+  var R = rref(aug), i, j;
+  for (i = 0; i &lt; m; i++) {
+    var allz = true;
+    for (j = 0; j &lt; n; j++) if (Math.abs(R.M[i][j]) &gt; 1e-8) allz = false;
+    if (allz &amp;&amp; Math.abs(R.M[i][n]) &gt; 1e-8) return null;
+  }
+  var v = [0, 0, 0];
+  R.pivots.forEach(function (p, pi) { if (p &lt; n) v[p] = R.M[pi][n]; });
+  return v;
+}
+</code></pre></div>
+</div></section><section><h3>Embed with parameters</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · The MATH 53 demos · step 4 of 4.</em> Each figure is one element with its own parameters. Write <code class="code-inline tex2jax_ignore">&amp;amp;</code> between them, because the source is XML.</p>
+<p>From <code class="code-inline tex2jax_ignore">MATH-53/source</code></p>
+<div class="code-box"><pre class="program"><code class="language-xml">&lt;interactive xml:id="int-indep-two-plane"
+  iframe="demos-manim/axb.html?mat=2,0:1,1:0,3&amp;amp;x=2,1&amp;amp;show=true&amp;amp;theme=dark"
+  width="100%" aspect="5:4"/&gt;
+</code></pre></div>
+</div></section><section><h2>What I’ve learned</h2></section><section><h3>Lessons from a year of building</h3>
+<div align="left"><dl class="description-list">
+<div>
+<dt>The first chapter is the expensive one</dt>
+<dd><p>XML, a build pipeline, and figure tools take time to learn; later chapters go much faster.</p></dd>
+</div>
+<div>
+<dt>Describe a figure while drawing it</dt>
+<dd><p>Writing the description alongside the figure costs minutes; adding it afterwards costs far more.</p></dd>
+</div>
+<div>
+<dt>Figures are most of the work</dt>
+<dd><p>Diagrams, interactives, and animations take far more time than the prose around them.</p></dd>
+</div>
+<div>
+<dt>Notes become a living document</dt>
+<dd><p>A fixed typo or a clearer example reaches every student the same day.</p></dd>
+</div>
+</dl></div></section><section><h3>Try it on one chapter</h3>
+<div align="left"><div style="display:table;margin-left:1%;margin-right:1%;" class="sidebyside">
+<div style="display:table-cell;width:48.9795918367347%;vertical-align:top;"><pre class="program"><code class="language-none"># the command-line tool
+pip install pretext
+
+# a new book, built and viewed
+pretext new book
+pretext build web
+pretext view
+</code></pre></div>
+<div style="display:table-cell;width:48.9795918367347%;vertical-align:top;">
+<p>Or skip the install: a GitHub Codespace runs the same tools in the browser.</p>
+<p><a class="external" href="https://pretextbook.org" target="_blank">pretextbook.org</a>: guides, sample books, and community support.</p>
+<p><a class="external" href="https://prefigure.org" target="_blank">prefigure.org</a>: accessible diagrams, inside PreTeXt or on their own.</p>
+<p><em class="alert">Come find me.</em> I’m glad to share my setup and help convert a first chapter.</p>
+</div>
+</div></div></section><section><h3>Thank you</h3>
+<div align="left">
+<p>Questions, and a second look at any demo.</p>
+<p><em class="alert">MATH 13 notes:</em> <a class="external" href="https://mahmadi-ops.github.io/M13-Mehdi/" target="_blank">mahmadi-ops.github.io/M13-Mehdi</a></p>
+<p><em class="alert">MATH 14 notes:</em> <a class="external" href="https://mahmadi-ops.github.io/MATH-14/" target="_blank">mahmadi-ops.github.io/MATH-14</a></p>
+<p><em class="alert">MATH 53 notes, in progress:</em> <a class="external" href="https://mahmadi-ops.github.io/MATH-53/" target="_blank">mahmadi-ops.github.io/MATH-53</a></p>
+<p>Supported by SCU’s Teaching and Technology Innovation Grant (with Norman Paris) and a Faculty Development AI Exploration grant.</p>
+</div></section><section><h2>Appendix</h2></section><section><h3>Anatomy of a PreTeXt project</h3>
+<div align="left">
+<pre class="code-block tex2jax_ignore">M13-Mehdi/
+├── project.ptx                  # targets: web · runestone · print
+├── publication/
+│   ├── publication.ptx          # what the web and PDF builds keep
+│   └── publication-runestone.ptx  # the same, minus hints and solutions
+├── source/                      # 50 .ptx files
+│   ├── main.ptx                 # the outline: one xi:include per chapter
+│   ├── ch-series-sequences.ptx  # a chapter; it includes its sections
+│   ├── Taylor.ptx  Conics.ptx … # one section per file
+│   └── assignment-8-chain-rule.ptx …  # one worksheet per assignment
+├── assets/                      # your files; the web build copies them
+├── generated-assets/            # made by the build, committed on purpose
+├── output/                      # the built books, not committed
+├── .github/workflows/           # build and publish; the Posting Desk
+├── .devcontainer/               # the Codespace: PreTeXt's Docker image
+├── requirements.txt             # pretext == 2.44.0 · prefig == 0.6.7
+└── CLAUDE.md  .claude/skills/   # rules and routines for Claude Code
+</pre>
+<p><em class="alert">You edit</em> <code class="code-inline tex2jax_ignore">source/</code> and <code class="code-inline tex2jax_ignore">assets/</code>. <em class="alert">The build makes</em> <code class="code-inline tex2jax_ignore">generated-assets/</code> and <code class="code-inline tex2jax_ignore">output/</code>. <em class="alert">The rest keeps it running:</em> <code class="code-inline tex2jax_ignore">project.ptx</code> and <code class="code-inline tex2jax_ignore">publication/</code> say what to build, the workflows publish it, <code class="code-inline tex2jax_ignore">.devcontainer/</code> and <code class="code-inline tex2jax_ignore">requirements.txt</code> pin the tools.</p>
+</div></section><section><h3>From zero to a live book, steps 1 to 4</h3>
+<div align="left"><dl class="description-list">
+<div>
+<dt>1. Get the tools</dt>
+<dd><p><code class="code-inline tex2jax_ignore">pip install pretext</code>. Or skip the install: a Codespace from PreTeXt’s <code class="code-inline tex2jax_ignore">pretext-codespace</code> template has everything, in the browser.</p></dd>
+</div>
+<div>
+<dt>2. Start a book</dt>
+<dd><p><code class="code-inline tex2jax_ignore">pretext new book -d my-notes</code> makes <code class="code-inline tex2jax_ignore">project.ptx</code>, a publication file, and <code class="code-inline tex2jax_ignore">source/</code> with <code class="code-inline tex2jax_ignore">main.ptx</code>, a chapter, and a section to copy.</p></dd>
+</div>
+<div>
+<dt>3. Bring your notes</dt>
+<dd><p><code class="code-inline tex2jax_ignore">pretext import notes.tex</code> (experimental) turns a LaTeX file into PreTeXt to start from. Or write sections by hand; each is one <code class="code-inline tex2jax_ignore">&lt;xi:include&gt;</code> in its chapter.</p></dd>
+</div>
+<div>
+<dt>4. Build and look</dt>
+<dd><p><code class="code-inline tex2jax_ignore">pretext build web</code>, then <code class="code-inline tex2jax_ignore">pretext view</code> serves the book on your machine. Add <code class="code-inline tex2jax_ignore">-x</code> and an <code class="code-inline tex2jax_ignore">xml:id</code> to build one part.</p></dd>
+</div>
+</dl></div></section><section><h3>From zero to a live book, steps 5 to 8</h3>
+<div align="left"><dl class="description-list">
+<div>
+<dt>5. Add figures and media</dt>
+<dd><p>files go in <code class="code-inline tex2jax_ignore">assets/</code>, then <code class="code-inline tex2jax_ignore">&lt;interactive&gt;</code>, <code class="code-inline tex2jax_ignore">&lt;image&gt;</code>, <code class="code-inline tex2jax_ignore">&lt;video&gt;</code>. The build makes PreFigure diagrams, previews, and QR codes into <code class="code-inline tex2jax_ignore">generated-assets/</code> whenever their source changes.</p></dd>
+</div>
+<div>
+<dt>6. Typeset the PDF</dt>
+<dd><p><code class="code-inline tex2jax_ignore">pretext build print</code>, through LaTeX, with a preview image and a QR code in place of each interactive.</p></dd>
+</div>
+<div>
+<dt>7. Publish</dt>
+<dd><p><code class="code-inline tex2jax_ignore">pretext deploy</code> puts the web book on GitHub Pages. PreTeXt’s <code class="code-inline tex2jax_ignore">pretext-deploy.yml</code> workflow runs on demand; uncomment its <code class="code-inline tex2jax_ignore">push</code> lines to publish on every push.</p></dd>
+</div>
+<div>
+<dt>8. Get help</dt>
+<dd><p><a class="external" href="https://pretextbook.org" target="_blank">pretextbook.org</a> has the Guide, an annotated sample book that shows the source of each example, and the pretext-support forum.</p></dd>
+</div>
+</dl></div></section><section><h3>PreTeXt markup at a glance: content, figures, and media</h3>
+<div align="left"><div class="tabular-box natural-width"><table class="tabular">
+<tr class="header-horizontal">
+<th scope="col" class="l m b1 r0 l0 t0 lines">You want</th>
+<th scope="col" class="l m b1 r0 l0 t0 lines">You write</th>
+</tr>
+<tr>
+<td class="l m b0 r0 l0 t0 lines">A section in its own file</td>
+<td class="l m b0 r0 l0 t0 lines"><code class="code-inline tex2jax_ignore">&lt;xi:include href="section.ptx"/&gt;</code></td>
+</tr>
+<tr>
+<td class="l m b0 r0 l0 t0 lines">Math: inline, display, aligned</td>
+<td class="l m b0 r0 l0 t0 lines">
+<code class="code-inline tex2jax_ignore">&lt;m&gt;</code> · <code class="code-inline tex2jax_ignore">&lt;md&gt;</code> · <code class="code-inline tex2jax_ignore">&lt;md&gt;&lt;mrow&gt;</code>
+</td>
+</tr>
+<tr>
+<td class="l m b0 r0 l0 t0 lines">A numbered, linkable item</td>
+<td class="l m b0 r0 l0 t0 lines">
+<code class="code-inline tex2jax_ignore">xml:id="…"</code> then <code class="code-inline tex2jax_ignore">&lt;xref ref="…"/&gt;</code>
+</td>
+</tr>
+<tr>
+<td class="l m b0 r0 l0 t0 lines">A photo with alt text</td>
+<td class="l m b0 r0 l0 t0 lines"><code class="code-inline tex2jax_ignore">&lt;image source="…"&gt;&lt;shortdescription&gt;</code></td>
+</tr>
+<tr>
+<td class="l m b0 r0 l0 t0 lines">A diagram from code</td>
+<td class="l m b0 r0 l0 t0 lines">
+<code class="code-inline tex2jax_ignore">&lt;image&gt;&lt;prefigure&gt;</code> · <code class="code-inline tex2jax_ignore">&lt;latex-image&gt;</code>
+</td>
+</tr>
+<tr>
+<td class="l m b0 r0 l0 t0 lines">Your own HTML figure</td>
+<td class="l m b0 r0 l0 t0 lines"><code class="code-inline tex2jax_ignore">&lt;interactive iframe="file.html"&gt;</code></td>
+</tr>
+<tr>
+<td class="l m b0 r0 l0 t0 lines">A script-driven widget</td>
+<td class="l m b0 r0 l0 t0 lines"><code class="code-inline tex2jax_ignore">&lt;interactive platform="javascript"&gt;&lt;slate&gt;</code></td>
+</tr>
+<tr>
+<td class="l m b0 r0 l0 t0 lines">GeoGebra</td>
+<td class="l m b0 r0 l0 t0 lines">
+<code class="code-inline tex2jax_ignore">&lt;interactive geogebra="id"&gt;</code> · <code class="code-inline tex2jax_ignore">&lt;slate surface="geogebra"&gt;</code>
+</td>
+</tr>
+<tr>
+<td class="l m b0 r0 l0 t0 lines">Desmos</td>
+<td class="l m b0 r0 l0 t0 lines"><code class="code-inline tex2jax_ignore">&lt;interactive desmos="id"/&gt;</code></td>
+</tr>
+<tr>
+<td class="l m b0 r0 l0 t0 lines">A video</td>
+<td class="l m b0 r0 l0 t0 lines"><code class="code-inline tex2jax_ignore">&lt;video source="videos/….mp4"/&gt;</code></td>
+</tr>
+<tr>
+<td class="l m b0 r0 l0 t0 lines">Live code</td>
+<td class="l m b0 r0 l0 t0 lines"><code class="code-inline tex2jax_ignore">&lt;sage&gt;&lt;input&gt;…&lt;/input&gt;&lt;/sage&gt;</code></td>
+</tr>
+<tr>
+<td class="l m b0 r0 l0 t0 lines">Web-only or print-only</td>
+<td class="l m b0 r0 l0 t0 lines">
+<code class="code-inline tex2jax_ignore">component="web"</code> · <code class="code-inline tex2jax_ignore">component="print"</code>
+</td>
+</tr>
+</table></div></div></section><section><h3>PreTeXt markup at a glance: exercises, editions, and builds</h3>
+<div align="left"><div class="tabular-box natural-width"><table class="tabular">
+<tr class="header-horizontal">
+<th scope="col" class="l m b1 r0 l0 t0 lines">You want</th>
+<th scope="col" class="l m b1 r0 l0 t0 lines">You write</th>
+</tr>
+<tr>
+<td class="l m b0 r0 l0 t0 lines">Answer boxes that check</td>
+<td class="l m b0 r0 l0 t0 lines">
+<code class="code-inline tex2jax_ignore">&lt;var/&gt;</code> · <code class="code-inline tex2jax_ignore">&lt;setup&gt;&lt;var&gt;&lt;condition&gt;</code>
+</td>
+</tr>
+<tr>
+<td class="l m b0 r0 l0 t0 lines">True / False</td>
+<td class="l m b0 r0 l0 t0 lines">
+<code class="code-inline tex2jax_ignore">&lt;statement correct="yes"&gt;</code> + <code class="code-inline tex2jax_ignore">&lt;feedback&gt;</code>
+</td>
+</tr>
+<tr>
+<td class="l m b0 r0 l0 t0 lines">Multiple choice or select</td>
+<td class="l m b0 r0 l0 t0 lines"><code class="code-inline tex2jax_ignore">&lt;choices&gt;&lt;choice correct="yes"&gt;</code></td>
+</tr>
+<tr>
+<td class="l m b0 r0 l0 t0 lines">Parsons problem</td>
+<td class="l m b0 r0 l0 t0 lines">
+<code class="code-inline tex2jax_ignore">&lt;blocks&gt;&lt;block&gt;</code>, written in the right order</td>
+</tr>
+<tr>
+<td class="l m b0 r0 l0 t0 lines">Card sort</td>
+<td class="l m b0 r0 l0 t0 lines"><code class="code-inline tex2jax_ignore">&lt;cardsort&gt;&lt;match&gt;&lt;premise&gt;&lt;response&gt;</code></td>
+</tr>
+<tr>
+<td class="l m b0 r0 l0 t0 lines">Clickable area</td>
+<td class="l m b0 r0 l0 t0 lines"><code class="code-inline tex2jax_ignore">&lt;areas&gt;&lt;area correct="yes"&gt;</code></td>
+</tr>
+<tr>
+<td class="l m b0 r0 l0 t0 lines">Short answer</td>
+<td class="l m b0 r0 l0 t0 lines"><code class="code-inline tex2jax_ignore">&lt;response/&gt;</code></td>
+</tr>
+<tr>
+<td class="l m b0 r0 l0 t0 lines">Hints and solutions</td>
+<td class="l m b0 r0 l0 t0 lines">
+<code class="code-inline tex2jax_ignore">&lt;hint&gt;</code> · <code class="code-inline tex2jax_ignore">&lt;answer&gt;</code> · <code class="code-inline tex2jax_ignore">&lt;solution&gt;</code>
+</td>
+</tr>
+<tr>
+<td class="l m b0 r0 l0 t0 lines">Release solutions by date</td>
+<td class="l m b0 r0 l0 t0 lines">
+<code class="code-inline tex2jax_ignore">component="hw3-solutions"</code> + <code class="code-inline tex2jax_ignore">&lt;version include="…"/&gt;</code>
+</td>
+</tr>
+<tr>
+<td class="l m b0 r0 l0 t0 lines">Slides like these</td>
+<td class="l m b0 r0 l0 t0 lines">
+<code class="code-inline tex2jax_ignore">&lt;slideshow&gt;&lt;section&gt;&lt;slide&gt;</code>, built with <code class="code-inline tex2jax_ignore">format="revealjs"</code>
+</td>
+</tr>
+<tr>
+<td class="l m b0 r0 l0 t0 lines">Build and preview</td>
+<td class="l m b0 r0 l0 t0 lines">
+<code class="code-inline tex2jax_ignore">pretext build</code> · <code class="code-inline tex2jax_ignore">pretext view</code>
+</td>
+</tr>
+</table></div></div></section>
+</div>
+</div>
+<script>diagcess.Base.init()</script>
+</body>
+<script>
+Reveal.initialize({
+  controls: true,
+  controlsTutorial: true,
+  controlsLayout: 'bottom-right',
+  controlsBackArrows: 'faded',
+  navigationMode: 'linear',
+  progress: false,
+  center: false,
+  hash: true,
+  transition: 'fade',
+  width: "100%",
+  height: "100%",
+  margin: "0.025",
+  math: {
+    mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+    config: 'TeX-AMS_HTML-full',
+    // other options are passed into MathJax.Hub.Config()
+    tex2jax: {
+      inlineMath:  [['\\(','\\)']],
+      displayMath: [],
+    }
+  },
+  plugins: [ RevealMath ]
+});
+</script>
+</html>
