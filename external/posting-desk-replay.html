@@ -1,0 +1,535 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Posting Desk replay</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;600&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=Source+Serif+4:ital,wght@0,400..700;1,400..700&display=swap">
+<style>
+:root {
+  color-scheme: light;
+  --paper: #FAF7F2; --paper-2: #F2EDE3; --card: #FFFDF9; --line: #E4DBCD;
+  --ink: #231C1F; --body: #4A4246; --muted: #6B6266;
+  --wine: #5E011C; --wine-soft: #F4E6E8; --olive: #4A5D23; --olive-soft: #E9EEDD;
+  --on-wine: #FAF1E8; --on-wine-2: #E6CFC0; --sand: #E2C3A8;
+  --code-bg: #231C1F; --code-fg: #EDE6DA; --tag: #F2A7B5; --attr: #C5D69A; --math: #E8C98F; --comment: #9C8F86;
+  --letterbox: #18120F;
+  --book-bg: #FFFFFF; --book-ink: #1E1E1E; --book-muted: #5A5A5A; --book-rule: #5F86AE; --book-box: #EEF5FC; --book-knowl: #F6F3EA;
+  --good: #2E6B34; --bad: #A3271F; --check: #3E7B40; --hl: #FFF1A8;
+  --f-display: 'Source Serif 4', Georgia, serif;
+  --f-body: 'IBM Plex Sans', Arial, sans-serif;
+  --f-mono: 'JetBrains Mono', 'Courier New', monospace;
+  --f-book: 'Open Sans', Arial, sans-serif;
+  --f-book-head: 'PT Serif', Georgia, serif;
+}
+[hidden] { display: none !important; }
+.row { display: flex; gap: 40px; min-height: 0; flex: 1; }
+.col { display: flex; flex-direction: column; gap: 24px; min-width: 0; }
+.grow { flex: 1; }
+.small { font: 400 22px/1.45 var(--f-body); color: var(--muted); }
+.tabs { display: flex; gap: 10px; flex-wrap: wrap; }
+.tab { font: 500 22px/1.2 var(--f-body); padding: 11px 20px; border-radius: 999px; border: 1.5px solid var(--line); background: var(--card); color: var(--body); cursor: pointer; }
+.tab:hover { border-color: var(--wine); color: var(--wine); }
+.tab[aria-selected="true"] { background: var(--wine); border-color: var(--wine); color: var(--on-wine); }
+.btn { font: 600 22px/1 var(--f-body); padding: 14px 22px; border-radius: 10px; border: 1.5px solid var(--wine); background: var(--wine); color: var(--on-wine); cursor: pointer; }
+.btn.ghost { background: transparent; color: var(--wine); }
+.btn:disabled { opacity: .45; cursor: default; }
+button:focus-visible, .tab:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible, [tabindex]:focus-visible { outline: 3px solid #1F6FEB; outline-offset: 3px; }
+.pill { font: 600 18px/1 var(--f-body); letter-spacing: .1em; text-transform: uppercase; padding: 8px 12px; border-radius: 999px; background: var(--wine-soft); color: var(--wine); align-self: flex-start; }
+.flash { animation: flash 2.2s ease; }
+@keyframes flash { 0%, 60% { background: var(--hl); } 100% { background: transparent; } }
+.btn.ready { animation: dkring 1.8s ease-in-out infinite; }
+
+/* Camino, the link desk, and the Posting Desk replay */
+.shot { background: #FFFFFF; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; position: relative; box-shadow: 0 10px 30px rgba(35, 28, 31, .08); }
+.shot img { display: block; width: 100%; height: auto; }
+.callout { width: 48px; height: 48px; border-radius: 50%; background: var(--wine); color: var(--on-wine); display: grid; place-items: center; font: 600 25px/1 var(--f-display); box-shadow: 0 0 0 4px #FFFFFF, 0 4px 12px rgba(0, 0, 0, .18); flex: none; }
+.shot .callout { position: absolute; transform: translate(-50%, -50%); }
+.why3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 36px; }
+.why3 > div { display: grid; grid-template-columns: 48px 1fr; column-gap: 18px; align-items: start; }
+.why3 b { font: 600 26px/1.3 var(--f-body); color: var(--ink); display: block; margin-bottom: 4px; }
+.why3 p { font: 400 22px/1.45 var(--f-body); color: var(--body); }
+
+.ldoc { position: relative; overflow: auto; background: #E6E0D5; border: 1px solid var(--line); border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 18px; }
+.ldoc .pg { position: relative; flex: none; background: #FFFFFF; box-shadow: 0 4px 14px rgba(0, 0, 0, .12); }
+.ldoc .pg img { display: block; width: 100%; height: auto; }
+.ldoc .zone { position: absolute; box-sizing: border-box; border: 4px solid var(--wine); border-radius: 10px; background: rgba(94, 1, 28, .07); opacity: 0; transition: opacity .3s; pointer-events: none; }
+.ldoc .zone.on { opacity: 1; }
+.zlist { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.zlist button { width: 100%; text-align: left; display: grid; grid-template-columns: 42px 1fr; column-gap: 16px; align-items: center; background: var(--card); border: 1.5px solid var(--line); border-radius: 14px; padding: 11px 18px 11px 13px; cursor: pointer; font: inherit; color: var(--body); }
+.zlist button:hover { border-color: var(--wine); }
+.zlist button[aria-pressed="true"] { background: #FFFFFF; border-color: var(--wine); box-shadow: 0 6px 18px rgba(94, 1, 28, .10); }
+.zlist .n { width: 42px; height: 42px; border-radius: 50%; background: var(--paper); color: var(--wine); display: grid; place-items: center; font: 600 21px/1 var(--f-display); }
+.zlist button[aria-pressed="true"] .n { background: var(--wine); color: var(--on-wine); }
+.zlist b { font: 600 23px/1.25 var(--f-body); color: var(--ink); display: block; }
+.zlist .d { font: 400 19px/1.4 var(--f-body); color: var(--body); display: block; margin-top: 2px; }
+.oneline { background: var(--card); border: 1px solid var(--line); border-left: 5px solid var(--wine); border-radius: 12px; padding: 16px 22px; font: 400 21px/1.45 var(--f-body); color: var(--body); }
+.oneline b { color: var(--ink); }
+.oneline code { font: 500 18px/1 var(--f-mono); color: var(--wine); }
+
+/* the desk replica: the real desk's palette and type, scaled for a projector */
+.dk-bar { display: flex; align-items: center; gap: 18px; }
+.dk-bar .small { flex: 1; font-size: 18px; text-align: right; white-space: nowrap; }
+.dk { --dk-bg: #FAF8F5; --dk-ink: #26201D; --dk-muted: #6E6259; --dk-line: #E5DCD4; --dk-accent: #7A2531; --dk-accent-soft: #F3E6E4; --dk-good: #2E6B4F; --dk-good-soft: #E4EFE8; --dk-pend: #996A1F; --dk-pend-soft: #F5EBD9; --dk-code: #8A4B44;
+  flex: 1; min-height: 0; overflow: auto; background: var(--dk-bg); color: var(--dk-ink); font: 400 19px/1.4 'Source Sans 3', var(--f-body); border: 1px solid var(--line); border-radius: 14px; padding: 14px 22px 16px; display: flex; flex-direction: column; gap: 11px; }
+.dk-mast { border-bottom: 2px solid var(--dk-accent); padding-bottom: 8px; display: flex; align-items: baseline; gap: 18px; flex-wrap: wrap; }
+.dk-mast h4 { font: 700 28px/1.15 var(--f-display); color: var(--dk-ink); }
+.dk-mast p { color: var(--dk-muted); font-size: 17px; }
+.dk-mast p u { text-decoration: none; color: var(--dk-accent); border-bottom: 1px solid var(--dk-line); }
+.dk-banner { border: 1px solid var(--dk-line); border-left: 5px solid var(--dk-pend); background: var(--dk-pend-soft); border-radius: 8px; padding: 9px 16px; font-size: 18px; }
+.dk-card { background: #FFFFFF; border: 1px solid var(--dk-line); border-radius: 12px; box-shadow: 0 1px 3px rgba(60, 40, 30, .08); padding: 9px 20px 5px; flex: none; }
+.dk-card h5 { font: 600 22px/1.2 var(--f-display); color: var(--dk-ink); margin: 0; }
+.dk-desc { color: var(--dk-muted); font-size: 16px; margin-top: 1px; }
+.dk-card h6 { font: 600 14px/1.2 'Source Sans 3', var(--f-body); letter-spacing: .08em; text-transform: uppercase; color: var(--dk-muted); margin: 7px 0 0; }
+.dk-row { display: flex; align-items: center; gap: 12px; padding: 7px 0; border-top: 1px solid var(--dk-line); flex-wrap: wrap; }
+.dk-rows .dk-row:first-child { border-top: 0; }
+.dk-t { flex: 1 1 380px; min-width: 0; }
+.dk-name { font-weight: 600; display: block; line-height: 1.3; }
+.dk-id { font: 400 14px/1.4 var(--f-mono); color: var(--dk-code); display: block; }
+.dk-chip { font: 600 16px/1 'Source Sans 3', var(--f-body); border-radius: 999px; padding: 6px 13px; white-space: nowrap; }
+.dk-chip.none { background: var(--dk-bg); border: 1px solid var(--dk-line); color: var(--dk-muted); }
+.dk-chip.sent { background: var(--dk-pend-soft); color: var(--dk-pend); }
+.dk-chip.done { background: var(--dk-good-soft); color: var(--dk-good); }
+.dk-chip.pend { background: var(--dk-pend-soft); color: var(--dk-pend); }
+.dk-btn { font: 600 17px/1 'Source Sans 3', var(--f-body); border-radius: 8px; padding: 9px 15px; border: 1px solid var(--dk-line); background: #FFFFFF; color: var(--dk-ink); cursor: pointer; white-space: nowrap; }
+.dk-btn:hover { border-color: var(--dk-accent); color: var(--dk-accent); }
+.dk-btn.pri { background: var(--dk-accent); border-color: var(--dk-accent); color: #FFFFFF; }
+.dk-btn.hot { border-color: var(--dk-accent); color: var(--dk-accent); box-shadow: 0 0 0 4px rgba(122, 37, 49, .14); }
+.dk-btn:disabled { opacity: .4; cursor: default; }
+.dk-confirm { display: flex; gap: 8px; align-items: center; }
+.dk-q { font-size: 17px; color: var(--dk-muted); }
+.dk-due { font: 400 15px/1 var(--f-mono); color: var(--dk-muted); white-space: nowrap; }
+.dk-date { font: 400 15px/1 var(--f-mono); color: var(--dk-ink); background: var(--dk-bg); border: 1px solid var(--dk-line); border-radius: 6px; padding: 8px 10px; }
+.dk-log { list-style: none; margin: 2px 0 0; padding: 0; }
+.dk-log li { border-top: 1px solid var(--dk-line); padding: 6px 0; font-size: 16.5px; line-height: 1.35; display: flex; gap: 12px; align-items: baseline; }
+.dk-log li:first-child { border-top: 0; }
+.dk-log .w { font: 400 14px/1 var(--f-mono); color: var(--dk-muted); white-space: nowrap; min-width: 52px; }
+.dk-log .nt { color: var(--dk-muted); }
+
+.chat { min-width: 0; background: #FFFFFF; border: 1px solid var(--line); border-radius: 14px; display: flex; flex-direction: column; overflow: hidden; }
+.chat-top { display: flex; align-items: center; gap: 10px; padding: 14px 22px; border-bottom: 1px solid var(--line); background: var(--paper); font: 600 21px/1 var(--f-body); color: var(--ink); }
+.chat-top i { width: 12px; height: 12px; border-radius: 50%; background: var(--olive); display: block; }
+.chat-body { flex: 1; min-height: 0; overflow: auto; padding: 16px 22px; display: flex; flex-direction: column; gap: 12px; }
+.chat-hint { font: 400 22px/1.45 var(--f-body); color: var(--muted); }
+.chat-hint b { color: var(--ink); }
+.chat-me { align-self: flex-end; max-width: 90%; background: var(--paper-2); border-radius: 18px 18px 4px 18px; padding: 12px 18px; font: 500 22px/1.35 var(--f-body); color: var(--ink); }
+.chat-steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 9px; }
+.chat-steps li { display: grid; grid-template-columns: 30px 1fr; column-gap: 12px; align-items: start; }
+.chat-steps .ic { width: 28px; height: 28px; border-radius: 50%; border: 3px solid var(--line); display: grid; place-items: center; font: 700 15px/1 var(--f-body); color: #FFFFFF; margin-top: 1px; box-sizing: border-box; }
+.chat-steps li.run .ic { border-color: var(--olive); border-top-color: transparent; }
+@media (prefers-reduced-motion: no-preference) {
+  .chat-steps li.run .ic { animation: dkspin .9s linear infinite; }
+  .dk-chip.sent { animation: dkpulse 2.2s ease-in-out infinite; }
+  .btn.ready { animation: dkring 1.8s ease-in-out infinite; }
+}
+.chat-steps li.ok .ic { background: var(--good); border-color: var(--good); }
+.chat-steps li.ok .ic::after { content: "\2713"; }
+.chat-steps b { font: 600 21px/1.3 var(--f-body); color: var(--ink); display: block; }
+.chat-steps .d { font: 400 18px/1.4 var(--f-body); color: var(--body); display: block; overflow-wrap: anywhere; }
+.chat-steps .d code { font: 400 15.5px/1.4 var(--f-mono); color: var(--wine); }
+.diff { margin: 7px 0 0; background: var(--code-bg); color: var(--code-fg); border-radius: 10px; padding: 10px 12px; font: 400 15.5px/1.45 var(--f-mono); white-space: pre-wrap; overflow-wrap: anywhere; }
+.diff span { display: block; padding: 0 4px; border-radius: 3px; }
+.diff .f { color: var(--comment); }
+.diff .del { background: rgba(214, 69, 65, .24); color: #F8C9C4; }
+.diff .add { background: rgba(92, 170, 90, .24); color: #CDEBC6; }
+.diff .ctx { color: var(--code-fg); opacity: .7; }
+.chat-foot { padding: 14px 22px; border-top: 1px solid var(--line); display: flex; gap: 12px; align-items: center; }
+@keyframes dkspin { to { transform: rotate(360deg); } }
+@keyframes dkpulse { 50% { opacity: .55; } }
+@keyframes dkring { 0%, 100% { box-shadow: 0 0 0 0 rgba(94, 1, 28, .35); } 50% { box-shadow: 0 0 0 9px rgba(94, 1, 28, 0); } }
+
+/* two desks */
+.wk { list-style: none; margin: 0; padding: 0; counter-reset: wk; }
+.wk li { counter-increment: wk; position: relative; padding: 0 0 24px 74px; }
+.wk li::before { content: counter(wk); position: absolute; left: 0; top: 0; width: 50px; height: 50px; border-radius: 50%; background: var(--wine); color: var(--on-wine); display: grid; place-items: center; font: 600 24px/1 var(--f-display); }
+.wk li::after { content: ""; position: absolute; left: 24px; top: 56px; bottom: 6px; width: 2px; background: var(--line); }
+.wk li:last-child { padding-bottom: 0; }
+.wk li:last-child::after { display: none; }
+.wk b { font: 600 27px/1.3 var(--f-body); color: var(--ink); display: block; padding-top: 7px; }
+.wk span { font: 400 21px/1.45 var(--f-body); color: var(--body); display: block; margin-top: 3px; }
+table.cmp { border-collapse: collapse; table-layout: fixed; width: 100%; font: 400 21px/1.4 var(--f-body); color: var(--body); }
+table.cmp th { text-align: left; font: 600 28px/1.2 var(--f-display); color: var(--wine); padding: 0 14px 12px; border-bottom: 2px solid var(--ink); }
+table.cmp td { padding: 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+table.cmp td:first-child { width: 24%; padding-left: 0; padding-top: 17px; font: 600 16px/1.35 var(--f-body); letter-spacing: .08em; text-transform: uppercase; color: var(--olive); }
+table.cmp code { font: 500 18px/1.3 var(--f-mono); color: var(--wine); white-space: nowrap; }
+table.cmp th:first-child { width: 24%; }
+.chips.rules span::before { content: "\2713\00a0"; color: var(--good); font-weight: 700; }
+
+/* the syllabus */
+.sylframe { flex: 1; min-height: 0; overflow: auto; background: #FFFFFF; border: 1px solid var(--line); border-radius: 14px; }
+.sylframe img { display: block; width: 100%; height: auto; }
+.sylframe.pdf { background: #E6E0D5; padding: 18px; }
+.sylframe.pdf img { width: 880px; margin: 0 auto; box-shadow: 0 4px 14px rgba(0, 0, 0, .12); }
+.dk-bar .small code { font: 500 16px/1 var(--f-mono); color: var(--wine); }
+.benefits { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 15px; }
+.benefits li { display: grid; grid-template-columns: 28px 1fr; column-gap: 10px; }
+.benefits li::before { content: "\2713"; color: var(--good); font: 700 23px/1.3 var(--f-body); }
+.benefits b { font: 600 24px/1.3 var(--f-body); color: var(--ink); display: block; }
+.benefits span { font: 400 20px/1.42 var(--f-body); color: var(--body); display: block; margin-top: 2px; }
+
+html, body { margin: 0; height: 100%; overflow: hidden; background: var(--paper); color: var(--ink); font-family: var(--f-body); }
+p, h1, h2, h3, h4, h5, h6, ul, ol { margin: 0; }
+#stage { position: absolute; left: 0; top: 0; width: 1680px; height: 764px; transform-origin: 0 0; display: flex; flex-direction: column; background: var(--paper); }
+#stage > .row { flex: 1; min-height: 0; }
+</style>
+</head>
+<body>
+<div id="stage">
+<div class="row" style="gap:36px">
+    <div class="col" style="width:960px;flex:none;gap:16px">
+      <div class="dk-bar">
+        <div class="tabs" role="tablist" data-group="desk" aria-label="Choose a desk">
+          <button class="tab" role="tab" aria-selected="true" data-key="m14">MATH 14 desk</button>
+          <button class="tab" role="tab" aria-selected="false" data-key="m13">MATH 13 desk</button>
+        </div>
+        <span class="small">Replay as of Oct 9 · nothing is posted</span>
+        <button class="btn ghost" type="button" data-desk="play">▶ Play it</button>
+      </div>
+      <div class="dk"></div>
+    </div>
+    <div class="chat grow">
+      <div class="chat-top"><i></i>Claude chat</div>
+      <div class="chat-body" aria-live="polite"></div>
+      <div class="chat-foot"><button class="btn" type="button" data-desk="say" disabled>Say “check the posting desk”</button><button class="btn ghost" type="button" data-desk="again" hidden>Replay again</button></div>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  'use strict';
+
+  var inits = {};
+  function tabs(group, onPick) {
+    var list = document.querySelector('[data-group="' + group + '"]');
+    if (!list) return;
+    var btns = Array.prototype.slice.call(list.querySelectorAll('[data-key]'));
+    btns.forEach(function (b) {
+      b.addEventListener('click', function () {
+        btns.forEach(function (x) { x.setAttribute('aria-selected', String(x === b)); });
+        onPick(b.dataset.key);
+      });
+    });
+  }
+  function panes(scope, key) {
+    scope.querySelectorAll('[data-pane]').forEach(function (p) { p.hidden = p.dataset.pane !== key; });
+  }
+
+
+  /* ---------- the syllabus: website and PDF from one source ---------- */
+  inits.syllabus = function (s) { tabs('syl', function (k) { panes(s, k); }); };
+
+  /* ---------- the link desk: click a row, see it on the page ---------- */
+  /* zones: [page, left, top, width, height] as fractions of the page image */
+  var LZ = {
+    most: [[1, .004, .040, .992, .172]],
+    sites: [[1, .002, .249, .49, .294], [1, .002, .692, .49, .278]],
+    tools: [[1, .505, .249, .493, .157], [1, .505, .692, .493, .157]],
+    repos: [[1, .505, .404, .493, .247], [2, .505, .004, .493, .31]],
+    tutor: [[2, .002, .324, .996, .212]],
+    admin: [[2, .002, .544, .996, .264]]
+  };
+  inits.linkdesk = function (s) {
+    var doc = s.querySelector('.ldoc'), pgs = doc.querySelectorAll('.pg');
+    var btns = Array.prototype.slice.call(s.querySelectorAll('.zlist button'));
+    var boxes = {};
+    Object.keys(LZ).forEach(function (k) {
+      boxes[k] = LZ[k].map(function (z) {
+        var d = document.createElement('div');
+        d.className = 'zone';
+        d.style.left = (z[1] * 100) + '%'; d.style.top = (z[2] * 100) + '%';
+        d.style.width = (z[3] * 100) + '%'; d.style.height = (z[4] * 100) + '%';
+        pgs[z[0] - 1].appendChild(d);
+        return d;
+      });
+    });
+    function pick(k) {
+      btns.forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.zone === k)); });
+      Object.keys(boxes).forEach(function (j) { boxes[j].forEach(function (d) { d.classList.toggle('on', j === k); }); });
+      var d = boxes[k][0];
+      var top = d.parentNode.offsetTop + d.offsetTop - 14;
+      try { doc.scrollTo({ top: top, behavior: 'smooth' }); } catch (e) { doc.scrollTop = top; }
+    }
+    btns.forEach(function (b) { b.addEventListener('click', function () { pick(b.dataset.zone); }); });
+  };
+
+  /* ---------- the Posting Desk: a replay of the two real desks ---------- */
+  inits.desk = function (s) {
+    var MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    var now = new Date(), TODAY = MON[now.getMonth()] + ' ' + now.getDate();
+    var panel = s.querySelector('.dk'), chatBody = s.querySelector('.chat-body');
+    var sayBtn = s.querySelector('[data-desk="say"]'), againBtn = s.querySelector('[data-desk="again"]'), playBtn = s.querySelector('[data-desk="play"]');
+    var tabBtns = Array.prototype.slice.call(s.querySelectorAll('[data-group="desk"] [data-key]'));
+    function E(t) { return String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+    function diff(file, lines) {
+      var cls = { '-': 'del', '+': 'add', ' ': 'ctx' };
+      return '<pre class="diff"><span class="f">' + E(file) + '</span>' + lines.map(function (l) {
+        return '<span class="' + cls[l.charAt(0)] + '">' + E(l.charAt(0) + ' ' + l.slice(1)) + '</span>';
+      }).join('') + '</pre>';
+    }
+    var CHECK = '<code>xmllint</code> ✓ · <code>pretext build web</code> ✓';
+    var LIVE = ['GitHub Actions rebuilds the site', 'Live a few minutes later'];
+    function deskStep(what) { return ['Updates the desk', 'Request done · ' + what + ' ' + TODAY + ' · a line in Activity', '', true]; }
+    var DESKS = {
+      m14: {
+        title: 'MATH 14 Posting Desk', sub: 'Calculus IV · Fall 2026', say: 'check the MATH 14 posting desk',
+        cards: [
+          { h: 'Completed notes', grp: 'Ch. 2 — Multiple Integrals', rows: [
+            { name: 'Double and Iterated Integrals Over Rectangles', id: 'section-double-integrals-rectangles.html · via Claude', chip: 'done', text: 'Posted Oct 8', btn: 'Unpost' },
+            { key: 'post', name: 'Double Integrals Over General Regions and Area by Double Integration', id: 'section-double-integrals-general-regions.html · via Claude', chip: 'none', text: 'Not on the site', btn: 'Post' }
+          ] },
+          { h: 'Solutions', desc: 'Hidden by default. Release turns a set on after its due date; Re-lock hides it again.', rows: [
+            { name: 'Assignment 3 solutions', id: 'due Oct 7 · via Claude', chip: 'none', text: 'Released Oct 8', btn: 'Re-lock' },
+            { key: 'release', name: 'Assignment 4 solutions', id: 'due Oct 16 · via Claude', chip: 'pend', text: 'Locked', btn: 'Release solutions' }
+          ] }
+        ],
+        log: [
+          ['Oct 9', 'Skeletal §2.2, §2.3 and §2.4 are on the site.'],
+          ['Oct 9', 'Assignment 4 is on the skeletal site.'],
+          ['Oct 8', 'Completed notes: §2.1 Double and Iterated Integrals Over Rectangles is on the site.'],
+          ['Oct 8', 'Assignment 3 solutions released.']
+        ],
+        acts: {
+          post: {
+            q: 'Put this on the site?', yes: 'Yes, post', label: 'Post: Notes: Double Integrals Over General Regions and Area by Double Integration',
+            after: { chip: 'done', text: 'Posted ' + TODAY, btn: 'Unpost' },
+            done: ['Completed notes: §2.2 Double Integrals Over General Regions is on the site.', 'chapter 2 of the course-notes site now holds §2.1 and §2.2'],
+            steps: [
+              ['Reads the desk', 'One request: <code>notes</code> · <code>section-double-integrals-general-regions</code>'],
+              ['Posts the section in MATH-14', '<code>python3 scripts/desk_action.py post-notes section-double-integrals-general-regions</code>',
+                diff('MATH-14/source/main.ptx', ['-<!-- UNPOSTED <xi:include href="double-integrals-general-regions.ptx" /> UNPOSTED -->', '+<xi:include href="double-integrals-general-regions.ptx" />'])],
+              ['Checks it', CHECK],
+              ['Commits to main', '“Post section 2.2, Double Integrals Over General Regions … (completed notes)”'],
+              deskStep('Posted'), LIVE
+            ]
+          },
+          release: {
+            q: 'Make the solutions public?', yes: 'Yes, release', label: 'Release solutions: Assignment 4',
+            after: { chip: 'none', text: 'Released ' + TODAY, btn: 'Re-lock' },
+            done: ['Assignment 4 solutions released.', 'hw4-solutions added to both publication files'],
+            steps: [
+              ['Reads the desk', 'One request: <code>release</code> · Assignment 4'],
+              ['Turns them on in MATH14-Skeletal', 'Adds <code>hw4-solutions</code> to the version line, for web and print',
+                diff('MATH14-Skeletal/publication/publication.ptx and publication-print.ptx', ['-<version include="hw1-solutions hw2-solutions hw3-solutions review1-solutions"/>', '+<version include="hw1-solutions hw2-solutions hw3-solutions hw4-solutions review1-solutions"/>'])],
+              ['Checks it', '<code>xmllint</code> ✓ · <code>pretext build</code> ✓ for web and print'],
+              ['Commits to main', '“Desk: release Assignment 4 solutions”'],
+              deskStep('Released'), LIVE
+            ]
+          }
+        }
+      },
+      m13: {
+        title: 'MATH 13 Posting Desk', sub: 'Multivariable Calculus · Fall 2026', say: 'check the posting desk',
+        cards: [
+          { h: 'Assignments and review sets', grp: 'Assignments', rows: [
+            { name: 'Assignment 3 — Taylor Convergence and Binomial Series', id: 'worksheet-assignment-3.html · via Claude', chip: 'done', text: 'Posted Oct 4', due: 'due Oct 7', btn: 'Unpost' },
+            { key: 'post', name: 'Assignment 4 — 3D Space, Vectors, Dot Product', id: 'worksheet-assignment-4.html · via Claude', chip: 'none', text: 'Not on the site', date: '2026-10-16', btn: 'Post' }
+          ] },
+          { h: 'Solutions', desc: 'Public by default. Lock hides a set until you release it after the due date.', rows: [
+            { name: 'Assignment 3 solutions', id: 'due Oct 7 · via Claude', chip: 'none', text: 'Released Oct 8', btn: 'Re-lock' },
+            { key: 'release', name: 'Assignment 4 solutions', id: 'due Oct 16 · via Claude', chip: 'pend', text: 'Locked', btn: 'Release solutions' }
+          ] }
+        ],
+        log: [
+          ['Oct 8', 'Assignment 3 solutions released.'],
+          ['Oct 5', 'Skeletal §3.1 Three-Dimensional Coordinate Systems, §3.2 Vectors and §3.3 The Dot Product are on the site.'],
+          ['Oct 4', 'Assignment 3 and Review Problems #1 are on the skeletal site.'],
+          ['Oct 4', 'Assignment 2 solutions released.']
+        ],
+        acts: {
+          post: {
+            q: 'Post Assignment 4, due Oct 16?', yes: 'Yes, post', label: 'Post: Assignment 4',
+            after: { chip: 'done', text: 'Posted ' + TODAY, btn: 'Unpost', due: 'due Oct 16' },
+            done: ['Assignment 4 is on the skeletal site.', 'due Oct 16, its solutions locked until you click Release'],
+            steps: [
+              ['Reads the desk', 'One request: <code>assignment</code> · Assignment 4, due 2026-10-16'],
+              ['Posts it in M13-Skeletal-Notes', '<code>python3 scripts/desk_action.py post-notes assignment-4-space-vectors-dot-product</code>',
+                diff('M13-Skeletal-Notes/source/exercises.ptx', ['-<!-- UNPOSTED <xi:include href="assignment-4-space-vectors-dot-product.ptx"/> UNPOSTED -->', '+<xi:include href="assignment-4-space-vectors-dot-product.ptx"/>'])],
+              ['Checks it', CHECK],
+              ['Commits to main', '“Post Assignment 4, 3D Space, Vectors, Dot Product, due Oct 16”'],
+              deskStep('Posted'), LIVE
+            ]
+          },
+          release: {
+            q: 'Make the solutions public?', yes: 'Yes, release', label: 'Release solutions: Assignment 4',
+            after: { chip: 'none', text: 'Released ' + TODAY, btn: 'Re-lock' },
+            done: ['Assignment 4 solutions released.', 'the SOLUTION-LOCKED markers are gone from worksheet-assignment-4'],
+            steps: [
+              ['Reads the desk', 'One request: <code>release</code> · Assignment 4'],
+              ['Unlocks them in M13-Skeletal-Notes', 'Removes the two marker lines around each of the twelve locked blocks',
+                diff('M13-Skeletal-Notes/source/assignment-4-space-vectors-dot-product.ptx', ['-<!-- SOLUTION-LOCKED assignment="4" due="2026-10-16"', ' <solution> … </solution>', '-END SOLUTION-LOCKED -->'])],
+              ['Checks it', CHECK],
+              ['Commits to main', '“Desk: release Assignment 4 solutions”'],
+              deskStep('Released'), LIVE
+            ]
+          }
+        }
+      }
+    };
+
+    var cur = 'm14', ST = {}, timers = [];
+    function later(fn, ms) { timers.push(setTimeout(fn, ms)); }
+    function fresh(k) {
+      return {
+        cards: JSON.parse(JSON.stringify(DESKS[k].cards)),
+        log: DESKS[k].log.map(function (l) { return { w: l[0], t: l[1] }; }),
+        confirm: null, pending: null, busy: false, done: {}, transcript: null
+      };
+    }
+    ST.m14 = fresh('m14'); ST.m13 = fresh('m13');
+    function rowOf(S, key) {
+      var hit = null;
+      S.cards.forEach(function (c) { c.rows.forEach(function (r) { if (r.key === key) hit = r; }); });
+      return hit;
+    }
+    function chip(c, t) { return '<span class="dk-chip ' + c + '">' + E(t) + '</span>'; }
+    function rowHTML(r, S, D) {
+      var A = r.key ? D.acts[r.key] : null, status, action = '';
+      if (S.pending && S.pending === r.key) status = chip('sent', 'Sent to Claude…');
+      else status = chip(r.chip, r.text);
+      if (S.pending && S.pending === r.key) action = '';
+      else if (S.confirm && S.confirm === r.key) {
+        action = '<span class="dk-confirm"><span class="dk-q">' + E(A.q) + '</span>' +
+          '<button type="button" class="dk-btn pri" data-dk="yes">' + E(A.yes) + '</button>' +
+          '<button type="button" class="dk-btn" data-dk="cancel">Cancel</button></span>';
+      } else {
+        if (r.due) action += '<span class="dk-due">' + E(r.due) + '</span>';
+        if (r.date) action += '<span class="dk-date">' + E(r.date) + '</span>';
+        var on = !!A && !S.done[r.key] && !S.pending && !S.busy && !S.confirm;
+        action += '<button type="button" class="dk-btn' + (on ? ' hot' : '') + '" data-dk="ask" data-row="' + E(r.key || '') + '"' +
+          (on ? '' : ' disabled') + '>' + E(r.btn) + '</button>';
+      }
+      var h = '<div class="dk-row' + (r.flash ? ' flash' : '') + '"><div class="dk-t"><span class="dk-name">' + E(r.name) + '</span>' +
+        '<span class="dk-id">' + E(r.id) + '</span></div>' + status + action + '</div>';
+      r.flash = false;
+      return h;
+    }
+    function render() {
+      var D = DESKS[cur], S = ST[cur], h = '';
+      h += '<header class="dk-mast"><h4>' + E(D.title) + '</h4><p>' + E(D.sub) + ' · <u>completed notes</u> · <u>skeletal notes</u> · <u>syllabus</u></p></header>';
+      if (S.pending) h += '<div class="dk-banner">1 request is waiting for Claude. Say <b>“' + E(D.say) + '”</b> in your Claude chat and it’s handled right away; the page updates itself when it’s done.</div>';
+      S.cards.forEach(function (c) {
+        h += '<section class="dk-card"><h5>' + E(c.h) + '</h5>' + (c.desc ? '<p class="dk-desc">' + E(c.desc) + '</p>' : '') +
+          (c.grp ? '<h6>' + E(c.grp) + '</h6>' : '') + '<div class="dk-rows">';
+        c.rows.forEach(function (r) { h += rowHTML(r, S, D); });
+        h += '</div></section>';
+      });
+      h += '<section class="dk-card"><h5>Activity</h5><ul class="dk-log">';
+      S.log.slice(0, 3).forEach(function (l) {
+        h += '<li' + (l.fresh ? ' class="flash"' : '') + '><span class="w">' + E(l.w) + '</span><span>' + E(l.t) +
+          (l.n ? ' <span class="nt">— ' + E(l.n) + '</span>' : '') + '</span></li>';
+        l.fresh = false;
+      });
+      h += '</ul></section>';
+      panel.innerHTML = h;
+    }
+    function nextAct(S) { return ['post', 'release'].filter(function (k) { return !S.done[k]; })[0]; }
+    function controlsFor() {
+      var D = DESKS[cur], S = ST[cur];
+      sayBtn.textContent = 'Say “' + D.say + '”';
+      sayBtn.hidden = !!S.transcript && !S.pending;
+      sayBtn.disabled = !S.pending || S.busy;
+      sayBtn.classList.toggle('ready', !!S.pending && !S.busy);
+      againBtn.hidden = !S.transcript || S.busy;
+      playBtn.disabled = S.busy;
+      tabBtns.forEach(function (b) { b.disabled = S.busy && b.dataset.key !== cur; });
+    }
+    function chat() {
+      var S = ST[cur];
+      if (S.transcript && !S.pending) chatBody.innerHTML = S.transcript;
+      else if (S.pending) chatBody.innerHTML = '<p class="chat-hint">A request is waiting on the desk. Nothing changes in the books until you tell Claude.</p>';
+      else chatBody.innerHTML = '<p class="chat-hint">Click <b>Post</b> or <b>Release solutions</b> on the desk. A click only queues a request; Claude does the work when you ask.</p>';
+      controlsFor();
+    }
+    function queue() {
+      var S = ST[cur], A = DESKS[cur].acts[S.confirm];
+      S.pending = S.confirm; S.confirm = null; S.transcript = null;
+      S.log.unshift({ w: TODAY, t: A.label, n: 'sent to Claude', fresh: true });
+      render(); chat();
+    }
+    function finishRow(S, key, A) {
+      var r = rowOf(S, key);
+      r.chip = A.after.chip; r.text = A.after.text; r.btn = A.after.btn;
+      if (A.after.due) { r.due = A.after.due; delete r.date; }
+      r.flash = true;
+      S.pending = null; S.done[key] = true;
+      S.log.unshift({ w: TODAY, t: A.done[0], n: A.done[1], fresh: true });
+    }
+    function run() {
+      var D = DESKS[cur], S = ST[cur], key = S.pending;
+      if (!key || S.busy) return;
+      var A = D.acts[key], i = 0;
+      S.busy = true; controlsFor(); render();
+      chatBody.innerHTML = '<div class="chat-me">' + E(D.say) + '</div><ol class="chat-steps"></ol>';
+      var ol = chatBody.querySelector('.chat-steps');
+      function next() {
+        if (i > 0) {
+          ol.children[i - 1].className = 'ok';
+          if (A.steps[i - 1][3]) { finishRow(S, key, A); render(); panel.scrollTop = panel.scrollHeight; }
+        }
+        if (i === A.steps.length) {
+          S.busy = false; S.transcript = chatBody.innerHTML;
+          render(); controlsFor();
+          return;
+        }
+        var st = A.steps[i], li = document.createElement('li');
+        li.className = 'run';
+        li.innerHTML = '<span class="ic" aria-hidden="true"></span><div><b>' + st[0] + '</b><span class="d">' + st[1] + '</span>' + (st[2] || '') + '</div>';
+        ol.appendChild(li);
+        chatBody.scrollTop = chatBody.scrollHeight;
+        i++;
+        later(next, i === 2 ? 1600 : 950);
+      }
+      later(next, 450);
+    }
+    function reset() {
+      timers.forEach(clearTimeout); timers = [];
+      ST[cur] = fresh(cur); render(); chat();
+    }
+    function play() {
+      var S = ST[cur];
+      if (S.busy) return;
+      if (S.pending) { run(); return; }
+      var k = nextAct(S);
+      if (!k) { reset(); S = ST[cur]; k = 'post'; }
+      S.confirm = k; render();
+      later(function () { if (ST[cur] === S && S.confirm === k) { queue(); later(run, 1300); } }, 1200);
+    }
+    panel.addEventListener('click', function (e) {
+      var b = e.target.closest('button');
+      if (!b || b.disabled) return;
+      var S = ST[cur], a = b.dataset.dk;
+      if (a === 'ask') { S.confirm = b.dataset.row; render(); }
+      else if (a === 'cancel') { S.confirm = null; render(); }
+      else if (a === 'yes') { queue(); }
+    });
+    sayBtn.addEventListener('click', run);
+    againBtn.addEventListener('click', reset);
+    playBtn.addEventListener('click', play);
+    tabBtns.forEach(function (b) {
+      b.addEventListener('click', function () {
+        if (ST[cur].busy || b.dataset.key === cur) return;
+        cur = b.dataset.key;
+        tabBtns.forEach(function (x) { x.setAttribute('aria-selected', String(x === b)); });
+        render(); chat();
+      });
+    });
+    render(); chat();
+  };
+
+
+
+  var stage = document.getElementById('stage');
+  function fit() {
+    var s = Math.min(window.innerWidth / 1680, window.innerHeight / 764);
+    stage.style.transform = 'translate(' + (window.innerWidth - 1680 * s) / 2 + 'px,' + (window.innerHeight - 764 * s) / 2 + 'px) scale(' + s + ')';
+  }
+  window.addEventListener('resize', fit);
+  fit();
+  inits['desk'](stage);
+
+})();
+</script>
+</body>
+</html>
