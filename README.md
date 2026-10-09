@@ -28,11 +28,14 @@ source/sections/
                                  GeoGebra, Desmos, Manim, PreFigure
   sec-math14.ptx                 MATH 14: the wall, the course map, skeletal notes,
                                  Check me, exercise types, the tutor, feedback, report
-  sec-build-math53.ptx           the build pipeline; MATH 53 Sage cells and demos
+  sec-build-math53.ptx           the build pipeline; Camino; the syllabus; the link desk;
+                                 the Posting Desks (replay and comparison); MATH 53 Sage
+                                 cells and demos
   sec-closing.ptx                lessons, try it, thank you
   sec-appendix.ptx               project anatomy, zero to a live book, markup at a glance
 assets/                          the books' own figure pages, videos, photos, screenshots,
-                                 and talk.css (the deck's look)
+                                 the two desk replays (link-desk.html,
+                                 posting-desk-replay.html), and talk.css (the deck's look)
 generated-assets/                the PreFigure diagram, and one qrcode stub per interactive
 publication/publication.ptx      theme, CSS, linear navigation, responsive interactives
 ```
@@ -53,6 +56,9 @@ and click the next demo.
   polar-rose script and slate, GeoGebra (material `xzdc5jpq`), Desmos (`7b85e78f17`),
   the videos, the Sage cells (they run on the SageMathCell server; evaluate them in order),
   and the PreFigure diagram with its keyboard explorer.
+- **Replays here too**: the link desk (click a zone to find it on the page) and the
+  Posting Desk replay (both desks and the Claude chat) are the same pages as in the HTML
+  deck, as `<interactive>`s; nothing is posted from them.
 - **Screenshots here**: knowls, Check me, the exercise types, the tutor, and the feedback
   form. PreTeXt's reveal.js output prints cross-references as plain text and does not
   render exercises, so these slides show the books.
