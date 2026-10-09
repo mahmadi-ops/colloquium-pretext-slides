@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>T(x) = Ax</title>
+<style>
+  body.dark {
+    --bg: #0c0f13; --pane: #101419; --line: #232b38; --grid: #22344a;
+    --axis: #c7d0df; --ink: #e8eaf0; --muted: #8b93a7; --tick: #5b6579;
+    --cube: #202a38; --x: #ffe45c; --b: #fc6255; --range: #58c4dd;
+    --sol: #b48ee0; --btnbord: #2a3341; --btnhov: #161c25; --brk: #aeb8c9;
+  }
+  body.light {
+    --bg: #ffffff; --pane: #ffffff; --line: #d7dde6; --grid: #e4e9f0;
+    --axis: #1a1a1a; --ink: #111111; --muted: #5a6270; --tick: #8a94a6;
+    --cube: #d9dfe8; --x: #0072b2; --b: #d55e00; --range: #1f8fb4;
+    --sol: #7d5bb5; --btnbord: #c9d1dc; --btnhov: #f0f3f7; --brk: #444c5a;
+  }
+  html, body { margin: 0; background: var(--bg); color: var(--ink);
+    font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif; }
+  #wrap { max-width: 1060px; margin: 0 auto; padding: 8px 8px 12px; }
+
+  #titlebar { display: flex; align-items: baseline; justify-content: space-between;
+    flex-wrap: wrap; gap: 4px 16px; padding: 2px 4px 6px; }
+  #title { font-size: 18px; }
+  #title .fx { color: var(--x); } #title .fb { color: var(--b); }
+  #title .dim { color: var(--muted); font-size: 14px; margin-left: 8px; }
+  #controls { display: flex; gap: 8px; }
+  #controls button {
+    background: transparent; color: var(--ink); border: 1px solid var(--btnbord);
+    border-radius: 6px; padding: 3px 12px; font: 13px Georgia, serif;
+    cursor: pointer; transition: border-color .15s, background .15s;
+  }
+  #controls button:hover { background: var(--btnhov); }
+  #controls button.active { border-color: var(--x); color: var(--x); }
+
+  #eqbar { display: flex; justify-content: center; align-items: center;
+    gap: 9px; padding: 4px 0 10px; font-size: 15px; flex-wrap: wrap; }
+  .mtx { display: inline-grid; justify-items: end; column-gap: 10px;
+    padding: 3px 8px; border-left: 1.4px solid var(--brk); border-right: 1.4px solid var(--brk);
+    background:
+      linear-gradient(var(--brk),var(--brk)) top left    / 6px 1.4px no-repeat,
+      linear-gradient(var(--brk),var(--brk)) bottom left / 6px 1.4px no-repeat,
+      linear-gradient(var(--brk),var(--brk)) top right   / 6px 1.4px no-repeat,
+      linear-gradient(var(--brk),var(--brk)) bottom right/ 6px 1.4px no-repeat;
+    font-variant-numeric: tabular-nums; line-height: 1.4;
+  }
+  .vxc { color: var(--x); } .vbc { color: var(--b); }
+  .eq { color: var(--muted); margin: 0 2px; }
+  #nosol { color: var(--b); font-size: 13.5px; font-style: italic; display: none; }
+
+  #panes { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pane { flex: 1 1 46%; min-width: 250px; }
+  .pane-head { font-size: 12px; color: var(--muted); letter-spacing: .5px;
+    padding: 0 2px 4px; display: flex; gap: 10px; flex-wrap: wrap; }
+  .pane-head b { color: var(--ink); font-weight: normal; }
+  .chip { white-space: nowrap; }
+  .pane svg { display: block; width: 100%; height: auto;
+    background: var(--pane); border: 1px solid var(--line); border-radius: 8px; }
+  svg.spin { cursor: grab; } svg.spin.dragging { cursor: grabbing; }
+
+  #hint { text-align: center; color: var(--muted); font-size: 12px; padding-top: 8px; }
+  #hint kbd { font: 10.5px Georgia, serif; border: 1px solid var(--btnbord);
+    border-radius: 4px; padding: 0 5px; margin: 0 1px; color: var(--ink); }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden;
+    clip-path: inset(50%); }
+  .handle { cursor: grab; outline: none; }
+  .handle:focus-visible .fring, .handle:hover .fring { opacity: 1; }
+  .fring { opacity: 0; transition: opacity .15s; }
+</style>
+</head>
+<body>
+<div id="wrap">
+  <div id="titlebar">
+    <div id="title"><i>T</i>(<b class="fx"><i>x</i></b>) = <i>A</i><b class="fx"><i>x</i></b>
+      <span class="dim" id="dims"></span></div>
+    <div id="controls">
+      <button id="btn-demo" type="button">&#9654;&#xFE0E; animate</button>
+      <button id="btn-view" type="button" style="display:none">&#10226; view</button>
+    </div>
+  </div>
+  <div id="eqbar">
+    <span class="mtx" id="matA"></span>
+    <span class="mtx vxc" id="matX"></span>
+    <span class="eq">=</span>
+    <span class="mtx vbc" id="matB"></span>
+    <span id="nosol">no solution &mdash; <b><i>b</i></b> is not in the range</span>
+  </div>
+  <div id="panes">
+    <div class="pane">
+      <div class="pane-head"><span>INPUT &middot; <b id="dimIn"></b></span>
+        <span class="chip" id="chipSol" style="display:none">
+          <span style="color:var(--sol)">&#9632;</span> <span id="chipSolTxt"></span></span></div>
+      <svg id="svgIn" viewBox="0 0 520 520" role="img"
+        aria-label="Input space with draggable vector x"></svg>
+    </div>
+    <div class="pane">
+      <div class="pane-head"><span>OUTPUT &middot; <b id="dimOut"></b></span>
+        <span class="chip"><span style="color:var(--range)">&#9632;</span>
+          <span id="chipRngTxt">range of <i>T</i></span></span></div>
+      <svg id="svgOut" viewBox="0 0 520 520" role="img"
+        aria-label="Output space with vector b equals A x"></svg>
+    </div>
+  </div>
+  <div id="hint">drag the head of <b style="color:var(--x)"><i>x</i></b> or
+    <b style="color:var(--b)"><i>b</i></b>
+    &nbsp;&middot;&nbsp; <kbd>&#8592;</kbd><kbd>&#8593;</kbd><kbd>&#8594;</kbd><kbd>&#8595;</kbd>
+    move <b style="color:var(--x)"><i>x</i></b><span id="hint3d">
+    &nbsp;&middot;&nbsp; drag a 3D pane to rotate</span></div>
+  <div class="sr" aria-live="polite" id="announce"></div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+  var NS = "http://www.w3.org/2000/svg";
+  var W = 520, C = W / 2;
+
+  // ---------------- URL parameters ----------------
+  var Q = {};
+  location.search.slice(1).split("&").forEach(function (kv) {
+    if (!kv) return; var p = kv.split("=");
+    Q[decodeURIComponent(p[0])] = decodeURIComponent(p[1] || "");
+  });
+  document.body.className = Q.theme === "light" ? "light" : "dark";
+  var A = (Q.mat || "1,0:1,1:0,1").split(":").map(function (r) {
+    return r.split(",").map(Number); });
+  var m = A.length, n = A[0].length;
+  var RANGE = parseFloat(Q.range || "5");
+  var SHOW = Q.show === "true";
+  var LOCK = Q.lock === "true";
+  var x0 = (Q.x || "").split(",").map(Number).filter(function (v) {
+    return !isNaN(v); });
+  while (x0.length < n) x0.push([-1, 2, 1][x0.length]);
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // ---------------- tiny linear algebra (length-3 padded vectors) ----------------
+  function pad(v) { var r = [0, 0, 0], i; for (i = 0; i < v.length; i++) r[i] = v[i]; return r; }
+  function apply(v) {
+    var r = [0, 0, 0], i, j;
+    for (i = 0; i < m; i++) { r[i] = 0; for (j = 0; j < n; j++) r[i] += A[i][j] * v[j]; }
+    return r;
+  }
+  function rref(M) {
+    M = M.map(function (r) { return r.slice(); });
+    var rows = M.length, cols = M[0].length, lead = 0, pivots = [], r, i, k, val;
+    for (r = 0; r < rows && lead < cols; r++) {
+      var piv = -1, best = 1e-9;
+      for (i = r; i < rows; i++) if (Math.abs(M[i][lead]) > best) { best = Math.abs(M[i][lead]); piv = i; }
+      if (piv < 0) { lead++; r--; continue; }
+      var t = M[r]; M[r] = M[piv]; M[piv] = t;
+      val = M[r][lead];
+      for (k = 0; k < cols; k++) M[r][k] /= val;
+      for (i = 0; i < rows; i++) if (i !== r) {
+        val = M[i][lead];
+        for (k = 0; k < cols; k++) M[i][k] -= val * M[r][k];
+      }
+      pivots.push(lead); lead++;
+    }
+    return { M: M, pivots: pivots };
+  }
+  var RA = rref(A), rank = RA.pivots.length;
+  var nullB = [];                                   // null-space basis in R^n
+  (function () {
+    var free = [], j, i;
+    for (j = 0; j < n; j++) if (RA.pivots.indexOf(j) < 0) free.push(j);
+    free.forEach(function (f) {
+      var v = [0, 0, 0]; v[f] = 1;
+      RA.pivots.forEach(function (p, pi) { v[p] = -RA.M[pi][f]; });
+      nullB.push(v);
+    });
+  })();
+  var colB = RA.pivots.map(function (p) {           // range basis in R^m
+    var v = [0, 0, 0], i; for (i = 0; i < m; i++) v[i] = A[i][p]; return v; });
+  function dot(a, b) { return a[0]*b[0] + a[1]*b[1] + a[2]*b[2]; }
+  function orthonormal(basis) {
+    var out = [];
+    basis.forEach(function (v) {
+      var w = v.slice();
+      out.forEach(function (e) { var d = dot(w, e);
+        w = [w[0]-d*e[0], w[1]-d*e[1], w[2]-d*e[2]]; });
+      var len = Math.sqrt(dot(w, w));
+      if (len > 1e-9) out.push([w[0]/len, w[1]/len, w[2]/len]);
+    });
+    return out;
+  }
+  var nullON = orthonormal(nullB), colON = orthonormal(colB);
+  function projOn(v, onb) {
+    var r = [0, 0, 0];
+    onb.forEach(function (e) { var d = dot(v, e);
+      r = [r[0]+d*e[0], r[1]+d*e[1], r[2]+d*e[2]]; });
+    return r;
+  }
+  function solve(b) {                               // particular solution or null
+    var aug = A.map(function (r, i) { return r.concat([b[i]]); });
+    var R = rref(aug), i, j;
+    for (i = 0; i < m; i++) {
+      var allz = true;
+      for (j = 0; j < n; j++) if (Math.abs(R.M[i][j]) > 1e-8) allz = false;
+      if (allz && Math.abs(R.M[i][n]) > 1e-8) return null;
+    }
+    var v = [0, 0, 0];
+    R.pivots.forEach(function (p, pi) { if (p < n) v[p] = R.M[pi][n]; });
+    return v;
+  }
+
+  // ---------------- state ----------------
+  var x = pad(x0), b = apply(x), consistent = true;
+
+  // ---------------- svg helpers ----------------
+  function el(parent, tag, attrs) {
+    var e = document.createElementNS(NS, tag);
+    for (var k in attrs) e.setAttribute(k, attrs[k]);
+    parent.appendChild(e); return e;
+  }
+  function css(name) {
+    return getComputedStyle(document.body).getPropertyValue(name).trim(); }
+  function ease(u) { u = Math.max(0, Math.min(1, u));
+    return u < 0.5 ? 4*u*u*u : 1 - Math.pow(-2*u + 2, 3) / 2; }
+  function fmt(t) { return (t < -0.005 ? "−" : "") + Math.abs(t).toFixed(2); }
+
+  function makeArrow(svg, colorVar) {
+    var g = el(svg, "g", {});
+    var glow = el(g, "line", { "stroke-width": 7, "stroke-linecap": "round",
+      opacity: 0.28 });
+    glow.style.stroke = "var(" + colorVar + ")"; glow.style.filter = "blur(4px)";
+    var core = el(g, "line", { "stroke-width": 2.6, "stroke-linecap": "round" });
+    core.style.stroke = "var(" + colorVar + ")";
+    var tip = el(g, "path", {}); tip.style.fill = "var(" + colorVar + ")";
+    var label = el(g, "text", { "font-size": 21, "font-style": "italic",
+      "font-family": "Open Sans, Helvetica Neue, Helvetica, Arial, sans-serif" });
+    label.style.fill = "var(" + colorVar + ")";
+    return { g: g, glow: glow, core: core, tip: tip, label: label };
+  }
+  function setArrow(a, x0, y0, x1, y1, txt, vis) {
+    var dx = x1 - x0, dy = y1 - y0, len = Math.hypot(dx, dy) || 1;
+    var hx = dx / len, hy = dy / len;
+    var hs = Math.min(15, 6 + len * 0.06);
+    var bx = x1 - hx * hs, by = y1 - hy * hs;
+    [a.glow, a.core].forEach(function (l) {
+      l.setAttribute("x1", x0); l.setAttribute("y1", y0);
+      l.setAttribute("x2", bx + hx); l.setAttribute("y2", by + hy);
+    });
+    a.tip.setAttribute("d", "M" + x1 + "," + y1 +
+      "L" + (bx - hy * hs * 0.38) + "," + (by + hx * hs * 0.38) +
+      "L" + (bx + hy * hs * 0.38) + "," + (by - hx * hs * 0.38) + "Z");
+    a.label.textContent = txt;
+    a.label.setAttribute("x", x1 + hx * 15 + (hx >= 0 ? 3 : -14));
+    a.label.setAttribute("y", y1 + hy * 15 + 7);
+    a.g.setAttribute("opacity", vis);
+  }
+
+  // ---------------- pane ----------------
+  function Pane(svgId, dim, labels) {
+    var P = { svg: document.getElementById(svgId), dim: dim,
+      yaw: -0.62, pitch: 0.40 };
+    var S = dim === 2 ? W / (2 * RANGE) : W / (2 * RANGE) * 0.7;
+    P.scale = S;
+    P.map = function (p) {
+      if (dim === 2) return [C + p[0] * S, C - p[1] * S];
+      var ca = Math.cos(P.yaw), sa = Math.sin(P.yaw);
+      var cb = Math.cos(P.pitch), sb = Math.sin(P.pitch);
+      var X = p[0] * ca - p[1] * sa;
+      var Y = p[0] * sa + p[1] * ca;
+      return [C + X * S, C - (-Y * sb + p[2] * cb) * S];
+    };
+    P.camBasis = function () {   // screen right & up in world coords
+      var ca = Math.cos(P.yaw), sa = Math.sin(P.yaw);
+      var cb = Math.cos(P.pitch), sb = Math.sin(P.pitch);
+      return { r: [ca, -sa, 0], u: [-sa * sb, -ca * sb, cb] };
+    };
+
+    var gGrid = el(P.svg, "g", {}), gSub = el(P.svg, "g", {}),
+        gAxes = el(P.svg, "g", {});
+    P.layers = { grid: gGrid, sub: gSub, axes: gAxes };
+    var i;
+
+    if (dim === 2) {
+      for (i = -RANGE; i <= RANGE; i++) {
+        if (i === 0) continue;
+        [[ [i,-RANGE,0], [i,RANGE,0] ], [ [-RANGE,i,0], [RANGE,i,0] ]]
+        .forEach(function (seg) {
+          var a = P.map(seg[0]), c = P.map(seg[1]);
+          el(gGrid, "line", { x1: a[0], y1: a[1], x2: c[0], y2: c[1],
+            "stroke-width": 1 }).style.stroke = "var(--grid)";
+        });
+      }
+      [-4, -2, 2, 4].forEach(function (v) {
+        if (Math.abs(v) > RANGE) return;
+        var t1 = el(gAxes, "text", { x: P.map([v,0,0])[0] - 4, y: C + 15,
+          "font-size": 11 });
+        t1.textContent = v; t1.style.fill = "var(--tick)";
+        var t2 = el(gAxes, "text", { x: C + 6, y: P.map([0,v,0])[1] + 4,
+          "font-size": 11 });
+        t2.textContent = v; t2.style.fill = "var(--tick)";
+      });
+    } else {
+      P.cubeC = []; P.cubeL = [];
+      for (i = 0; i < 8; i++) P.cubeC.push(
+        [(i&1?RANGE:-RANGE),(i&2?RANGE:-RANGE),(i&4?RANGE:-RANGE)]);
+      P.cubeE = [[0,1],[2,3],[4,5],[6,7],[0,2],[1,3],[4,6],[5,7],[0,4],[1,5],[2,6],[3,7]];
+      P.cubeE.forEach(function () {
+        var l = el(gGrid, "line", { "stroke-width": 1 });
+        l.style.stroke = "var(--cube)"; P.cubeL.push(l);
+      });
+      P.svg.classList.add("spin");
+      document.getElementById("hint3d").style.display = "";
+    }
+
+    // axes (arrows drawn each frame so 3D re-projects)
+    P.axes = [];
+    var axdef = dim === 2
+      ? [[[-RANGE,0,0],[RANGE,0,0]], [[0,-RANGE,0],[0,RANGE,0]]]
+      : [[[-RANGE,0,0],[RANGE,0,0]], [[0,-RANGE,0],[0,RANGE,0]],
+         [[0,0,-RANGE],[0,0,RANGE]]];
+    axdef.forEach(function (d, k) {
+      var line = el(gAxes, "line", { "stroke-width": dim === 2 ? 1.8 : 1.5 });
+      line.style.stroke = "var(--axis)";
+      var tip = el(gAxes, "path", {}); tip.style.fill = "var(--axis)";
+      var txt = el(gAxes, "text", { "font-size": 15, "font-style": "italic",
+        "text-anchor": "middle" });
+      txt.style.fill = "var(--axis)"; txt.textContent = labels[k];
+      P.axes.push({ p0: d[0], p1: d[1], line: line, tip: tip, txt: txt });
+    });
+
+    // subspace visuals, allocated lazily
+    P.subFace = el(gSub, "path", { "fill-opacity": 0.20,
+      "stroke-opacity": 0.75, "stroke-width": 1.2 });
+    P.subGrid = [];
+    for (i = 0; i < 10; i++) {
+      var l = el(gSub, "line", { "stroke-opacity": 0.18, "stroke-width": 1 });
+      P.subGrid.push(l);
+    }
+    P.subLineGlow = el(gSub, "line", { "stroke-width": 6,
+      "stroke-linecap": "round", opacity: 0.25 });
+    P.subLineGlow.style.filter = "blur(3px)";
+    P.subLine = el(gSub, "line", { "stroke-width": 2.2, "stroke-linecap": "round" });
+    P.subDot = el(gSub, "circle", { r: 7, opacity: 0.85 });
+    P.tint = el(gGrid, "rect", { x: 1, y: 1, width: W - 2, height: W - 2,
+      rx: 8, "fill-opacity": 0.05, stroke: "none" });
+
+    P.renderFrame = function (op) {
+      if (dim === 3) P.cubeL.forEach(function (l, k) {
+        var a = P.map(P.cubeC[P.cubeE[k][0]]), c = P.map(P.cubeC[P.cubeE[k][1]]);
+        l.setAttribute("x1", a[0]); l.setAttribute("y1", a[1]);
+        l.setAttribute("x2", c[0]); l.setAttribute("y2", c[1]);
+        l.setAttribute("opacity", op.axes);
+      });
+      gGrid.setAttribute("opacity", Math.max(op.grid, dim === 3 ? op.axes : 0));
+      P.axes.forEach(function (a) {
+        var p0 = P.map(a.p0), p1 = P.map(a.p1);
+        var dx = p1[0]-p0[0], dy = p1[1]-p0[1], len = Math.hypot(dx,dy) || 1;
+        var hx = dx/len, hy = dy/len, hs = 9;
+        a.line.setAttribute("x1", p0[0]); a.line.setAttribute("y1", p0[1]);
+        a.line.setAttribute("x2", p1[0]-hx*hs); a.line.setAttribute("y2", p1[1]-hy*hs);
+        a.tip.setAttribute("d", "M" + p1[0] + "," + p1[1] +
+          "L" + (p1[0]-hx*hs-hy*hs*0.35) + "," + (p1[1]-hy*hs+hx*hs*0.35) +
+          "L" + (p1[0]-hx*hs+hy*hs*0.35) + "," + (p1[1]-hy*hs-hx*hs*0.35) + "Z");
+        var tp = P.map([a.p1[0]*1.1, a.p1[1]*1.1, a.p1[2]*1.1]);
+        a.txt.setAttribute("x", tp[0]); a.txt.setAttribute("y", tp[1] + 5);
+        [a.line, a.tip, a.txt].forEach(function (e) {
+          e.setAttribute("opacity", op.axes); });
+      });
+    };
+
+    // subspace: onb (orthonormal basis), through point, colorVar; op = opacity
+    P.renderSub = function (onb, through, colorVar, op) {
+      var d = onb.length, S1 = RANGE * 0.62, k;
+      var hide = function () {
+        P.subFace.setAttribute("opacity", 0); P.subDot.setAttribute("opacity", 0);
+        P.subLine.setAttribute("opacity", 0); P.subLineGlow.setAttribute("opacity", 0);
+        P.subGrid.forEach(function (l) { l.setAttribute("opacity", 0); });
+        P.tint.setAttribute("opacity", 0);
+      };
+      hide();
+      if (op <= 0.01) return;
+      if (d === 0) {
+        var q = P.map(through);
+        P.subDot.setAttribute("cx", q[0]); P.subDot.setAttribute("cy", q[1]);
+        P.subDot.style.fill = "var(" + colorVar + ")";
+        P.subDot.setAttribute("opacity", 0.85 * op);
+      } else if (d === 1) {
+        var e1 = onb[0], tmin = -1e9, tmax = 1e9, ax;
+        for (ax = 0; ax < dim; ax++) {
+          if (Math.abs(e1[ax]) < 1e-9) continue;
+          var t1 = (-RANGE - through[ax]) / e1[ax], t2 = (RANGE - through[ax]) / e1[ax];
+          tmin = Math.max(tmin, Math.min(t1, t2));
+          tmax = Math.min(tmax, Math.max(t1, t2));
+        }
+        var pA = P.map([through[0]+tmin*e1[0], through[1]+tmin*e1[1], through[2]+tmin*e1[2]]);
+        var pB = P.map([through[0]+tmax*e1[0], through[1]+tmax*e1[1], through[2]+tmax*e1[2]]);
+        [P.subLine, P.subLineGlow].forEach(function (l) {
+          l.setAttribute("x1", pA[0]); l.setAttribute("y1", pA[1]);
+          l.setAttribute("x2", pB[0]); l.setAttribute("y2", pB[1]);
+          l.style.stroke = "var(" + colorVar + ")";
+        });
+        P.subLine.setAttribute("opacity", op);
+        P.subLineGlow.setAttribute("opacity", 0.25 * op);
+      } else if (d === 2 && dim === 3) {
+        var e1 = onb[0], e2 = onb[1];
+        function pt(s, t) { return P.map([
+          through[0] + s*e1[0] + t*e2[0],
+          through[1] + s*e1[1] + t*e2[1],
+          through[2] + s*e1[2] + t*e2[2]]); }
+        var cs = [pt(-S1,-S1), pt(S1,-S1), pt(S1,S1), pt(-S1,S1)];
+        P.subFace.setAttribute("d", "M" + cs.map(function (q) {
+          return q[0] + "," + q[1]; }).join("L") + "Z");
+        P.subFace.style.fill = "var(" + colorVar + ")";
+        P.subFace.style.stroke = "var(" + colorVar + ")";
+        P.subFace.setAttribute("opacity", op);
+        for (k = 0; k < 5; k++) {
+          var f = (k - 2) / 2 * S1;
+          var l1 = P.subGrid[k], l2 = P.subGrid[k + 5];
+          var a1 = pt(f, -S1), c1 = pt(f, S1), a2 = pt(-S1, f), c2 = pt(S1, f);
+          l1.setAttribute("x1", a1[0]); l1.setAttribute("y1", a1[1]);
+          l1.setAttribute("x2", c1[0]); l1.setAttribute("y2", c1[1]);
+          l2.setAttribute("x1", a2[0]); l2.setAttribute("y1", a2[1]);
+          l2.setAttribute("x2", c2[0]); l2.setAttribute("y2", c2[1]);
+          [l1, l2].forEach(function (l) {
+            l.style.stroke = "var(" + colorVar + ")";
+            l.setAttribute("opacity", op); });
+        }
+      } else {   // subspace fills the whole pane
+        P.tint.style.fill = "var(" + colorVar + ")";
+        P.tint.setAttribute("opacity", op);
+      }
+    };
+    return P;
+  }
+
+  var subIn = ["&#8477;", "&#8477;&sup2;", "&#8477;&sup3;"];
+  document.getElementById("dims").innerHTML =
+    subIn[n - 1] + " &rarr; " + subIn[m - 1];
+  document.getElementById("dimIn").innerHTML = subIn[n - 1];
+  document.getElementById("dimOut").innerHTML = subIn[m - 1];
+
+  var paneIn = Pane("svgIn", n === 3 ? 3 : 2,
+    n === 3 ? ["x₁", "x₂", "x₃"] : ["x₁", "x₂"]);
+  var paneOut = Pane("svgOut", m === 3 ? 3 : 2,
+    m === 3 ? ["b₁", "b₂", "b₃"] : ["b₁", "b₂"]);
+
+  // vectors + handles
+  var xArrow = makeArrow(paneIn.svg, "--x");
+  var xHandle = el(paneIn.svg, "g", { "class": "handle", tabindex: 0,
+    role: "application", "aria-label": "vector x. Use arrow keys to move." });
+  el(xHandle, "circle", { "class": "fring", r: 12, fill: "none",
+    "stroke-width": 1.3 }).style.stroke = "var(--ink)";
+  el(xHandle, "circle", { r: 5.5 }).style.fill = "var(--x)";
+  el(xHandle, "circle", { r: 24, fill: "transparent" });
+
+  var drop = null, foot = null;
+  if (m === 3) {
+    drop = el(paneOut.svg, "line", { "stroke-opacity": 0.4,
+      "stroke-dasharray": "4 4", "stroke-width": 1.3 });
+    drop.style.stroke = "var(--b)";
+    foot = el(paneOut.svg, "circle", { r: 2.6, "fill-opacity": 0.5 });
+    foot.style.fill = "var(--b)";
+  }
+  var bArrow = makeArrow(paneOut.svg, "--b");
+  var bHandle = el(paneOut.svg, "g", { "class": "handle" });
+  el(bHandle, "circle", { "class": "fring", r: 12, fill: "none",
+    "stroke-width": 1.3 }).style.stroke = "var(--ink)";
+  el(bHandle, "circle", { r: 5.5 }).style.fill = "var(--b)";
+  el(bHandle, "circle", { r: 24, fill: "transparent" });
+
+  // ---------------- equation bar ----------------
+  function fill(id, rows, cols) {
+    var e = document.getElementById(id), out = [], i, j;
+    e.style.gridTemplateColumns = "repeat(" + cols + ", auto)";
+    for (i = 0; i < rows * cols; i++) out.push("<span></span>");
+    e.innerHTML = out.join("");
+    return e.children;
+  }
+  var cellsA = fill("matA", m, n), cellsX = fill("matX", n, 1),
+      cellsB = fill("matB", m, 1), i, j;
+  for (i = 0; i < m; i++) for (j = 0; j < n; j++)
+    cellsA[i * n + j].textContent = (A[i][j] === Math.round(A[i][j]))
+      ? A[i][j] : A[i][j].toFixed(2);
+
+  var chipSol = document.getElementById("chipSol");
+  if (SHOW) {
+    chipSol.style.display = "";
+    document.getElementById("chipSolTxt").innerHTML =
+      nullON.length === 0 ? "the only solution of <i>T</i>(<i>x</i>)=<i>b</i>"
+        : "solutions of <i>T</i>(<i>x</i>)=<i>b</i>";
+  }
+  if (rank === m) document.getElementById("chipRngTxt").innerHTML =
+    "range of <i>T</i> = all of " + subIn[m - 1];
+
+  // ---------------- render ----------------
+  var grow = { grid: reduced?1:0, axes: reduced?1:0, plane: reduced?1:0,
+    x: reduced?1:0, b: reduced?1:0 };
+
+  function render() {
+    paneIn.renderFrame(grow); paneOut.renderFrame(grow);
+    // input pane: solution set through x (null space translate)
+    paneIn.renderSub(nullON, x, "--sol", SHOW ? grow.plane : 0);
+    // output pane: range of T through origin
+    paneOut.renderSub(colON, [0, 0, 0], "--range", grow.plane * 0.9);
+
+    var o = paneIn.map([0,0,0]), h = paneIn.map(x);
+    var xop = grow.x * (consistent ? 1 : 0.15);
+    setArrow(xArrow, o[0], o[1], h[0], h[1], "x", xop);
+    xHandle.setAttribute("transform", "translate(" + h[0] + "," + h[1] + ")");
+    xHandle.setAttribute("opacity", xop);
+
+    var o2 = paneOut.map([0,0,0]), hb = paneOut.map(b);
+    setArrow(bArrow, o2[0], o2[1], hb[0], hb[1], "b", grow.b);
+    bHandle.setAttribute("transform", "translate(" + hb[0] + "," + hb[1] + ")");
+    bHandle.setAttribute("opacity", grow.b);
+    if (drop) {
+      var fb = paneOut.map([b[0], b[1], 0]);
+      drop.setAttribute("x1", fb[0]); drop.setAttribute("y1", fb[1]);
+      drop.setAttribute("x2", hb[0]); drop.setAttribute("y2", hb[1]);
+      foot.setAttribute("cx", fb[0]); foot.setAttribute("cy", fb[1]);
+      drop.setAttribute("opacity", grow.b); foot.setAttribute("opacity", grow.b);
+    }
+    for (var k = 0; k < n; k++)
+      cellsX[k].textContent = consistent ? fmt(x[k]) : "?";
+    for (k = 0; k < m; k++) cellsB[k].textContent = fmt(b[k]);
+    document.getElementById("nosol").style.display =
+      consistent ? "none" : "inline";
+  }
+
+  // ---------------- animation loop ----------------
+  var t0 = performance.now(), lastT = t0;
+  var demo = false, demoT = 0, demoFrom = null;
+  var lastSpin = reduced ? Infinity : -1, spinPane = null, lastP = null;
+
+  function stage(t, a, c) { return ease((t - a) / (c - a)); }
+  function frame(now) {
+    var t = now - t0, dt = Math.min(50, now - lastT); lastT = now;
+    if (!reduced) {
+      grow.grid = stage(t, 0, 700); grow.axes = stage(t, 250, 1000);
+      grow.plane = stage(t, 650, 1500); grow.x = stage(t, 1150, 1750);
+      grow.b = stage(t, 1450, 2100);
+      if (now - lastSpin > 4000 && !spinPane) {
+        if (paneIn.dim === 3) paneIn.yaw += dt * 0.00006;
+        if (paneOut.dim === 3) paneOut.yaw += dt * 0.00006;
+      }
+    }
+    if (demo) {
+      demoT += dt;
+      var u = Math.min(1, demoT / 9000), ang = u * 2 * Math.PI;
+      var blend = ease(Math.min(1, demoT / 700)), tgt;
+      if (LOCK && nullON.length > 0) {
+        var a1 = 2.1 * Math.sin(ang), a2 = nullON.length > 1
+          ? 2.1 * Math.sin(2 * ang + 1) : 0;
+        tgt = [demoFrom[0] + a1*nullON[0][0] + (nullON[1]?a2*nullON[1][0]:0),
+               demoFrom[1] + a1*nullON[0][1] + (nullON[1]?a2*nullON[1][1]:0),
+               demoFrom[2] + a1*nullON[0][2] + (nullON[1]?a2*nullON[1][2]:0)];
+      } else {
+        tgt = [0.5 + 2.4 * Math.cos(ang + 1.9), 0.9 + 2.4 * Math.sin(ang + 1.9),
+               demoFrom[2]];
+      }
+      x = [demoFrom[0] + (tgt[0]-demoFrom[0]) * blend,
+           demoFrom[1] + (tgt[1]-demoFrom[1]) * blend,
+           demoFrom[2] + (tgt[2]-demoFrom[2]) * blend];
+      b = apply(x); consistent = true;
+      if (u >= 1) setDemo(false);
+    }
+    render();
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+
+  // ---------------- interaction ----------------
+  function ptrXY(ev) { var t = ev.touches ? ev.touches[0] : ev;
+    return [t.clientX, t.clientY]; }
+  function svgPoint(P, ev) {
+    var r = P.svg.getBoundingClientRect(), p = ptrXY(ev);
+    return [(p[0] - r.left) / r.width * W, (p[1] - r.top) / r.height * W];
+  }
+  // pointer -> world point in pane, dragging in the screen-parallel plane
+  // through `ref` for 3D panes
+  function toWorld(P, ev, ref) {
+    var q = svgPoint(P, ev);
+    if (P.dim === 2)
+      return [(q[0] - C) / P.scale, (C - q[1]) / P.scale, 0];
+    var q0 = P.map(ref), cb = P.camBasis();
+    var du = (q[0] - q0[0]) / P.scale, dv = -(q[1] - q0[1]) / P.scale;
+    return [ref[0] + du*cb.r[0] + dv*cb.u[0],
+            ref[1] + du*cb.r[1] + dv*cb.u[1],
+            ref[2] + du*cb.r[2] + dv*cb.u[2]];
+  }
+  function clampV(v, dims) {
+    for (var k = 0; k < 3; k++)
+      v[k] = k < dims ? Math.max(-RANGE, Math.min(RANGE, v[k])) : 0;
+    return v;
+  }
+  function announce() {
+    document.getElementById("announce").textContent = consistent
+      ? "x = (" + x.slice(0, n).map(fmt).join(", ") + "), b = (" +
+        b.slice(0, m).map(fmt).join(", ") + ")"
+      : "b = (" + b.slice(0, m).map(fmt).join(", ") + ") is not in the range";
+  }
+
+  var mode = null, xStart = null, bStart = null;
+  function down(ev, which) {
+    setDemo(false); mode = which;
+    xStart = x.slice(); bStart = b.slice(); ev.preventDefault();
+    ev.stopPropagation();
+  }
+  xHandle.addEventListener("mousedown", function (e) { down(e, "x"); });
+  xHandle.addEventListener("touchstart", function (e) { down(e, "x"); }, { passive: false });
+  bHandle.addEventListener("mousedown", function (e) { down(e, "b"); });
+  bHandle.addEventListener("touchstart", function (e) { down(e, "b"); }, { passive: false });
+
+  [paneIn, paneOut].forEach(function (P) {
+    if (P.dim !== 3) return;
+    P.svg.addEventListener("mousedown", function (e) { spinDown(e, P); });
+    P.svg.addEventListener("touchstart", function (e) { spinDown(e, P); },
+      { passive: false });
+  });
+  function spinDown(ev, P) {
+    if (mode) return;
+    spinPane = P; lastP = ptrXY(ev);
+    P.svg.classList.add("dragging"); ev.preventDefault();
+  }
+
+  function move(ev) {
+    if (mode === "x") {
+      var p = toWorld(paneIn, ev, xStart);
+      if (LOCK && nullON.length > 0) {
+        var d = projOn([p[0]-xStart[0], p[1]-xStart[1], p[2]-xStart[2]], nullON);
+        p = [xStart[0]+d[0], xStart[1]+d[1], xStart[2]+d[2]];
+      }
+      x = clampV(p, n); b = apply(x); consistent = true;
+      ev.preventDefault();
+    } else if (mode === "b") {
+      var p = clampV(toWorld(paneOut, ev, bStart), m);
+      var q = projOn(p, colON);
+      var dd = Math.hypot(p[0]-q[0], p[1]-q[1], p[2]-q[2]);
+      if (dd < 0.55) {
+        b = q; consistent = true;
+        var xp = solve(b);
+        if (xp) {
+          var dn = projOn([x[0]-xp[0], x[1]-xp[1], x[2]-xp[2]], nullON);
+          x = clampV([xp[0]+dn[0], xp[1]+dn[1], xp[2]+dn[2]], n);
+          b = apply(x);
+        }
+      } else { b = p; consistent = false; }
+      ev.preventDefault();
+    } else if (spinPane) {
+      var p2 = ptrXY(ev);
+      spinPane.yaw += (p2[0] - lastP[0]) * 0.008;
+      spinPane.pitch = Math.max(-1.45, Math.min(1.45,
+        spinPane.pitch + (p2[1] - lastP[1]) * 0.008));
+      lastP = p2; lastSpin = performance.now(); ev.preventDefault();
+    }
+  }
+  window.addEventListener("mousemove", move);
+  window.addEventListener("touchmove", move, { passive: false });
+  function up() {
+    if (mode) announce();
+    mode = null;
+    if (spinPane) { spinPane.svg.classList.remove("dragging"); spinPane = null; }
+  }
+  window.addEventListener("mouseup", up);
+  window.addEventListener("touchend", up);
+
+  xHandle.addEventListener("keydown", function (ev) {
+    var step = ev.shiftKey ? 1 : 0.25, d = null;
+    if (ev.key === "ArrowLeft") d = [-step, 0, 0];
+    else if (ev.key === "ArrowRight") d = [step, 0, 0];
+    else if (ev.key === "ArrowUp") d = [0, step, 0];
+    else if (ev.key === "ArrowDown") d = [0, -step, 0];
+    if (!d) return;
+    setDemo(false);
+    if (LOCK && nullON.length > 0) d = projOn(d, nullON);
+    x = clampV([x[0]+d[0], x[1]+d[1], x[2]+d[2]], n);
+    b = apply(x); consistent = true;
+    announce(); ev.preventDefault();
+  });
+
+  function setDemo(on) {
+    demo = on;
+    if (on) { demoT = 0; demoFrom = x.slice(); }
+    document.getElementById("btn-demo").classList.toggle("active", on);
+  }
+  document.getElementById("btn-demo").addEventListener("click", function () {
+    setDemo(!demo); });
+  if (paneIn.dim === 3 || paneOut.dim === 3) {
+    var bv = document.getElementById("btn-view");
+    bv.style.display = "";
+    bv.addEventListener("click", function () {
+      paneIn.yaw = paneOut.yaw = -0.62; paneIn.pitch = paneOut.pitch = 0.40;
+      lastSpin = reduced ? Infinity : -1;
+    });
+  }
+})();
+</script>
+</body>
+</html>

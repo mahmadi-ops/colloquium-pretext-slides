@@ -1,0 +1,51 @@
+WARNING : Using CLI version 2.37.1 but project's `requirements.txt`
+WARNING : is configured to use 2.44.0. Consider either installing
+WARNING : CLI version 2.44.0 or running `pretext update`
+WARNING : to update `requirements.txt` and other managed files to match 2.37.1.
+INFO    : Since no target was supplied, we will use "talk".
+
+INFO    : Building target talk
+INFO    : XSL conversion of /workspaces/colloquium-pretext-slides/source/talk.ptx by /root/.ptx/2.37.1/core/xsl/utilities/pretext-enhanced-source.xsl
+INFO    : successful application of /root/.ptx/2.37.1/core/xsl/utilities/pretext-enhanced-source.xsl
+INFO    : Generating any needed assets.
+INFO    : converting PreFigure diagrams from /workspaces/colloquium-pretext-slides/source/talk.ptx to SVG graphics for placement in /workspaces/colloquium-pretext-slides/generated-assets/prefigure
+INFO    : extracting PreFigure diagrams from /workspaces/colloquium-pretext-slides/source/talk.ptx
+INFO    : string parameters passed to extraction stylesheet: {'cli.version': '2.37', 'publisher': '/workspaces/colloquium-pretext-slides/publication/publication.ptx'}
+INFO    : XSL conversion of /workspaces/colloquium-pretext-slides/source/talk.ptx by /root/.ptx/2.37.1/core/xsl/extract-prefigure.xsl
+INFO    : messages from the log for XSL processing:
+ERROR   : * PTX:ERROR:   An object (slide) lacks a serial number, search output for "[NUM]"
+INFO    : *              located within: "PreFigure: one figure for every reader" (title)
+ERROR   : * PTX:ERROR:   An object (slide) lacks a structure number, search output for "[STRUCT]"
+INFO    : successful application of /root/.ptx/2.37.1/core/xsl/extract-prefigure.xsl
+INFO    : discovering source file's directory name: /workspaces/colloquium-pretext-slides/source
+INFO    : verifying and expanding input directory: /workspaces/colloquium-pretext-slides/source/../generated-assets
+INFO    : input directory expanded to absolute path: /workspaces/colloquium-pretext-slides/generated-assets
+INFO    : verifying and expanding input directory: /workspaces/colloquium-pretext-slides/source/../assets
+INFO    : input directory expanded to absolute path: /workspaces/colloquium-pretext-slides/assets
+INFO    : compiling PreFigure source file hyperbola-loran.xml to SVG
+INFO    : copying PreFigure output to /workspaces/colloquium-pretext-slides/generated-assets/prefigure
+INFO    : Removing temporary directory /ptx-1_5glurh
+INFO    : Finished generating assets.
+
+INFO    : Preparing to build into /workspaces/colloquium-pretext-slides/output/talk.
+INFO    : converting /workspaces/colloquium-pretext-slides/source/talk.ptx to HTML in /ptx-c0stc555
+INFO    : XSL conversion of /workspaces/colloquium-pretext-slides/source/talk.ptx by /root/.ptx/2.37.1/core/xsl/pretext-revealjs.xsl
+INFO    : * ********************************************************************************
+INFO    : * Conversion to reveal.js presentations/slideshows is experimental
+INFO    : * Requests for additional specific constructions welcome
+INFO    : * Additional PreTeXt elements are subject to change
+INFO    : * PTX:INFO:   checking all deprecated elements.
+INFO    : successful application of /root/.ptx/2.37.1/core/xsl/pretext-revealjs.xsl
+INFO    : Removing temporary directory /ptx-c0stc555
+INFO    : 
+Finished build for target talk. The output is in /workspaces/colloquium-pretext-slides/output/talk.
+
+CRITICAL: There were errors during the build.  See above.
+INFO    : ------------------------
+CRITICAL: Failed to build without errors.  Exiting...
+INFO    : 
+----------------------------------------------------
+INFO    : While running pretext, the following errors occurred:
+
+INFO    : (see log messages above or in the 'logs' folder for more information)
+INFO    : ----------------------------------------------------
