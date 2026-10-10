@@ -17,6 +17,12 @@ MATH 13 repository.
 Navigation is linear: → and ← (or Space) step through every slide. Esc shows all slides
 as a grid, so you can click to jump to any demo or skip a code walkthrough.
 
+The button in the bottom-left corner shows the slide number, the part of the talk, and
+the slide's title, and follows you from slide to slide. Click it, or press T, for the
+table of contents: the current slide is highlighted and stays in view as you move, each
+code walkthrough is one entry that opens while you are inside it, and clicking any entry
+jumps there. T or Esc closes it.
+
 ## Layout
 
 ```
@@ -38,6 +44,8 @@ assets/                          the books' own figure pages, videos, photos, sc
                                  posting-desk-replay.html), and talk.css (the deck's look)
 generated-assets/                the PreFigure diagram, and one qrcode stub per interactive
 publication/publication.ptx      theme, CSS, linear navigation, responsive interactives
+xsl/talk-revealjs.xsl            PreTeXt's reveal.js conversion, plus the script tag for
+                                 the contents dropdown (assets/toc-dropdown.js)
 ```
 
 Speaker notes are the XML comments just above each slide.

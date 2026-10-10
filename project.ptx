@@ -6,6 +6,7 @@
             source="talk.ptx"
             publication="publication.ptx"
             output-dir="talk"
+            xsl="talk-revealjs.xsl"
             deploy-dir="."/>
   </targets>
 </project>
