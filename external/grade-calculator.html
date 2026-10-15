@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MATH 13 grade calculator</title>
+<!--
+  MATH 13 course-grade calculator, shown in an <interactive iframe> in the
+  syllabus subsection "Dropping the Lowest Midterm Grade"
+  (source/grading.ptx, xml:id drop-lowest-midterm).
+
+  Grading rule (table-components, plus the dropped-midterm policy):
+    three midterms out of 20, final out of 30, assignments out of 10;
+    the lowest midterm is dropped and the best two (out of 40) are scaled
+    to the full 60 midterm points:  midterm points = (best two) / 40 * 60.
+  Letter grades: table-letter-grades, applied to the unrounded total.
+
+  Empty boxes count as 0, so with scores still missing the page shows the
+  lowest total the entered scores can give (every rule here only rises as
+  scores are added). The letter grade is shown only once all five scores
+  are entered, so a partial total never reads as a final grade. Light only,
+  like the book's other iframes; fonts are the book's own (Open Sans,
+  PT Serif).
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&amp;family=PT+Serif:wght@400;700&amp;display=swap">
+<style>
+  :root{
+    --ink:#22262E; --muted:#5C6575; --line:#C9CFDC; --soft:#EEF3F8;
+    --blue:#195684; --blue-soft:#E3ECF4; --drop:#9A3B1F; --error:#B3261E;
+    --sans:"Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --serif:"PT Serif", "Times New Roman", Times, serif;
+  }
+  *{box-sizing:border-box}
+  [hidden]{display:none!important}
+  html,body{margin:0;background:#fff;color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.45;
+    -webkit-font-smoothing:antialiased}
+  body{padding:10px 12px}
+  .wrap{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:12px;align-items:start}
+  @media (max-width:540px){ .wrap{grid-template-columns:minmax(0,1fr)} }
+  h2{font-family:var(--serif);font-size:1.15rem;margin:0 0 10px;font-weight:700}
+  .panel{border:1px solid var(--line);border-radius:4px;padding:12px 12px;min-width:0}
+  .result{background:var(--soft)}
+
+  .field{display:grid;grid-template-columns:minmax(0,1fr) 4.4em 2.5em;align-items:center;gap:8px;padding:5px 0}
+  .field label{font-weight:600}
+  .field input{width:100%;font:inherit;font-variant-numeric:tabular-nums;text-align:right;padding:6px 8px;
+    border:1px solid #9AA4B8;border-radius:3px;background:#fff;color:var(--ink)}
+  .field input:focus-visible{outline:3px solid #8DB3D6;outline-offset:1px;border-color:var(--blue)}
+  .field input[aria-invalid="true"]{border-color:var(--error);background:#FFF5F4}
+  .field .of{color:var(--muted);font-variant-numeric:tabular-nums}
+  .err{grid-column:1 / -1;color:var(--error);font-size:.85rem;margin:-2px 0 2px}
+  .hint{color:var(--muted);font-size:.85rem;margin:8px 0 0}
+  .tag{display:inline-block;font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+    color:var(--blue);background:var(--blue-soft);border-radius:3px;padding:2px 6px;margin-left:6px;vertical-align:2px}
+  .buttons{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+  button{font:inherit;font-size:.9rem;font-weight:600;color:var(--ink);background:#fff;border:1px solid #B9C1D2;
+    border-radius:3px;padding:6px 12px;cursor:pointer}
+  button:hover{border-color:var(--blue);color:var(--blue)}
+  button:focus-visible{outline:3px solid #8DB3D6;outline-offset:1px}
+
+  .total{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+  .total .num{font-family:var(--serif);font-size:2.1rem;white-space:nowrap;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.1}
+  .total .num small{font-size:1rem;color:var(--muted);font-weight:400}
+  .letter{font-family:var(--serif);font-size:1.6rem;font-weight:700;color:#fff;background:var(--blue);
+    border-radius:4px;padding:2px 12px;line-height:1.3}
+  .compare{color:var(--muted);margin:4px 0 10px}
+  .compare b{color:var(--ink)}
+  .lowest{font-size:.88rem;color:var(--ink);background:#FFF8E6;border:1px solid #E8D49A;border-radius:3px;padding:6px 9px;margin:0 0 10px}
+
+  table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+  th,td{text-align:left;padding:3px 5px;border-bottom:1px solid var(--line);font-size:.88rem}
+  td.n,th.n{white-space:nowrap}
+  th{font-weight:600;color:var(--muted);font-size:.8rem;text-transform:uppercase;letter-spacing:.05em}
+  td.n,th.n{text-align:right}
+  tr.dropped td{color:var(--drop)}
+  tr.dropped td.n span{text-decoration:line-through}
+  tr.sum td{font-weight:700;border-bottom:0}
+  .formula{font-size:.88rem;color:var(--muted);margin:6px 0 0}
+  .need{margin-top:12px}
+  .need h3{font-size:.95rem;margin:0 0 2px}
+  .need p{font-size:.82rem;color:var(--muted);margin:0 0 6px}
+  .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 8px}
+  .cell{display:flex;justify-content:space-between;align-items:baseline;gap:6px;background:#fff;border:1px solid var(--line);
+    border-radius:3px;padding:3px 7px;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .cell b{font-size:.8rem;color:var(--muted);font-weight:600}
+  .cell span{font-size:.88rem;font-weight:700}
+  .cell.off span{color:var(--muted);font-weight:400}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <form class="panel" id="scores" novalidate>
+    <h2>Your scores <span class="tag" id="example-tag">Example</span></h2>
+    <div class="field"><label for="e1">Exam #1</label><input id="e1" inputmode="decimal" autocomplete="off"><span class="of">/ 20</span></div>
+    <div class="field"><label for="e2">Exam #2</label><input id="e2" inputmode="decimal" autocomplete="off"><span class="of">/ 20</span></div>
+    <div class="field"><label for="e3">Exam #3</label><input id="e3" inputmode="decimal" autocomplete="off"><span class="of">/ 20</span></div>
+    <div class="field"><label for="fin">Final Exam</label><input id="fin" inputmode="decimal" autocomplete="off"><span class="of">/ 30</span></div>
+    <div class="field"><label for="asg">Assignments</label><input id="asg" inputmode="decimal" autocomplete="off"><span class="of">/ 10</span></div>
+    <p class="hint">Leave a box empty if you have not taken that exam yet. Assignments: your total of the ten 1-point assignments.</p>
+    <div class="buttons">
+      <button type="button" id="clear">Clear all</button>
+      <button type="button" id="example">Load example</button>
+    </div>
+    <div class="need" id="need" hidden>
+      <h3>Score needed on the final exam</h3>
+      <p id="need-note">Final exam score (out of 30) needed for each letter grade.</p>
+      <div class="grid" id="need-rows"></div>
+    </div>
+  </form>
+
+  <section class="panel result" aria-live="polite">
+    <h2>Your course grade</h2>
+    <div class="total"><span class="num" id="total">&nbsp;</span><span class="letter" id="letter">&nbsp;</span></div>
+    <p class="compare" id="compare"></p>
+    <p class="lowest" id="lowest" hidden>Empty boxes count as 0, so this is the <b>lowest</b> total the scores you entered can give. It can only go up from here. Your letter grade appears once all five scores are entered.</p>
+    <table>
+      <thead><tr><th>Component</th><th class="n">Score</th><th class="n">Points</th></tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+    <p class="formula" id="formula"></p>
+  </section>
+</div>
+
+<script>
+(function () {
+  "use strict";
+  var FIELDS = [
+    { id: "e1", label: "Exam #1", max: 20, mid: true },
+    { id: "e2", label: "Exam #2", max: 20, mid: true },
+    { id: "e3", label: "Exam #3", max: 20, mid: true },
+    { id: "fin", label: "Final Exam", max: 30 },
+    { id: "asg", label: "Assignments", max: 10 }
+  ];
+  var EXAMPLE = { e1: "8", e2: "18", e3: "18", fin: "25", asg: "9" };
+  // table-letter-grades in source/grading.ptx, applied to the unrounded total.
+  var LETTERS = [[94, "A"], [90, "A−"], [87, "B+"], [83, "B"], [80, "B−"], [77, "C+"],
+                 [73, "C"], [70, "C−"], [67, "D+"], [63, "D"], [60, "D−"], [0, "F"]];
+  var STORE = "math13-grade-calculator-v1";
+
+  function $(id) { return document.getElementById(id); }
+  function fmt(x) { return (Math.round(x * 100) / 100).toString(); }
+  function fmt1(x) { return (Math.round(x * 10) / 10).toFixed(1); }
+  function letterOf(t) { for (var i = 0; i < LETTERS.length; i++) if (t >= LETTERS[i][0] - 1e-9) return LETTERS[i][1]; return "F"; }
+
+  // Midterm points with the lowest of three dropped: best two of the
+  // entered midterms (missing ones count as 0), out of 40, scaled to 60.
+  function midtermPoints(scores) {
+    var s = scores.slice().sort(function (a, b) { return b - a; });
+    return (s[0] + s[1]) / 40 * 60;
+  }
+
+  function read() {
+    var vals = {}, ok = true;
+    FIELDS.forEach(function (f) {
+      var el = $(f.id), raw = el.value.trim().replace(",", "."), err = $(f.id + "-err");
+      var bad = "";
+      if (raw === "") { vals[f.id] = null; }
+      else {
+        var v = Number(raw);
+        if (!isFinite(v) || v < 0 || v > f.max) { bad = "Enter a number from 0 to " + f.max + "."; vals[f.id] = null; ok = false; }
+        else vals[f.id] = v;
+      }
+      el.setAttribute("aria-invalid", bad ? "true" : "false");
+      if (bad && !err) {
+        err = document.createElement("div"); err.className = "err"; err.id = f.id + "-err";
+        el.parentNode.appendChild(err); el.setAttribute("aria-describedby", err.id);
+      }
+      if (err) { err.textContent = bad; err.hidden = !bad; }
+    });
+    return { vals: vals, ok: ok };
+  }
+
+  function render() {
+    var r = read(), v = r.vals;
+    var mids = ["e1", "e2", "e3"].map(function (k) { return v[k] == null ? 0 : v[k]; });
+    var missing = FIELDS.some(function (f) { return v[f.id] == null; });
+
+    // Which midterm is dropped: the lowest entered score, or an empty box.
+    var dropIdx = 0;
+    for (var i = 1; i < 3; i++) if (mids[i] < mids[dropIdx]) dropIdx = i;
+    var midPts = midtermPoints(mids);
+    var fin = v.fin == null ? 0 : v.fin, asg = v.asg == null ? 0 : v.asg;
+    var total = midPts + fin + asg;
+    var noDrop = mids[0] + mids[1] + mids[2] + fin + asg;
+
+    $("total").innerHTML = fmt1(total) + ' <small>/ 100</small>';
+    // No letter grade until every score is in: a partial total is only a floor.
+    $("letter").textContent = missing ? "" : letterOf(total);
+    $("letter").hidden = missing;
+    $("compare").innerHTML = "Without the drop: <b>" + fmt1(noDrop) + (missing ? "" : " (" + letterOf(noDrop) + ")") + "</b>";
+    $("lowest").hidden = !missing;
+
+    var rows = "";
+    ["e1", "e2", "e3"].forEach(function (k, j) {
+      var shown = v[k] == null ? "—" : fmt(v[k]);
+      var dropped = j === dropIdx;
+      var note = dropped ? (v[k] == null ? " (not taken yet)" : " (dropped)") : "";
+      rows += '<tr' + (dropped ? ' class="dropped"' : '') + '><td>' + FIELDS[j].label + note +
+              '</td><td class="n"><span>' + shown + '</span> / 20</td><td class="n">' + (dropped ? "—" : "") + '</td></tr>';
+    });
+    var keep = [0, 1, 2].filter(function (j) { return j !== dropIdx; });
+    rows += '<tr><td>Midterm points</td><td class="n"></td><td class="n">' + fmt1(midPts) + ' / 60</td></tr>';
+    rows += '<tr><td>Final Exam</td><td class="n">' + (v.fin == null ? "—" : fmt(v.fin)) + ' / 30</td><td class="n">' + fmt(fin) + '</td></tr>';
+    rows += '<tr><td>Assignments</td><td class="n">' + (v.asg == null ? "—" : fmt(v.asg)) + ' / 10</td><td class="n">' + fmt(asg) + '</td></tr>';
+    rows += '<tr class="sum"><td>Total</td><td class="n"></td><td class="n">' + fmt1(total) + ' / 100</td></tr>';
+    $("rows").innerHTML = rows;
+    $("formula").textContent = "Midterm points = (best two midterms) ÷ 40 × 60 = (" +
+      fmt(mids[keep[0]]) + " + " + fmt(mids[keep[1]]) + ") ÷ 40 × 60 = " + fmt1(midPts);
+
+    // With the final still to come: the final score each letter needs.
+    var needBox = $("need");
+    if (v.fin == null) {
+      var base = midPts + asg, out = "";
+      [[94, "A"], [90, "A−"], [87, "B+"], [83, "B"], [80, "B−"], [77, "C+"], [73, "C"], [70, "C−"]].forEach(function (g) {
+        var need = g[0] - base, cell;
+        var off = false;
+        if (need <= 0) cell = "reached";
+        else if (need > 30) { cell = "over 30"; off = true; }
+        else cell = fmt(Math.ceil(need * 4) / 4);
+        out += '<div class="cell' + (off ? ' off' : '') + '"><b>' + g[1] + " (" + g[0] + ")</b><span>" + cell + "</span></div>";
+      });
+      $("need-rows").innerHTML = out;
+      $("need-note").textContent = (v.e1 == null || v.e2 == null || v.e3 == null)
+        ? "Final exam score (out of 30) needed for each letter grade, with empty midterm boxes counted as 0. A good score on a midterm still to come lowers these."
+        : "Final exam score (out of 30) needed for each letter grade.";
+      needBox.hidden = false;
+    } else needBox.hidden = true;
+
+    try { localStorage.setItem(STORE, JSON.stringify(FIELDS.map(function (f) { return $(f.id).value; }))); } catch (e) {}
+  }
+
+  function fill(obj) { FIELDS.forEach(function (f) { $(f.id).value = obj[f.id] || ""; }); }
+  function markExample(on) { $("example-tag").hidden = !on; }
+
+  var saved = null;
+  try { saved = JSON.parse(localStorage.getItem(STORE) || "null"); } catch (e) {}
+  if (Array.isArray(saved) && saved.length === FIELDS.length) {
+    FIELDS.forEach(function (f, i) { $(f.id).value = saved[i] || ""; });
+    markExample(FIELDS.every(function (f) { return $(f.id).value === (EXAMPLE[f.id] || ""); }));
+  } else { fill(EXAMPLE); markExample(true); }
+
+  FIELDS.forEach(function (f) { $(f.id).addEventListener("input", function () { markExample(false); render(); }); });
+  $("clear").addEventListener("click", function () { fill({}); markExample(false); render(); $("e1").focus(); });
+  $("example").addEventListener("click", function () { fill(EXAMPLE); markExample(true); render(); });
+  $("scores").addEventListener("submit", function (e) { e.preventDefault(); });
+  render();
+})();
+</script>
+</body>
+</html>
