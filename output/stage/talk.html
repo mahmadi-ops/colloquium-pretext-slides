@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <!--********************************************-->
 <!--*       Generated from PreTeXt source      *-->
-<!--*       on 2026-10-10T02:25:02Z       *-->
+<!--*       on 2026-10-15T02:36:19Z       *-->
 <!--*   A recent stable commit (2022-07-01):   *-->
 <!--* 6c761d3dba23af92cba35001c852aac04ae99a5f *-->
 <!--*                                          *-->
@@ -2442,9 +2442,30 @@ Before any push:
 <li><p><em class="alert">Easy to change mid-term.</em> One edit updates both, and the history keeps every change: Oct 4, “Exam #1 topics: drop the binomial series.”</p></li>
 <li><p><em class="alert">Reusable.</em> MATH 14’s syllabus has the same files and sections; next term starts from a copy.</p></li>
 </ul>
+</div></section><section><h3>A grade calculator, right in the syllabus</h3>
+<div align="left">
+<div style="display:table;margin-left:0.75%;margin-right:0.75%;" class="sidebyside">
+<div style="display:table-cell;width:58.8832487309645%;vertical-align:top;">
+<div class="interactive-iframe-container">
+<iframe src="external/grade-calculator.html" id="int-slide-grade-calculator" style="max-width: 58%; width: 100%; aspect-ratio:1.25" title="described in detail following the image" aria-describedby="int-slide-grade-calculator-description"></iframe><details class="image-description" aria-live="polite"><summary title="details"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe88e;</span></summary><div id="int-slide-grade-calculator-description"><p>The MATH 13 grade calculator from section 3.2 of the syllabus: boxes for the three midterms, the final exam, and the assignments, and beside them the course total and letter grade with the lowest midterm dropped, the total without the drop, a row for every component, and the formula with the entered numbers.</p></div></details>
+</div>
+<div class="interactive-iframe-container__opener"><a href="int-slide-grade-calculator.html" title="Open in new tab" aria-label="Open in new tab" target="_blank"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe89e;</span></a></div>
+</div>
+<div style="display:table-cell;width:39.5939086294416%;vertical-align:top;">
+<ul class="disc" id="sec-build-math53-9-2-2">
+<li><p><em class="alert">Your grade as you type,</em> with the lowest midterm dropped.</p></li>
+<li><p><em class="alert">What the drop is worth:</em> the total without it, and the dropped exam struck through.</p></li>
+<li><p><em class="alert">The arithmetic, shown:</em> every component, and the formula with the student’s numbers.</p></li>
+<li><p><em class="alert">Honest mid-quarter:</em> empty boxes count as 0, and the letter waits for all five scores.</p></li>
+<li><p><em class="alert">What the final needs</em> for each letter grade, A to C−.</p></li>
+<li><p><em class="alert">Private, and in the PDF too:</em> scores stay in the browser; the PDF prints a QR code.</p></li>
+</ul>
+</div>
+</div>
+<p>It opens on the syllabus’s own example, a C+ that becomes a B+. MATH 14’s syllabus has the same calculator.</p>
 </div></section><section><h3>An article, one file per section</h3>
 <div align="left">
-<p><em class="alert">How it’s coded · The syllabus · step 1 of 5.</em> The syllabus is a PreTeXt <code class="code-inline tex2jax_ignore">&lt;article&gt;</code>: a title, then one file per section, organized like the course books.</p>
+<p><em class="alert">How it’s coded · The syllabus · step 1 of 6.</em> The syllabus is a PreTeXt <code class="code-inline tex2jax_ignore">&lt;article&gt;</code>: a title, then one file per section, organized like the course books.</p>
 <p>From <code class="code-inline tex2jax_ignore">MATH13-Syllabus-Fall2026/source/main.ptx</code></p>
 <div class="code-box"><pre class="program" data-line="7,13-15"><code class="language-xml">&lt;!-- MATH13-Syllabus-Fall2026/source/main.ptx --&gt;
 &lt;pretext xml:lang="en-US" xmlns:xi="http://www.w3.org/2001/XInclude"&gt;
@@ -2468,7 +2489,7 @@ Before any push:
 </code></pre></div>
 </div></section><section><h3>Tables and cross-references</h3>
 <div align="left">
-<p><em class="alert">How it’s coded · The syllabus · step 2 of 5.</em> A table gets an <code class="code-inline tex2jax_ignore">xml:id</code>, a title, and a header row. <code class="code-inline tex2jax_ignore">&lt;xref&gt;</code> prints “Table 5.2” or a section’s title, and keeps the number right when sections move.</p>
+<p><em class="alert">How it’s coded · The syllabus · step 2 of 6.</em> A table gets an <code class="code-inline tex2jax_ignore">xml:id</code>, a title, and a header row. <code class="code-inline tex2jax_ignore">&lt;xref&gt;</code> prints “Table 5.2” or a section’s title, and keeps the number right when sections move.</p>
 <p>From <code class="code-inline tex2jax_ignore">MATH13-Syllabus-Fall2026/source/grading.ptx</code></p>
 <div class="code-box"><pre class="program" data-line="4,8,19"><code class="language-xml">…
   &lt;title&gt;Summary of Course Components&lt;/title&gt;
@@ -2493,7 +2514,7 @@ Before any push:
 </code></pre></div>
 </div></section><section><h3>Links into the books</h3>
 <div align="left">
-<p><em class="alert">How it’s coded · The syllabus · step 3 of 5.</em> Each exam’s topic list links to its review set and to every section in the skeletal notes, so the syllabus doubles as a study map.</p>
+<p><em class="alert">How it’s coded · The syllabus · step 3 of 6.</em> Each exam’s topic list links to its review set and to every section in the skeletal notes, so the syllabus doubles as a study map.</p>
 <p>From <code class="code-inline tex2jax_ignore">MATH13-Syllabus-Fall2026/source/grading.ptx</code></p>
 <div class="code-box"><pre class="program" data-line="5,12,16"><code class="language-xml">&lt;!-- source/grading.ptx; "…" stands for https://mahmadi-ops.github.io,
      and long lines are wrapped for the slide --&gt;
@@ -2517,7 +2538,7 @@ Before any push:
 </code></pre></div>
 </div></section><section><h3>Pictures with descriptions</h3>
 <div align="left">
-<p><em class="alert">How it’s coded · The syllabus · step 4 of 5.</em> Every picture has alt text and a longer description for screen readers; the PDF gets the same figure and caption.</p>
+<p><em class="alert">How it’s coded · The syllabus · step 4 of 6.</em> Every picture has alt text and a longer description for screen readers; the PDF gets the same figure and caption.</p>
 <p>From <code class="code-inline tex2jax_ignore">MATH13-Syllabus-Fall2026/source/assignments.ptx</code></p>
 <div class="code-box"><pre class="program" data-line="6-8,15"><code class="language-xml">&lt;!-- source/assignments.ptx --&gt;
 &lt;figure xml:id="fig-gradescope"&gt;
@@ -2537,9 +2558,34 @@ Before any push:
   &lt;/image&gt;
 &lt;/figure&gt;
 </code></pre></div>
+</div></section><section><h3>A calculator in the syllabus</h3>
+<div align="left">
+<p><em class="alert">How it’s coded · The syllabus · step 5 of 6.</em> The calculator is one HTML page in <code class="code-inline tex2jax_ignore">assets/</code>, placed with <code class="code-inline tex2jax_ignore">&lt;interactive iframe&gt;</code>. On the website it runs in the page; in the PDF, PreTeXt prints the <code class="code-inline tex2jax_ignore">preview</code> image with a QR code that opens it. The grading rule is one line of its script.</p>
+<p>From <code class="code-inline tex2jax_ignore">MATH13-Syllabus-Fall2026/source/grading.ptx · assets/grade-calculator.html</code></p>
+<div class="code-box"><pre class="program" data-line="9-11,19"><code class="language-xml">&lt;!-- source/grading.ptx --&gt;
+&lt;subsection xml:id="drop-lowest-midterm"&gt;
+  &lt;title&gt;Dropping the Lowest Midterm Grade&lt;/title&gt;
+  …
+  &lt;figure xml:id="figure-grade-calculator"&gt;
+    &lt;caption&gt;Enter your scores to see your course grade with the lowest
+    midterm dropped. … (In the PDF, scan the code to open the calculator on
+    the course website.)&lt;/caption&gt;
+    &lt;interactive xml:id="interactive-grade-calculator"
+                 iframe="grade-calculator.html"
+                 preview="grade-calculator-preview.png"
+                 width="100%" aspect="15:16"/&gt;
+  &lt;/figure&gt;
+&lt;/subsection&gt;
+
+&lt;!-- assets/grade-calculator.html: the rule, in one function --&gt;
+function midtermPoints(scores) {
+  var s = scores.slice().sort(function (a, b) { return b - a; });
+  return (s[0] + s[1]) / 40 * 60;
+}
+</code></pre></div>
 </div></section><section><h3>Two outputs, one push</h3>
 <div align="left">
-<p><em class="alert">How it’s coded · The syllabus · step 5 of 5.</em> Two targets: on every push the workflow builds the website and the PDF and publishes them together, the PDF beside the site.</p>
+<p><em class="alert">How it’s coded · The syllabus · step 6 of 6.</em> Two targets: on every push the workflow builds the website and the PDF and publishes them together, the PDF beside the site.</p>
 <p>From <code class="code-inline tex2jax_ignore">MATH13-Syllabus-Fall2026/project.ptx · deploy.yml</code></p>
 <div class="code-box"><pre class="program" data-line="4-5,12,14,19"><code class="language-none">…
 &lt;project ptx-version="2"&gt;
@@ -2579,7 +2625,7 @@ Before any push:
 <div style="display:table;margin-left:1%;margin-right:1%;" class="sidebyside">
 <div style="display:table-cell;width:38.7755102040816%;vertical-align:top;">
 <p><em class="alert">A week on the MATH 14 desk</em></p>
-<ol class="decimal" id="sec-build-math53-16-2-1-2">
+<ol class="decimal" id="sec-build-math53-18-2-1-2">
 <li><p><em class="alert">The skeletal section, for class:</em> §2.1 · Oct 7</p></li>
 <li><p><em class="alert">The completed notes for it:</em> §2.1 · Oct 8</p></li>
 <li><p><em class="alert">The next assignment, with its due date:</em> Assignment 4 · posted Oct 9, due Fri Oct 16</p></li>
@@ -2758,20 +2804,20 @@ concurrency:
 </div></section><section><h3>Code that runs on the page: an epidemic as a Markov chain</h3>
 <div align="left">
 <p>Each day <span class="process-math">\(5\%\)</span> of the susceptible fall ill; the infected recover, die, or relapse. Press Evaluate.</p>
-<div id="sec-build-math53-23-3" class="ptx-sagecell sagecell-sage"><script type="text/x-sage">T = matrix(QQ, [[0.95, 0.04, 0, 0],
+<div id="sec-build-math53-25-3" class="ptx-sagecell sagecell-sage"><script type="text/x-sage">T = matrix(QQ, [[0.95, 0.04, 0, 0],
                 [0.05, 0.85, 0, 0],
                 [0,    0.10, 1, 0],
                 [0,    0.01, 0, 1]])
 S0 = vector(QQ, [1, 0, 0, 0])
 T
 </script></div>
-<div id="sec-build-math53-23-4" class="ptx-sagecell sagecell-sage"><script type="text/x-sage">S = S0
+<div id="sec-build-math53-25-4" class="ptx-sagecell sagecell-sage"><script type="text/x-sage">S = S0
 for k in range(1, 6):
     S = T*S
     print(k, S.n(digits=4))
 </script></div>
 </div></section><section><h3>Two hundred days, plotted</h3>
-<div align="left"><div id="sec-build-math53-24-2" class="ptx-sagecell sagecell-sage"><script type="text/x-sage">N = 200
+<div align="left"><div id="sec-build-math53-26-2" class="ptx-sagecell sagecell-sage"><script type="text/x-sage">N = 200
 history = [S0]
 for k in range(N):
     history.append(T * history[-1])
@@ -2785,9 +2831,9 @@ p.axes_labels(["day $k$", "fraction of population"])
 p.show(ymin=0, ymax=1, figsize=[7, 3.5])
 </script></div></div></section><section><h3>The long run</h3>
 <div align="left">
-<div id="sec-build-math53-25-2" class="ptx-sagecell sagecell-sage"><script type="text/x-sage">(T^1000 * S0).n(digits=4)
+<div id="sec-build-math53-27-2" class="ptx-sagecell sagecell-sage"><script type="text/x-sage">(T^1000 * S0).n(digits=4)
 </script></div>
-<div id="sec-build-math53-25-3" class="ptx-sagecell sagecell-sage"><script type="text/x-sage">T.eigenvectors_right()
+<div id="sec-build-math53-27-3" class="ptx-sagecell sagecell-sage"><script type="text/x-sage">T.eigenvectors_right()
 </script></div>
 <p>About <span class="process-math">\(90.9\%\)</span> recovered and <span class="process-math">\(9.1\%\)</span> deceased; the exact limits are <span class="process-math">\(\frac{10}{11}\)</span> and <span class="process-math">\(\frac{1}{11}\text{.}\)</span> <a class="external" href="https://mahmadi-ops.github.io/MATH-53/sec-epidemic-sage.html" target="_blank">Section 9.3 in the book</a></p>
 </div></section><section><h3>A cell</h3>
@@ -2858,7 +2904,7 @@ p.show(ymin=0, ymax=1, figsize=[7, 3.5])
 </div></section><section><h3>MATH 53, Linear Algebra: ten chapters drafted</h3>
 <div align="left"><div style="display:table;margin-left:1%;margin-right:1%;" class="sidebyside">
 <div style="display:table-cell;width:44.8979591836735%;vertical-align:top;">
-<ol class="decimal" id="sec-build-math53-30-2-1">
+<ol class="decimal" id="sec-build-math53-32-2-1">
 <li><p>Systems of linear equations</p></li>
 <li><p>Vectors in <span class="process-math">\(\R^n\)</span></p></li>
 <li><p>Linear transformations</p></li>

@@ -149,10 +149,38 @@ Before any push:
     </ul>
   </slide>
 
-  <!-- ===== How it's coded: The syllabus (5 steps) ===== -->
+  <!-- Notes: LIVE: the calculator from both syllabi (section 3.2, Dropping the Lowest
+       Midterm Grade, added October 14). The lowest of the three midterms is dropped and the
+       best two, out of 40, are scaled to the full 60 midterm points. Type a score and
+       everything updates: the total and letter grade, the total without the drop, the
+       dropped exam struck through, and the formula with the student's numbers. Clear a box:
+       empty boxes count as 0, so mid-quarter the total is the lowest it can be, and the
+       letter appears only when all five scores are in. Clear the final: it lists the final
+       exam score needed for each letter grade. Scores stay in the student's own browser. In
+       the PDF the same figure prints a preview with a QR code that opens the calculator.
+       "Load example" brings back the C+ to B+ example from the syllabus table. -->
+  <slide>
+    <title>A grade calculator, right in the syllabus</title>
+    <sidebyside widths="58% 39%" valign="top">
+      <interactive xml:id="int-slide-grade-calculator" iframe="grade-calculator.html" aspect="5:4">
+        <description><p>The MATH 13 grade calculator from section 3.2 of the syllabus: boxes for the three midterms, the final exam, and the assignments, and beside them the course total and letter grade with the lowest midterm dropped, the total without the drop, a row for every component, and the formula with the entered numbers.</p></description>
+      </interactive>
+      <ul>
+        <li><p><alert>Your grade as you type,</alert> with the lowest midterm dropped.</p></li>
+        <li><p><alert>What the drop is worth:</alert> the total without it, and the dropped exam struck through.</p></li>
+        <li><p><alert>The arithmetic, shown:</alert> every component, and the formula with the student's numbers.</p></li>
+        <li><p><alert>Honest mid-quarter:</alert> empty boxes count as 0, and the letter waits for all five scores.</p></li>
+        <li><p><alert>What the final needs</alert> for each letter grade, A to C−.</p></li>
+        <li><p><alert>Private, and in the PDF too:</alert> scores stay in the browser; the PDF prints a QR code.</p></li>
+      </ul>
+    </sidebyside>
+    <p>It opens on the syllabus's own example, a C+ that becomes a B+. MATH 14's syllabus has the same calculator.</p>
+  </slide>
+
+  <!-- ===== How it's coded: The syllabus (6 steps) ===== -->
   <slide>
     <title>An article, one file per section</title>
-    <p><alert>How it’s coded · The syllabus · step 1 of 5.</alert> The syllabus is a PreTeXt <c>&lt;article&gt;</c>: a title, then one file per section, organized like the course books.</p>
+    <p><alert>How it’s coded · The syllabus · step 1 of 6.</alert> The syllabus is a PreTeXt <c>&lt;article&gt;</c>: a title, then one file per section, organized like the course books.</p>
     <p>From <c>MATH13-Syllabus-Fall2026/source/main.ptx</c></p>
     <program language="xml" highlight-lines="7,13-15">
 <code>
@@ -181,7 +209,7 @@ Before any push:
 
   <slide>
     <title>Tables and cross-references</title>
-    <p><alert>How it’s coded · The syllabus · step 2 of 5.</alert> A table gets an <c>xml:id</c>, a title, and a header row. <c>&lt;xref&gt;</c> prints “Table 5.2” or a section’s title, and keeps the number right when sections move.</p>
+    <p><alert>How it’s coded · The syllabus · step 2 of 6.</alert> A table gets an <c>xml:id</c>, a title, and a header row. <c>&lt;xref&gt;</c> prints “Table 5.2” or a section’s title, and keeps the number right when sections move.</p>
     <p>From <c>MATH13-Syllabus-Fall2026/source/grading.ptx</c></p>
     <program language="xml" highlight-lines="4,8,19">
 <code>
@@ -211,7 +239,7 @@ Before any push:
 
   <slide>
     <title>Links into the books</title>
-    <p><alert>How it’s coded · The syllabus · step 3 of 5.</alert> Each exam’s topic list links to its review set and to every section in the skeletal notes, so the syllabus doubles as a study map.</p>
+    <p><alert>How it’s coded · The syllabus · step 3 of 6.</alert> Each exam’s topic list links to its review set and to every section in the skeletal notes, so the syllabus doubles as a study map.</p>
     <p>From <c>MATH13-Syllabus-Fall2026/source/grading.ptx</c></p>
     <program language="xml" highlight-lines="5,12,16">
 <code>
@@ -240,7 +268,7 @@ Before any push:
 
   <slide>
     <title>Pictures with descriptions</title>
-    <p><alert>How it’s coded · The syllabus · step 4 of 5.</alert> Every picture has alt text and a longer description for screen readers; the PDF gets the same figure and caption.</p>
+    <p><alert>How it’s coded · The syllabus · step 4 of 6.</alert> Every picture has alt text and a longer description for screen readers; the PDF gets the same figure and caption.</p>
     <p>From <c>MATH13-Syllabus-Fall2026/source/assignments.ptx</c></p>
     <program language="xml" highlight-lines="6-8,15">
 <code>
@@ -266,8 +294,38 @@ Before any push:
   </slide>
 
   <slide>
+    <title>A calculator in the syllabus</title>
+    <p><alert>How it’s coded · The syllabus · step 5 of 6.</alert> The calculator is one HTML page in <c>assets/</c>, placed with <c>&lt;interactive iframe&gt;</c>. On the website it runs in the page; in the PDF, PreTeXt prints the <c>preview</c> image with a QR code that opens it. The grading rule is one line of its script.</p>
+    <p>From <c>MATH13-Syllabus-Fall2026/source/grading.ptx · assets/grade-calculator.html</c></p>
+    <program language="xml" highlight-lines="9-11,19">
+<code>
+&lt;!-- source/grading.ptx --&gt;
+&lt;subsection xml:id="drop-lowest-midterm"&gt;
+  &lt;title&gt;Dropping the Lowest Midterm Grade&lt;/title&gt;
+  …
+  &lt;figure xml:id="figure-grade-calculator"&gt;
+    &lt;caption&gt;Enter your scores to see your course grade with the lowest
+    midterm dropped. … (In the PDF, scan the code to open the calculator on
+    the course website.)&lt;/caption&gt;
+    &lt;interactive xml:id="interactive-grade-calculator"
+                 iframe="grade-calculator.html"
+                 preview="grade-calculator-preview.png"
+                 width="100%" aspect="15:16"/&gt;
+  &lt;/figure&gt;
+&lt;/subsection&gt;
+
+&lt;!-- assets/grade-calculator.html: the rule, in one function --&gt;
+function midtermPoints(scores) {
+  var s = scores.slice().sort(function (a, b) { return b - a; });
+  return (s[0] + s[1]) / 40 * 60;
+}
+</code>
+</program>
+  </slide>
+
+  <slide>
     <title>Two outputs, one push</title>
-    <p><alert>How it’s coded · The syllabus · step 5 of 5.</alert> Two targets: on every push the workflow builds the website and the PDF and publishes them together, the PDF beside the site.</p>
+    <p><alert>How it’s coded · The syllabus · step 6 of 6.</alert> Two targets: on every push the workflow builds the website and the PDF and publishes them together, the PDF beside the site.</p>
     <p>From <c>MATH13-Syllabus-Fall2026/project.ptx · deploy.yml</c></p>
     <program highlight-lines="4-5,12,14,19">
 <code>
